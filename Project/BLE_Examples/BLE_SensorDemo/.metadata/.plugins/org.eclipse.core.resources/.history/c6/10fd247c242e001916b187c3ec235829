@@ -1,0 +1,26 @@
+/*
+ * globals.h
+ *
+ *  Created on: 08.01.2019
+ *      Author: dinkelsv64505
+ */
+
+#ifndef BLUEHOME_GLOBALS_H_
+#define BLUEHOME_GLOBALS_H_
+
+#include <RuleProcess/RuleProcess_RuleChecker.h>
+#include "rule.h"
+#include "action.h"
+#include "stdint.h"
+
+#include "BlueNRG1_flash.h"
+
+
+
+//zu Programmstart leerer MAC-Array
+extern uint8_t MAC_Ad[SIZEOFMAC][6];
+
+//MAC-Adressen aus Flash auslesen
+void MAC_init();
+
+#endif /* BLUEHOME_GLOBALS_H_ */

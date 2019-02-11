@@ -1,0 +1,29 @@
+/*
+ * source.h
+ *
+ *  Created on: 08.01.2019
+ *      Author: dinkelsv64505
+ */
+
+#ifndef SOURCE_H_
+#define SOURCE_H_
+
+#include "stdint.h"
+
+//SourceTypes
+#define SOURCETYPE_NOSOURCE 0
+#define SOURCETYPE_BLUETOOTH 1
+#define SOURCETYPE_RTC 2
+#define SOURCETYPE_BUTTON 3
+#define SOURCETYPE_SENSOR 4
+
+//zu Programmstart leerer rules-Array
+Rules myRules[SIZEOFMYRULES];
+
+
+//funktionen
+//source.handler
+void source_handler(sources source);
+
+
+#endif /* SOURCE_H_ */

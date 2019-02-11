@@ -17,14 +17,14 @@
 /**
  * @file SensorDemo_main.c
  * @brief This application contains an example which shows how implementing a proprietary
- * Bluetooth Low Energy profile: the sensor profile. It also provides a reference example about how using the 
+ * Bluetooth Low Energy profile: the sensor profile. It also provides a reference example about how using the
  * BLE Over-The-Air (OTA) firmware upgrade capability with the BLE Sensor Demo.
- * 
+ *
 
 * \section ATOLLIC_project ATOLLIC project
   To use the project with ATOLLIC TrueSTUDIO for ARM, please follow the instructions below:
-  -# Open the ATOLLIC TrueSTUDIO for ARM and select File->Import... Project menu. 
-  -# Select Existing Projects into Workspace. 
+  -# Open the ATOLLIC TrueSTUDIO for ARM and select File->Import... Project menu.
+  -# Select Existing Projects into Workspace.
   -# Select the ATOLLIC project
   -# Select desired configuration to build from Project->Manage Configurations
   -# Select Project->Rebuild Project. This will recompile and link the entire application
@@ -34,7 +34,7 @@
 
 * \section KEIL_project KEIL project
   To use the project with KEIL uVision 5 for ARM, please follow the instructions below:
-  -# Open the KEIL uVision 5 for ARM and select Project->Open Project menu. 
+  -# Open the KEIL uVision 5 for ARM and select Project->Open Project menu.
   -# Open the KEIL project
      <tt> ...\\Project\\BLE_Examples\\SensorDemo\\MDK-ARM\\BlueNRG-1\\SensorDemo.uvprojx </tt> or
      <tt> ...\\Project\\BLE_Examples\\SensorDemo\\MDK-ARM\\BlueNRG-2\\SensorDemo.uvprojx </tt>
@@ -46,7 +46,7 @@
 
 * \section IAR_project IAR project
   To use the project with IAR Embedded Workbench for ARM, please follow the instructions below:
-  -# Open the Embedded Workbench for ARM and select File->Open->Workspace menu. 
+  -# Open the Embedded Workbench for ARM and select File->Open->Workspace menu.
   -# Open the IAR project
      <tt> ...\\Project\\BLE_Examples\\SensorDemo\\EWARM\\BlueNRG-1\\SensorDemo.eww </tt> or
      <tt> ...\\Project\\BLE_Examples\\SensorDemo\\EWARM\\BlueNRG-2\\SensorDemo.eww </tt>
@@ -84,7 +84,7 @@
 | ON 1-2      |            | USB supply power to STM32L1, JP2 pin 2 external power to BlueNRG1           |
 
 
-@endtable 
+@endtable
 
 * \section Jumper_settings Jumper settings
 @table
@@ -93,16 +93,16 @@
 |                                                                             STEVAL-IDB00XV1                                                                                          |
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Jumper name |                                                                Description                                                                                             |
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------          
-| JP1         | 1-2: to provide power from USB (JP2:2-3). 2-3: to provide power from battery holder (JP2:1-2)                                                                          |          
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| JP1         | 1-2: to provide power from USB (JP2:2-3). 2-3: to provide power from battery holder (JP2:1-2)                                                                          |
 | JP2         | 1-2: to provide power from battery holder (JP1:2-3). 2-3: to provide power from USB (JP1:1-2). Pin2 to VDD  to provide external power supply to BlueNRG-1 (JP1: 1-2)   |
-| JP3         | pin 1 and 2 UART RX and TX of MCU. pin 3 GND.                                                                                                                          |          
+| JP3         | pin 1 and 2 UART RX and TX of MCU. pin 3 GND.                                                                                                                          |
 | JP4         | Fitted: to provide VBLUE to BlueNRG1. It can be used also for current measurement.                                                                                     |
 | JP5         | Fitted : TEST pin to VBLUE. Not fitted:  TEST pin to GND                                                                                                               |
 
 
-@endtable 
-                        
+@endtable
+
 * \section Pin_settings Pin settings
 @table
 |            |                                      Release                                      ||||                                   HigherApp_OTA                                   ||||                                          Use_OTA_ServiceManager                                           ||||                                   LowerApp_OTA                                    ||||
@@ -126,7 +126,7 @@
 |     IO8    |      Not Used      |      Not Used      |      Not Used      |      Not Used      |      Not Used      |      Not Used      |      Not Used      |      Not Used      |         Not Used         |         Not Used         |         Not Used         |         Not Used         |      Not Used      |      Not Used      |      Not Used      |      Not Used      |
 |    TEST1   |      Not Used      |      Not Used      |      Not Used      |      Not Used      |      Not Used      |      Not Used      |      Not Used      |      Not Used      |         Not Used         |         Not Used         |         Not Used         |         Not Used         |      Not Used      |      Not Used      |      Not Used      |      Not Used      |
 
-@endtable 
+@endtable
 
 * \section Serial_IO Serial I/O
 @table
@@ -165,31 +165,31 @@
 @endtable
 
 * \section Usage Usage
-This profile exposes two services: 
- - acceleration service 
+This profile exposes two services:
+ - acceleration service
  - environmental service.
 
-Acceleration service exposes these characteristics: 
- - free-fall characteristic (read & notify properties ). 
+Acceleration service exposes these characteristics:
+ - free-fall characteristic (read & notify properties ).
     The application will send a notification on this characteristic if a free-fall condition has been
 detected by the MEMS sensor (the condition is detected if the acceleration on the 3
 axes is near zero for a certain amount of time).
  - acceleration characteristic  measured by the accelerometer (read & notify properties). The value is made up of six bytes. Each couple of
 bytes contains the acceleration on one of the 3 axes. The values are given in mg.
 
-Environmental service exposes these characteristics: 
+Environmental service exposes these characteristics:
 -  temperature, pressure characteristics (read property). For each
 characteristic, a characteristic format descriptor is present to describe the type of data
-contained inside the characteristic. 
+contained inside the characteristic.
 
 NOTEs:
-     - Setting the preprocessor option SENSOR_EMULATION=1, the sensor demo is built for using emulated values for acceleration and environmental sensors values. 
+     - Setting the preprocessor option SENSOR_EMULATION=1, the sensor demo is built for using emulated values for acceleration and environmental sensors values.
      - OTA service support for lower or higher application is enabled, respectively,  through ST_OTA_LOWER_APPLICATION=1 or ST_OTA_HIGHER_APPLICATION=1 (preprocessor, linker) options and files: OTA_btl.[ch] (refer to LowerApp_OTA and HigherApp_OTA IAR workspaces).
      - OTA service manager support is enabled, respectively,  through ST_USE_OTA_SERVICE_MANAGER_APPLICATION (preprocessor, linker) options and files: OTA_btl.[ch] (refer to Use_OTA_ServiceManager IAR workspace).
      - OTA FW upgrade feature is supported only on BlueNRG-2, BLE stack v2.x.
 
 **/
-   
+
 /** @addtogroup BlueNRG1_demonstrations_applications
  * BlueNRG-1 SensorDemo \see SensorDemo_main.c for documentation.
  *
@@ -203,14 +203,15 @@ NOTEs:
 #include <stdio.h>
 #include "BlueNRG1_it.h"
 #include "BlueNRG1_conf.h"
-#include "ble_const.h" 
+#include "ble_const.h"
 #include "bluenrg1_stack.h"
 #include "SDK_EVAL_Config.h"
 #include "sleep.h"
 #include "sensor.h"
 #include "SensorDemo_config.h"
-#include "OTA_btl.h"  
+#include "OTA_btl.h"
 #include "gatt_db.h"
+
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -225,24 +226,33 @@ NOTEs:
 #define PRINTF(...)
 #endif
 
-#define BLE_SENSOR_VERSION_STRING "1.0.0" 
+#define BLE_SENSOR_VERSION_STRING "1.0.0"
 
 /* Private macro -------------------------------------------------------------*/
+
+
+
+
+
 /* Private variables ---------------------------------------------------------*/
-   
+
+
+/* Global  variables ---------------------------------------------------------*/
+
+
 /* Set the Application Service Max number of attributes records with init parameters coming from application *.config.h file */
 uint8_t Services_Max_Attribute_Records[NUMBER_OF_APPLICATION_SERVICES] = {MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_1, MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_2};
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
-int main(void) 
+int main(void)
 {
   uint8_t ret;
 
   /* System Init */
   SystemInit();
-  
+
   /* Identify BlueNRG1 platform */
   SdkEvalIdentification();
 
@@ -255,38 +265,66 @@ int main(void)
     PRINTF("Error in BlueNRG_Stack_Initialization() 0x%02x\r\n", ret);
     while(1);
   }
-  
+
   /* Application demo Led Init */
-  SdkEvalLedInit(LED1); //Activity led 
-  SdkEvalLedInit(LED3); //Error led 
-  SdkEvalLedOn(LED1);
+  SdkEvalLedInit(LED1); //Activity led
+  SdkEvalLedInit(LED2);
+  SdkEvalLedInit(LED3); //Error led
+  SdkEvalLedOff(LED1);
+  SdkEvalLedOff(LED2);
   SdkEvalLedOff(LED3);
-  
-  PRINTF("BlueNRG-1 BLE Sensor Demo Application (version: %s)\r\n", BLE_SENSOR_VERSION_STRING); 
-  
+
+  PRINTF("BlueNRG-1 BLE Sensor Demo Application (version: %s)\r\n", BLE_SENSOR_VERSION_STRING);
+
+	/*
+	 *
+	 *
+	 * BLUEHOME INIT
+	 *
+	 *
+	 */
+
+
   /* Sensor Device Init */
   ret = Sensor_DeviceInit();
   if (ret != BLE_STATUS_SUCCESS) {
     SdkEvalLedOn(LED3);
     while(1);
   }
- 
+
 #if ST_USE_OTA_SERVICE_MANAGER_APPLICATION
   /* Initialize the button */
-  SdkEvalPushButtonInit(BUTTON_1); 
+  SdkEvalPushButtonInit(BUTTON_1);
 #endif /* ST_USE_OTA_SERVICE_MANAGER_APPLICATION */
-  
-  while(1)
-  {
+
+  //read rules from flash
+	//rules_init();
+
+  //read actions from flash
+	//action_init();
+
+	//read MACs from flash
+	//MAC_init();
+
+	//sourceBuffer mit NOSOURCE vorinitialisieren
+//	for (int j = 0; j < SIZEOFSOURCEBUFFER; j++)
+//	{
+//		sourceBuffer[j].sourceType = SOURCETYPE_NOSOURCE;
+//	}
+
+
+	while (1)
+	{
+		//SdkEvalLedOn(LED2);
     /* BLE Stack Tick */
-    BTLE_StackTick();
+		BTLE_StackTick();
 
     /* Application Tick */
-    APP_Tick();
-    
+		APP_Tick();
+
     /* Power Save management */
-    BlueNRG_Sleep(SLEEPMODE_NOTIMER, 0, 0); 
-    
+		BlueNRG_Sleep(SLEEPMODE_NOTIMER, 0, 0);
+
 #if ST_OTA_FIRMWARE_UPGRADE_SUPPORT
     /* Check if the OTA firmware upgrade session has been completed */
     if (OTA_Tick() == 1)
@@ -302,7 +340,7 @@ int main(void)
       OTA_Jump_To_Service_Manager_Application();
     }
 #endif /* ST_USE_OTA_SERVICE_MANAGER_APPLICATION */
-  }/* while (1) */
+	}/* while (1) */
 }
 
 /****************** BlueNRG-1 Sleep Management Callback ********************************/
@@ -311,7 +349,7 @@ SleepModes App_SleepMode_Check(SleepModes sleepMode)
 {
   if(SdkEvalComIOTxFifoNotEmpty())
     return SLEEPMODE_RUNNING;
-  
+
   return SLEEPMODE_NOTIMER;
 }
 
@@ -331,7 +369,7 @@ void assert_failed(uint8_t* file, uint32_t line)
 {
     /* User can add his own implementation to report the file name and line number,
     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-    
+
     /* Infinite loop */
     while (1)
     {}

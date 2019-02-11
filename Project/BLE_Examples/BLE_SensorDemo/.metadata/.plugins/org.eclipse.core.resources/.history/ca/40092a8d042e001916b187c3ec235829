@@ -1,0 +1,23 @@
+/*
+ * globals.c
+ *
+ *  Created on: 11.02.2019
+ *      Author: dinkelsv64505
+ */
+
+
+#include "globals.h"
+
+void MAC_init()
+{
+	//ein Schleifendurchlauf entspricht einer Action
+	for (int i = 0; i < SIZEOFMYACTIONS; i++)
+	{
+		MAC_Add[i][0] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 0);
+		MAC_Add[i][1] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 1);
+		MAC_Add[i][2] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 2);
+		MAC_Add[i][3] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 3);
+		MAC_Add[i][4] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 4);
+		MAC_Add[i][5] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 5);
+	}
+}

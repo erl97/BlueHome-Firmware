@@ -1,0 +1,36 @@
+/*
+ * actions.h
+ *
+ *  Created on: 08.01.2019
+ *      Author: dinkelsv64505
+ */
+
+#ifndef BLUEHOME_ACTION_H_
+#define BLUEHOME_ACTION_H_
+
+#include "stdint.h"
+
+
+
+//ActionID’s/ActionMakros
+//#define ACTION_BLUETOOTH_… 0
+//#define ACTION_… 1
+
+//struct
+typedef struct
+{
+	uint8_t actionType; //Makros
+	uint8_t targetID;	//ID
+	uint8_t paramNum;	//number of parameters
+	uint8_t param[24]; //Info und Werte
+} actions;
+
+
+//read actions from flash
+void action_init();
+
+//do action
+void action_exec();
+
+
+#endif /* BLUEHOME_ACTION_H_ */

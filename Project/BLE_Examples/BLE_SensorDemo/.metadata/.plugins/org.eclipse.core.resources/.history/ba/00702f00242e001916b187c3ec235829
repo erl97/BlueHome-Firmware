@@ -1,0 +1,44 @@
+/*
+ * globals.h
+ *
+ *  Created on: 08.01.2019
+ *      Author: dinkelsv64505
+ */
+
+#ifndef BLUEHOME_GLOBALS_H_
+#define BLUEHOME_GLOBALS_H_
+
+#include <RuleProcess/RuleProcess_RuleChecker.h>
+#include "rule.h"
+#include "action.h"
+#include "stdint.h"
+
+#include "BlueNRG1_flash.h"
+
+
+
+
+
+
+
+//Index auf source- und action-Buffer zum schreiben; Hochzählen nachdem neue Source/Action in Buffer geschrieben wurde
+extern volatile uint8_t write_idx_source;
+extern volatile uint8_t write_idx_action;
+
+//Hier werden die Sources/Actions hineingeschrieben
+
+extern uint8_t actionBuffer[SIZEOFACTIONBUFFER];
+
+//zu Programmstart leerer rules-Array
+extern rules myRules[SIZEOFMYRULES];
+
+//zu Programmstart leerer actions-Array
+extern actions myActions[SIZEOFMYACTIONS];
+
+//zu Programmstart leerer MAC-Array
+extern uint8_t MAC_Ad[SIZEOFMAC][6];
+
+//MAC-Adressen aus Flash auslesen
+void MAC_init();
+
+#endif /* BLUEHOME_GLOBALS_H_ */

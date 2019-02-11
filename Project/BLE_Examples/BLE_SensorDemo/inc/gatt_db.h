@@ -8,12 +8,12 @@
 #define Y_OFFSET 50
 #define Z_OFFSET 1000
 
-/** 
+/**
  * @brief Number of application services
  */
 #define NUMBER_OF_APPLICATION_SERVICES (2)
-   
-/** 
+
+/**
  * @brief Structure containing acceleration value of each axis.
  */
 typedef struct {
@@ -23,9 +23,13 @@ typedef struct {
 } AxesRaw_t;
 
 enum {
-  ACCELERATION_SERVICE_INDEX = 0,  
-  ENVIRONMENTAL_SERVICE_INDEX = 1   
+  ACCELERATION_SERVICE_INDEX = 0,
+  ENVIRONMENTAL_SERVICE_INDEX = 1
 };
+
+tBleStatus Add_Com_Service(void);
+tBleStatus Add_Conf_Service(void);
+
 
 IMU_6AXES_StatusTypeDef GetAccAxesRaw (AxesRaw_t * acceleration_data);
 void GetFreeFallStatus(void);

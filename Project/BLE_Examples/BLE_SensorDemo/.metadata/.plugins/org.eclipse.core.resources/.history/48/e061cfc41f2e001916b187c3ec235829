@@ -1,0 +1,20 @@
+/*
+ * RuleProcess_ActionManager.c
+ *
+ *  Created on: 11.02.2019
+ *      Author: dinkelsv64505
+ */
+
+
+#include "RP_ActionManager.h"
+
+void rp_am_init()
+{
+
+}
+
+uint8_t rp_am_registerSAMIdentfier(uint8_t samId, SamValue_Fct fct)
+{
+
+	return 0;
+}
