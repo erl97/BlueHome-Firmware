@@ -1,0 +1,16 @@
+/*
+ * DB_Assert.c
+ *
+ *  Created on: 12.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#include "DB_Assert.h"
+
+#include "SDK_EVAL_Led.h"
+
+
+void db_as_PinIdUnknown(uint32_t pin)
+{
+	SdkEvalLedOn(LED3);
+}

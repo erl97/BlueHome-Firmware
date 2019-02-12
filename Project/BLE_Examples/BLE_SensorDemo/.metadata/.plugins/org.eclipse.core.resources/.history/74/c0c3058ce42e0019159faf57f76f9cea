@@ -1,0 +1,13 @@
+/*
+ * HW_UART.c
+ *
+ *  Created on: 12.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#include "HW_UART.h"
+
+void hw_uart_receiveISR()
+{
+
+}

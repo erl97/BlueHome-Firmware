@@ -20,23 +20,23 @@
 * \section SystemInit  System Initialization
 
   - The SystemInit() function is called on BlueNRG-1, BlueNRG-2 main application as first operation required for properly initialize the device:
-    - It remaps the vector table and it configures all the device interrrupt priorities giving the 
+    - It remaps the vector table and it configures all the device interrrupt priorities giving the
        highest one to the Pendable request for system service  and to the BLE radio BLUE Controller ones.
       - It calls the DeviceConfiguration(TRUE,TRUE) function for performing the proper application configuration steps.
       - It disables all the  peripherals clock except NVM, SYSCTR, PKA and RNG
          - It's up to user application to enables the other peripherals clock according to his needs.
       - It clear PRIMASK to reenable global interrupt operations.
 
-* \section DeviceConfiguration_Cold  Define Application Configurations 
+* \section DeviceConfiguration_Cold  Define Application Configurations
 
-  - During the device initialization phase, some specific parameters must be set 
+  - During the device initialization phase, some specific parameters must be set
     on BLE device controller registers, in order to define the following configurations:
     - Application mode: user or test mode
     - High speed crystal configuration: 32 or 16 MHz
     - Low speed crystal source: external 32 kHz oscillator, internal RO
     - SMPS: on or off (if on: 4.7 uH or 10 uH SMPS inductor)
     - BOR configuration
-  - The BlueNRG-1, BlueNRG-2 controller registers values are defined on file system_bluenrg1.c through the configuration table: 
+  - The BlueNRG-1, BlueNRG-2 controller registers values are defined on file system_bluenrg1.c through the configuration table:
     - COLD_START_CONFIGURATION.
     - This table defines the default configurations as follows:
       - User mode: ATB0_ANA_ENG_REG = USER_MODE_ATB0 (0x00), ATB1_ANA_ENG_REG = USER_MODE_ATB (0x30)
@@ -46,7 +46,7 @@
       - BOR (brown-out threshold): it is enabled by default
     - At device initialization, on reset/power-on, the function SystemInit() sets the
       default  starting parameters defined on the COLD_START_CONFIGURATION table within
-      the cold_start_config[] array by calling the  DeviceConfiguration(BOOL coldStart, BOOL waitLS_Ready) function with coldStart = TRUE and waitLS_Ready = TRUE. 
+      the cold_start_config[] array by calling the  DeviceConfiguration(BOOL coldStart, BOOL waitLS_Ready) function with coldStart = TRUE and waitLS_Ready = TRUE.
       User application can define its specific application starting settings, based on its application scenario, by setting some preprocessor options which act on specific fields of the cold_start_config[] array:
       - HS_SPEED_XTAL (high speed cystal: HS_SPEED_XTAL_16MHZ or HS_SPEED_XTAL_32MHZ)
       - LS_SOURCE     (Low speed crystal source: LS_SOURCE_EXTERNAL_32kHZ, LS_SOURCE_INTERNAL_RO)
@@ -55,41 +55,41 @@
 
     - Regarding the ATB0_ANA_ENG_REG, ATB1_ANA_ENG_REG registers settings, some test modes are also available in order to address some test scenarios.
       User should sets such registers as follows:
-  
+
         - Low speed crystal oscillator test mode:
-        
+
             - cold_start_config[2] = LS_XTAL_MEAS_ATB0 (0x37)
             - cold_start_config[5] = LS_XTAL_MEAS_ATB1 (0x34)
-      
-        -  High speed start-up time test mode:  
-      
+
+        -  High speed start-up time test mode:
+
             - cold_start_config[2] = HS_STARTUP_TIME_MEAS_ATB0 (0x04)
             - cold_start_config[5] = HS_STARTUP_TIME_MEAS_ATB1 (0x34)
-      
+
         - TX/RX event alert enabling:
-        
+
             - cold_start_config[2] = TX_RX_START_STOP_MEAS_ATB0 (0x38)
             - cold_start_config[5] = TX_RX_START_STOP_MEAS_ATB1 (0x34)
-              
-        - Internal RO time test mode: 
-          
+
+        - Internal RO time test mode:
+
             - cold_start_config[2] = RO_XTAL_MEAS_ATB0 (0x36)
             - cold_start_config[5] = RO_XTAL_MEAS_ATB1 (0x34)
 
         - Please notice that the default user mode register setting must be restored for typical user mode application scenarios:
-        
+
             - cold_start_config[2] = USER_MODE_ATB0 (0x00)
             - cold_start_config[5] = USER_MODE_ATB1 (0x30)
 
-* \section General_Configuration  General Device Configuration 
+* \section General_Configuration  General Device Configuration
 
  - Beyond the application configuration performed only  at device reset/power-on by calling the DeviceConfiguration() function with
    coldStart = TRUE, this function performs the following general configuration operations:
 
-    - Setup RCO32K trimming value in PMU_ANA_USER_REG 
+    - Setup RCO32K trimming value in PMU_ANA_USER_REG
     - Setup LDO1V2 trimming value in ATB1_ANA_ENG_REG
 
-* \section DeviceConfiguration_ALL  How to set Device Configuration Parameters?  
+* \section DeviceConfiguration_ALL  How to set Device Configuration Parameters?
 
   - The selected device configuration parameters  are set within the BLE device controller, Radio configuration register,  through the
     following instructions executed on DeviceConfiguration() function:
@@ -99,9 +99,9 @@
         while ((BLUE_CTRL->RADIO_CONFIG & 0x10000) != 0);
 
   - Once the device configuration parameters are set, the DeviceConfiguration() function must wait until the High Speed (HS) crystal is ready.
-    Since the slow clock period measurement is done automatically each time the device enters in active2 state and the HS cystal is ready, the 
-    related Clock Gen interrupt signals that a slow clock period measurement has been done: 
-    
+    Since the slow clock period measurement is done automatically each time the device enters in active2 state and the HS cystal is ready, the
+    related Clock Gen interrupt signals that a slow clock period measurement has been done:
+
         while(CKGEN_BLE->CLK32K_IT == 0); //Interrupt event for 32 kHz clock measurement
 
 **/
@@ -118,7 +118,7 @@
 #if ST_OTA_SERVICE_MANAGER_APPLICATION
 #define OTA_VALID_APP_TAG (0xAABBCCDD) /* OTA Service Manager has a special valid tag */
 #else
-#define OTA_VALID_APP_TAG (0xAA5555AA) 
+#define OTA_VALID_APP_TAG (0xAA5555AA)
 #endif
 
 #define BLUE_FLAG_TAG   (0x424C5545)
@@ -173,7 +173,7 @@ REQUIRED(uint32_t savedMSP);
 /* ------------------------------------------------------------------------------
 *   uint8_t wakeupFromSleepFlag
 *
-*  A simple flag used to indicate if the wakeup occurred from Sleep or Standby 
+*  A simple flag used to indicate if the wakeup occurred from Sleep or Standby
 *  condition.
 *  If this flag is zero, an interrupt has affected the WFI instruction and the
 *  BlueNRG-1 doesn't enter in deep sleep state. So, no context restore is
@@ -186,7 +186,7 @@ REQUIRED(uint32_t savedMSP);
 * ------------------------------------------------------------------------------ */
 SECTION(".wakeupFromSleepFlag")
 REQUIRED(uint8_t volatile wakeupFromSleepFlag);
-  
+
 
 /* ------------------------------------------------------------------------------
 *    uint32_t __blueflag_RAM
@@ -210,30 +210,30 @@ REQUIRED(uint32_t volatile flash_sw_lock);
 /* ------------------------------------------------------------------------------
 *    uint32_t savedICSR
 *
-*  Private storage to save the Interrupt Control State register, to check the 
+*  Private storage to save the Interrupt Control State register, to check the
 *  SysTick and PendSV interrupt status
-*  This variable is only used during the samrt power management 
-*  procedure 
+*  This variable is only used during the samrt power management
+*  procedure
 * ------------------------------------------------------------------------------ */
 uint32_t savedICSR;
 
 /* ------------------------------------------------------------------------------
 *  uint32_t savedSHCSR
 *
-*  Private storage to save the System Handler Control and State register, 
+*  Private storage to save the System Handler Control and State register,
 *  to check the SVCall interrupt status
-*  This variable is only used during the samrt power management 
-*  procedure 
+*  This variable is only used during the samrt power management
+*  procedure
 * ------------------------------------------------------------------------------ */
 uint32_t savedSHCSR;
 
 /* ------------------------------------------------------------------------------
 *  uint32_t savedNVIC_ISPR
 *
-*  Private storage to save the Interrupt Set Pending register, 
+*  Private storage to save the Interrupt Set Pending register,
 *  to check the NVIC interrupt status
-*  This variable is only used during the smart power management 
-*  procedure 
+*  This variable is only used during the smart power management
+*  procedure
 *  ------------------------------------------------------------------------------ */
 uint32_t savedNVIC_ISPR;
 
@@ -241,8 +241,8 @@ uint32_t savedNVIC_ISPR;
 *  volatile uint8_t hot_table_radio_config[HOT_TABLE_RADIO_SIZE]
 *
 *  Hot table radio configuration storage.
-*  This variable is only used during the smart power management 
-*  procedure 
+*  This variable is only used during the smart power management
+*  procedure
 *  ------------------------------------------------------------------------------ */
 volatile uint8_t hot_table_radio_config[HOT_TABLE_RADIO_SIZE]={0x00};
 
@@ -250,21 +250,21 @@ volatile uint8_t hot_table_radio_config[HOT_TABLE_RADIO_SIZE]={0x00};
 *  volatile uint8_t BOR_config[7]
 *
 *  BOR configuration storage.
-*  This variable is only used during the smart power management 
-*  procedure 
+*  This variable is only used during the smart power management
+*  procedure
 *  ------------------------------------------------------------------------------ */
 volatile uint8_t BOR_config[7];
 
 
-int __low_level_init(void) 
+int __low_level_init(void)
 {
   /* Lock the flash */
   flash_sw_lock = FLASH_LOCK_WORD;
-  
+
   /* If the reset reason is a wakeup from sleep restore the context */
   if ((CKGEN_SOC->REASON_RST == 0) && (CKGEN_BLE->REASON_RST > RESET_WAKE_DEEPSLEEP_REASONS)) {
 #ifndef NO_SMART_POWER_MANAGEMENT
-          
+
   void CS_contextRestore(void);
   wakeupFromSleepFlag = 1; /* A wakeup from Standby or Sleep occurred */
   CS_contextRestore();     /* Restore the context */
@@ -272,7 +272,7 @@ int __low_level_init(void)
   while(1) { ; }
 #else
   return 0;
-#endif   
+#endif
   }
   return 1;
 }
@@ -312,14 +312,14 @@ void RESET_HANDLER(void)
 {
   if(__low_level_init()==1)	{
     unsigned long *pulSrc, *pulDest;
-    
+
     // Copy the data segment initializers from flash to SRAM.
     pulSrc = &_sidata;
     for(pulDest = &_sdata; pulDest < &_edata; )
     {
       *(pulDest++) = *(pulSrc++);
     }
-    
+
     pulSrc = &_sidata2;
     for(pulDest = &_sdata2; pulDest < &_edata2; )
     {
@@ -398,7 +398,7 @@ REQUIRED(const intvec_elem __vector_table[]) = {
     {0x00000000}                              /* IRQ31                              */
 };
 
-	
+
 
 //------------------------------------------------------------------------------
 //   uint32_t *app_base
@@ -428,7 +428,7 @@ REQUIRED(__blue_RAM_struct __blue_RAM) = {0,};
  */
 #define ATB1_ANA_ENG_REG    0x3E
 /**
- *@brief Rate Multiplier 1 register 
+ *@brief Rate Multiplier 1 register
  */
 #define RM1_DIG_ENG_REG     0x3C
 /**
@@ -507,57 +507,57 @@ REQUIRED(__blue_RAM_struct __blue_RAM) = {0,};
  */
 #define PMU_ANA_USER_RESET_VALUE    0x0B
 /**
- * @brief Analog test bus 0 settings for 
+ * @brief Analog test bus 0 settings for
  * normal application mode
  */
 #define USER_MODE_ATB0              0x00
 /**
- * @brief Analog test bus 1 settings for 
+ * @brief Analog test bus 1 settings for
  * normal application mode
  */
 #define USER_MODE_ATB1              0x30
 /**
- * @brief Analog test bus 0 settings for 
+ * @brief Analog test bus 0 settings for
  * low speed crystal measurement
  */
 #define LS_XTAL_MEAS_ATB0           0x37
 /**
- * @brief Analog test bus 1 settings for 
+ * @brief Analog test bus 1 settings for
  * low speed crystal measurement
  */
 #define LS_XTAL_MEAS_ATB1           0x34
 /**
- * @brief Analog test bus 0 settings for 
+ * @brief Analog test bus 0 settings for
  * high speed crystal startup time measurement
  */
 #define HS_STARTUP_TIME_MEAS_ATB0   0x04
 /**
- * @brief Analog test bus 1 settings for 
+ * @brief Analog test bus 1 settings for
  * high speed crystal startup time measurement
  */
 #define HS_STARTUP_TIME_MEAS_ATB1   0x34
 /**
- * @brief Analog test bus 0 settings for 
+ * @brief Analog test bus 0 settings for
  * Tx/Rx start stop signal measurement
  */
 #define TX_RX_START_STOP_MEAS_ATB0  0x38
 /**
- * @brief Analog test bus 1 settings for 
+ * @brief Analog test bus 1 settings for
  * Tx/Rx start stop signal measurement
  */
 #define TX_RX_START_STOP_MEAS_ATB1  0x34
 /**
- * @brief Analog test bus 0 settings for 
+ * @brief Analog test bus 0 settings for
  * internal RO crystal measurement
  */
 #define RO_XTAL_MEAS_ATB0           0x36
 /**
- * @brief Analog test bus 1 settings for 
+ * @brief Analog test bus 1 settings for
  * internal RO crystal measurement
  */
 #define RO_XTAL_MEAS_ATB1           0x34
 /**
- * @brief Central frequency 
+ * @brief Central frequency
  */
 #define CENTRAL_FREQ_MOD             0x08
 //@} \\Device Configuration values
@@ -630,7 +630,7 @@ void Wait_LS_Stabilization(void)
   CKGEN_BLE->CLK32K_COUNT = SLOW_COUNT;
 
   while ((ls_state != LS_STABILIZATION_ENDED) && (number_iteration <= MAX_NUMBER_ITERATION)) {
-  
+
     /* Stabilization State machine */
     switch(ls_state)
       {
@@ -710,7 +710,7 @@ void BOR_ConfigSave(uint8_t clock_low_eng_conf, uint8_t pmu_ana_user_conf)
     hot_table_radio_config[i+5] = pmu_ana_user_conf;
     hot_table_radio_config[i+6] = END_CONFIG;
   }
-    
+
   /* BOR configuration storage used only for smart power managment */
   BOR_config[0] = NUMBER_CONFIG_BYTE;
   BOR_config[1] = CLOCK_LOW_ENG_REG;
@@ -725,7 +725,7 @@ void BOR_ConfigSave(uint8_t clock_low_eng_conf, uint8_t pmu_ana_user_conf)
 void SET_BORconfigStatus(uint8_t enabled)
 {
   uint8_t clock_conf, pmu_ana_conf;
-  
+
   if (enabled) {
     BLUE_CTRL->RADIO_CONFIG = 0x10000U | (uint16_t)((uint32_t)BOR_config & 0x0000FFFFU);
     while ((BLUE_CTRL->RADIO_CONFIG & 0x10000) != 0);
@@ -751,8 +751,8 @@ void DeviceConfiguration(BOOL coldStart, BOOL waitLS_Ready)
 
   /* Get partInfo */
   HAL_GetPartInfo(&Device_partInfo);
-  
-  if (coldStart) {    
+
+  if (coldStart) {
     /* High Speed Crystal Configuration */
 #if (HS_SPEED_XTAL == HS_SPEED_XTAL_32MHZ)
     cold_start_config[14] = HIGH_FREQ_32M;
@@ -778,7 +778,7 @@ void DeviceConfiguration(BOOL coldStart, BOOL waitLS_Ready)
 #else
 #error "No definition for SMPS Configuration"
 #endif
-  
+
     /* Low Speed Crystal Source */
 #if (LS_SOURCE == LS_SOURCE_EXTERNAL_32KHZ)
     cold_start_config[20] = LOW_FREQ_XO;
@@ -794,7 +794,7 @@ void DeviceConfiguration(BOOL coldStart, BOOL waitLS_Ready)
       cold_start_config[23] &= ~0x70;                  // Clear the register content bit 4-5-6
       cold_start_config[23] |= (Trimm_config&0x7)<<4;  // Store the RCO32K trimming value in bit 4-5-6
     }
- 
+
     /* Setup LDO1V2 trimming value in ATB1_ANA_ENG_REG  */
     Trimm_config = *(volatile uint32_t*)LDO1V2_TRIMMING_FLASH_ADDR;
     if ((Trimm_config >> 16) == CHECK_BYTES) {
@@ -815,7 +815,7 @@ void DeviceConfiguration(BOOL coldStart, BOOL waitLS_Ready)
     cold_start_config[11] &= ~(1<<2);
     if (((Device_partInfo.die_major<<4)|(Device_partInfo.die_cut)) >= WA_DEVICE_VERSION) {
       /* Set the 3 bit of the PMU_ANA_USER register */
-      cold_start_config[23] |= (1<<2);    
+      cold_start_config[23] |= (1<<2);
       clock_low_eng = cold_start_config[11];
       pmu_ana_user = cold_start_config[23];
       BOR_ConfigSave(clock_low_eng, pmu_ana_user);
@@ -842,10 +842,10 @@ void DeviceConfiguration(BOOL coldStart, BOOL waitLS_Ready)
     if (((Device_partInfo.die_major<<4)|(Device_partInfo.die_cut)) >= WA_DEVICE_VERSION) {
       Set_RF_FrontEnd();
     }
-    
+
   }
-  
-  /* Wait until HS is ready. The slow clock period 
+
+  /* Wait until HS is ready. The slow clock period
   * measurement is done automatically each time the
   * device enters in active2 state and the HS is ready.
   * The interrupt signals that a measurement is done.
@@ -854,8 +854,8 @@ void DeviceConfiguration(BOOL coldStart, BOOL waitLS_Ready)
   CKGEN_BLE->CLK32K_IT = 1;
   CKGEN_BLE->CLK32K_COUNT = 23; //Restore the window length for slow clock measurement.
   CKGEN_BLE->CLK32K_PERIOD = 0;
-  
-  
+
+
   /* Wait until the RO or 32KHz is ready */
   if (waitLS_Ready) {
     current_time = BLUE_CTRL->CURRENT_TIME;
@@ -877,7 +877,7 @@ void DeviceConfiguration(BOOL coldStart, BOOL waitLS_Ready)
 #endif
 #endif
   }
-  
+
   /* Unlock the Flash */
   flash_sw_lock = FLASH_UNLOCK_WORD;
 }
@@ -887,7 +887,7 @@ void SystemInit(void)
   /* Remap the vector table */
   FLASH->CONFIG = FLASH_PREMAP_MAIN;
 
-  /* Configure all the interrupts priority. 
+  /* Configure all the interrupts priority.
   * The application can modify the interrupts priority.
   * The  PendSV_IRQn and BLUE_CTRL_IRQn SHALL maintain the highest priority
   */

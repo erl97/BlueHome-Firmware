@@ -1,0 +1,25 @@
+/*
+ * DB_TestCases.c
+ *
+ *  Created on: 12.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#include "DB_TestCases.h"
+
+#include "SDK_EVAL_Led.h"
+#include <unistd.h>
+
+void db_tc_init_Eval()
+{
+	SdkEvalLedInit(LED1);
+}
+
+void db_tc_test_EvalLeds()
+{
+	for (int i = 0; i < 10; i++)
+	{
+		SdkEvalLedToggle(LED1);
+		sleep(1);
+	}
+}

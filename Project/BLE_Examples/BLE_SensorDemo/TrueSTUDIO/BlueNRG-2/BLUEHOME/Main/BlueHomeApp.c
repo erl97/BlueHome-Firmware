@@ -5,6 +5,46 @@
  *      Author: dinkelsv64505
  */
 
+#include "BlueHomeApp.h"
+
+#include "BlueNRG_x_device.h"
+
+/// DEBUG ///
+#include "Debug/DB_TestCases.h"
+#include "SDK_EVAL_Led.h"
+/////////////
+
+#include "HardwareUtil/HW_Init.h"
+#include "SourceActionManager/SAM_Init.h"
+
+int main(void)
+{
+	SystemInit();
+
+	db_as_init();
+	hw_init_init();
+
+	// DEBUG CODE //
+	db_tc_init_Eval();
+	db_tc_init_GPIO_Int();
+	///////////////
+
+	//SAM INITS//
+	sam_init_init();
+
+	//HW INIT//
+	hw_init_gpio();
+
+	if (db_as_checkInit() == 0)
+		SdkEvalLedOn(LED3);
+
+
+
+	while (1)
+	{
+		//do nothing
+	}
+}
 
 /*******************************************************************************
  * Function Name  : APP_Tick.

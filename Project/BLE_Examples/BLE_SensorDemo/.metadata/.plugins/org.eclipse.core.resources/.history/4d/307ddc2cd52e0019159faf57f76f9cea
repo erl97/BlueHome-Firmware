@@ -1,0 +1,60 @@
+/*
+ * HWManager.c
+ *
+ *  Created on: 11.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#include "HW_Init.h"
+
+#include <stdint.h>
+
+uint32_t rtc_pin = 0;
+
+void hw_init_init()
+{
+	for (int i = 0; i < sizeof(setPinFct) / sizeof(SetPin_Fct); i++)
+	{
+		setPinFct[i] = &db_as_PinIdUnknown;
+}
+}
+
+uint8_t hw_init_registerPINIdentfier(uint8_t pinID, SetPin_Fct fct)
+{
+	setPinFct[pinID] = fct;
+}
+
+void hw_init_gpio()
+{
+
+	for (int j = 0; i < SIZEOFMYACTIONS; i++, j++)
+	{
+		myActions[i].actionType = FLASH_ReadByte(
+				_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + 0);
+		myActions[i].targetID = FLASH_ReadByte(
+				_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + 1);
+		myActions[i].paramNum = FLASH_ReadByte(
+				_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + 2);
+
+		for (int k = 3, l = 0; l < 24; k++, l++)
+		{
+			myActions[i].param[l] = FLASH_ReadByte(
+					_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + k);
+		}
+	}
+
+//	currPin = PIN0;
+//	for(bla)
+//	{
+//		function = flahs read byte // rtc code define 5
+//		switch(function )
+//		5. setRtcPin(currPin);
+//		6: tempSensPin(currOiubn);
+//		pin += 10;
+//	}
+//	PIN_0 = FLASH
+//	READ BYTE
+//
+//	rtc_pin = gpio_pin0;
+}
+

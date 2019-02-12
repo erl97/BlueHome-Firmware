@@ -1,0 +1,17 @@
+/*
+ * HWManager.h
+ *
+ *  Created on: 11.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#ifndef BLUEHOME_HWMANAGER_H_
+#define BLUEHOME_HWMANAGER_H_
+
+typedef void (*SetPin_Fct)();
+
+SamValue_Fct valueFct[255];
+
+void hw_init_port();
+
+#endif /* BLUEHOME_HWMANAGER_H_ */

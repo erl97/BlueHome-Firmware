@@ -1,0 +1,31 @@
+/*
+ * RP_InterruptManager.c
+ *
+ *  Created on: 12.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#include "RP_InterruptManager.h"
+
+#include "system_bluenrg2.h"
+
+void rp_im_init()
+{
+
+}
+
+/*
+ * Bluetooth ISR
+ */
+void Blue_Handler(void)
+{
+	sam_bl_notifyEvent();
+}
+
+/*
+ * UART ISR
+ */
+void UART_Handler(void)
+{
+	hw_uart_receiveISR();
+}

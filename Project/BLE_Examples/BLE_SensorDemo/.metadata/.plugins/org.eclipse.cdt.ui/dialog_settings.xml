@@ -18,6 +18,7 @@
 		<item value="false" key="caseSensitive"/>
 		<item value="227191" key="searchFlags"/>
 		<list key="previousPatterns">
+			<item value="bluenrg2"/>
 			<item value="inittype"/>
 			<item value="memory"/>
 		</list>

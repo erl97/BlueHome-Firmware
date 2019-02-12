@@ -8,6 +8,6 @@
 #ifndef BLUEHOME_MAIN_BLUEHOMEAPP_H_
 #define BLUEHOME_MAIN_BLUEHOMEAPP_H_
 
-
+int main(void);
 
 #endif /* BLUEHOME_MAIN_BLUEHOMEAPP_H_ */

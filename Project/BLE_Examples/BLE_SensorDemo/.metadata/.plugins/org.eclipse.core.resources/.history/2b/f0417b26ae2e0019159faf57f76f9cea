@@ -1,0 +1,49 @@
+/*
+ * RP_InterruptManager.c
+ *
+ *  Created on: 12.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#include "RP_InterruptManager.h"
+
+#include "BlueNRG_x_device.h"
+
+#include "SourceActionManager/SAM_Bluetooth.h"
+#include "HardwareUtil/HW_UART.h"
+
+#include "SDK_EVAL_Led.h"
+
+void rp_im_init()
+{
+
+}
+
+/*
+ * Bluetooth ISR
+ */
+void Blue_Handler(void)
+{
+	sam_bl_notifyEvent();
+}
+
+/*
+ * UART ISR
+ */
+void UART_Handler(void)
+{
+	hw_uart_receiveISR();
+}
+
+/*
+ * GPIO
+ */
+void GPIO_Handler(void)
+{
+	SdkEvalLedToggle(LED3);
+
+	if (GPIO_GetITPendingBit(Get_ButtonGpioPin(BUTTON_1)) == SET)
+	{
+		GPIO_ClearITPendingBit(Get_ButtonGpioPin(BUTTON_1));
+	}
+}

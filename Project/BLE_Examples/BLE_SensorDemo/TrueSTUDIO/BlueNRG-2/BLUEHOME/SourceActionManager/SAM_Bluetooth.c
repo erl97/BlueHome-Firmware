@@ -6,3 +6,8 @@
  */
 
 #include "SAM_Bluetooth.h"
+
+void sam_bl_notifyEvent()
+{
+
+}

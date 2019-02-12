@@ -6,11 +6,14 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
+		<item value="SdkEvalUart_Send_Data" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="SdkEvalUart_Send_Data"/>
+			<item value="sleep"/>
 			<item value="sourceBuffer"/>
 		</list>
 		<list key="replacehistory">

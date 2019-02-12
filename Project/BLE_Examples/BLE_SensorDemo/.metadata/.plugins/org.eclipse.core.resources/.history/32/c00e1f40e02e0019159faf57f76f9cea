@@ -1,0 +1,17 @@
+/*
+ * RTCManager.h
+ *
+ *  Created on: 11.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#ifndef BLUEHOME_SOURCEACTIONMANAGER_SAM_RTC_H_
+#define BLUEHOME_SOURCEACTIONMANAGER_SAM_RTC_H_
+
+uint32_t SAM_PIN_RTC_INT;
+
+void sam_rtc_init();
+
+void sam_rtc_notifyEvent();
+
+#endif /* BLUEHOME_SOURCEACTIONMANAGER_SAM_RTC_H_ */
