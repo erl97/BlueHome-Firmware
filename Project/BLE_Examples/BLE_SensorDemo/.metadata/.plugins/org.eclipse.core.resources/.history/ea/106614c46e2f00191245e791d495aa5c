@@ -1,0 +1,18 @@
+/*
+ * DB_Console.c
+ *
+ *  Created on: 12.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#include "DB_Console.h"
+
+void db_cs_executeCommand(char *cmd)
+{
+
+}
+
+void db_cs_printString(char *message)
+{
+
+}

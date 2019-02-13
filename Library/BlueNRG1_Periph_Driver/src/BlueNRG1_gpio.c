@@ -28,7 +28,7 @@
 
 /** @addtogroup GPIO_Peripheral  GPIO Peripheral
 * @{
-*/ 
+*/
 
 /** @defgroup GPIO_Private_TypesDefinitions Private Type Definitions
 * @{
@@ -116,18 +116,18 @@ void GPIO_DeInit(void)
 void GPIO_Init(GPIO_InitType* GPIO_InitStruct)
 {
   uint8_t tmp;
-  
+
   /* Check the parameters */
   assert_param(IS_GPIO_PINS(GPIO_InitStruct->GPIO_Pin));
   assert_param(IS_GPIO_MODE(GPIO_InitStruct->GPIO_Mode));
   assert_param(IS_FUNCTIONAL_STATE(GPIO_InitStruct->GPIO_Pull));
   assert_param(IS_FUNCTIONAL_STATE(GPIO_InitStruct->GPIO_HighPwr));
-  
+
   /* IO12 and IO13 cannot be programmed in output mode */
   assert_param( ((GPIO_InitStruct->GPIO_Pin & GPIO_Pin_12) != GPIO_Pin_12) || (GPIO_InitStruct->GPIO_Mode != GPIO_Output));
   assert_param( ((GPIO_InitStruct->GPIO_Pin & GPIO_Pin_13) != GPIO_Pin_13) || (GPIO_InitStruct->GPIO_Mode != GPIO_Output));
-  
-  
+
+
   /* Configure the IO mode */
   if(GPIO_InitStruct->GPIO_Mode == GPIO_Input) {
     CLEAR_BIT(GPIO->OEN, GPIO_InitStruct->GPIO_Pin);
@@ -136,7 +136,7 @@ void GPIO_Init(GPIO_InitType* GPIO_InitStruct)
     GPIO_InitStruct->GPIO_Mode = GPIO_Input;
     SET_BIT(GPIO->OEN, GPIO_InitStruct->GPIO_Pin);
   }
-  
+
   for(uint8_t i = 0; i < GPIO_PIN_COUNT; i++) {
     tmp = (uint8_t)((GPIO_InitStruct->GPIO_Pin>>i) & 0x01);
     if(tmp!=0) {
@@ -203,7 +203,7 @@ void GPIO_StructInit(GPIO_InitType* GPIO_InitStruct)
 void GPIO_InitLowPowerModes(GPIO_InitType* GPIO_InitStruct)
 {
 #ifdef BLUENRG2_DEVICE
-  
+
   /* Check the parameters */
   assert_param(IS_GPIO_PINS(GPIO_InitStruct->GPIO_Pin));
   assert_param(IS_GPIO_MODE(GPIO_InitStruct->GPIO_Mode));
@@ -221,7 +221,7 @@ void GPIO_InitLowPowerModes(GPIO_InitType* GPIO_InitStruct)
     else if(GPIO_InitStruct->GPIO_Mode == GPIO_Output) {
       CLEAR_BIT(SYSTEM_CTRL->SLEEPIO_OEN, (GPIO_InitStruct->GPIO_Pin>>9));
     }
-    
+
     /* Set the current mode */
     if(GPIO_InitStruct->GPIO_HighPwr == ENABLE) {
       SET_BIT(SYSTEM_CTRL->SLEEPIO_DS, (GPIO_InitStruct->GPIO_Pin>>9));
@@ -254,15 +254,15 @@ void GPIO_WriteBitLowPowerModes(uint32_t GPIO_Pin, BitAction BitVal)
 #ifdef BLUENRG2_DEVICE
   /* Check the parameters */
   assert_param(IS_GPIO_PIN(GPIO_Pin));
-  assert_param(IS_GPIO_BIT_ACTION(BitVal)); 
-  
+  assert_param(IS_GPIO_BIT_ACTION(BitVal));
+
   /* Reset GPIO init structure parameters values */
   if((GPIO_Pin&GPIO_Pin_9) == GPIO_Pin_9  ||
      (GPIO_Pin&GPIO_Pin_10) == GPIO_Pin_10 ||
        (GPIO_Pin&GPIO_Pin_11) == GPIO_Pin_11) {
          if (BitVal == Bit_SET) {
            SET_BIT(SYSTEM_CTRL->SLEEPIO_OUT, (GPIO_Pin>>9));
-         }         
+         }
          else {
            CLEAR_BIT(SYSTEM_CTRL->SLEEPIO_OUT, (GPIO_Pin>>9));
          }
@@ -282,8 +282,8 @@ void GPIO_WriteBitLowPowerModes(uint32_t GPIO_Pin, BitAction BitVal)
 BitAction GPIO_ReadBit(uint32_t GPIO_Pin)
 {
   /* Check the parameters */
-  assert_param(IS_GPIO_PIN(GPIO_Pin)); 
-  
+  assert_param(IS_GPIO_PIN(GPIO_Pin));
+
   if(READ_BIT(GPIO->DATA, GPIO_Pin)) {
     return Bit_SET;
   }
@@ -305,7 +305,7 @@ void GPIO_SetBits(uint32_t GPIO_Pins)
 {
   /* Check the parameters */
   assert_param(IS_GPIO_PINS(GPIO_Pins));
-  
+
   WRITE_REG(GPIO->DATS, GPIO_Pins);
 }
 
@@ -321,7 +321,7 @@ void GPIO_ResetBits(uint32_t GPIO_Pins)
 {
   /* Check the parameters */
   assert_param(IS_GPIO_PINS(GPIO_Pins));
-  
+
   WRITE_REG(GPIO->DATC, GPIO_Pins);
 }
 
@@ -339,8 +339,8 @@ void GPIO_WriteBit(uint32_t GPIO_Pins, BitAction BitVal)
 {
   /* Check the parameters */
   assert_param(IS_GPIO_PINS(GPIO_Pins));
-  assert_param(IS_GPIO_BIT_ACTION(BitVal)); 
-  
+  assert_param(IS_GPIO_BIT_ACTION(BitVal));
+
   if (BitVal == Bit_SET) {
     WRITE_REG(GPIO->DATS, GPIO_Pins);
   }
@@ -358,10 +358,10 @@ void GPIO_WriteBit(uint32_t GPIO_Pins, BitAction BitVal)
 * @retval None
 */
 void GPIO_ToggleBits(uint32_t GPIO_Pins)
-{  
-  /* Check the parameters */  
+{
+  /* Check the parameters */
   assert_param(IS_GPIO_PINS(GPIO_Pins));
-  
+
   GPIO->DATA ^= GPIO_Pins;
 }
 
@@ -391,7 +391,7 @@ void GPIO_EXTIConfig(GPIO_EXTIConfigType* EXTIConfig)
   assert_param(IS_GPIO_PINS(EXTIConfig->GPIO_Pin));
   assert_param(IS_GPIO_IRQSENSE(EXTIConfig->GPIO_IrqSense));
   assert_param(IS_GPIO_EVENT(EXTIConfig->GPIO_Event));
-  
+
   /* Interrupt sense configuration */
   if (EXTIConfig->GPIO_IrqSense == GPIO_IrqSense_Level) {
     /* Configure level detection */
@@ -401,7 +401,7 @@ void GPIO_EXTIConfig(GPIO_EXTIConfigType* EXTIConfig)
     /* Configure edge detection */
     CLEAR_BIT(GPIO->IS, EXTIConfig->GPIO_Pin);
   }
-  
+
   /* Configure event */
   if (EXTIConfig->GPIO_Event == GPIO_Event_High) {
     /* Configure interrupt on high level or rising edge event */
@@ -417,7 +417,7 @@ void GPIO_EXTIConfig(GPIO_EXTIConfigType* EXTIConfig)
     /* Configure interrupt on both edge */
     SET_BIT(GPIO->IBE, EXTIConfig->GPIO_Pin);
   }
-  
+
 }
 
 /**
@@ -435,7 +435,7 @@ void GPIO_EXTICmd(uint32_t GPIO_Pins, FunctionalState NewState)
   /* Check the parameters */
   assert_param(IS_GPIO_PINS(GPIO_Pins));
   assert_param(IS_FUNCTIONAL_STATE(NewState));
-  
+
   if (NewState != DISABLE) {
     SET_BIT(GPIO->IE, GPIO_Pins);
   }
@@ -456,7 +456,6 @@ void GPIO_ClearITPendingBit(uint32_t GPIO_Pins)
 {
   /* Check the parameters */
   assert_param(IS_GPIO_PINS(GPIO_Pins));
-
   SET_BIT(GPIO->IC, GPIO_Pins);
 }
 
@@ -470,10 +469,10 @@ void GPIO_ClearITPendingBit(uint32_t GPIO_Pins)
 *         This parameter can be: SET or RESET.
 */
 FlagStatus GPIO_GetITPendingBit(uint32_t GPIO_Pin)
-{  
+{
   /* Check the parameters */
   assert_param(IS_GPIO_PIN(GPIO_Pin));
-  
+
   if(READ_BIT(GPIO->MIS, GPIO_Pin) != (uint32_t)RESET) {
     return SET;
   }
@@ -492,10 +491,10 @@ FlagStatus GPIO_GetITPendingBit(uint32_t GPIO_Pin)
 *         This parameter can be: SET or RESET.
 */
 ITStatus GPIO_GetITStatusBit(uint32_t GPIO_Pin)
-{  
+{
   /* Check the parameters */
   assert_param(IS_GPIO_PIN(GPIO_Pin));
-  
+
   if(READ_BIT(GPIO->RIS, GPIO_Pin) != (uint32_t)RESET) {
     return SET;
   }

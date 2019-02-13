@@ -5,6 +5,7 @@
  *      Author: dinkelsv64505
  */
 
+#include <HardwareUtil/HW_Bluetooth.h>
 #include "HW_Init.h"
 
 
@@ -18,6 +19,7 @@ uint32_t rtc_pin = 0;
 
 void hw_init_init()
 {
+	// INIT GPIO PIN ASSIGNMENTS
 	HW_ID = 0x00;
 	HW_VERSION = 0x00;
 	HW_BUS_DEV_NUM = 0x00;
@@ -32,6 +34,9 @@ void hw_init_init()
 	{
 		setBusAddrVar[i] = &ADDR_ERR_FLAG;
 	}
+
+	// INIT HARDWARE MODULES
+	hw_bl_init();
 }
 
 //TODO: Error Check
@@ -47,7 +52,7 @@ uint8_t hw_init_registerBusAddrIdentfier(uint8_t samID, uint8_t* addr)
 	return 0;
 }
 
-
+//TODO INIT GPIO PINS
 void hw_init_gpio()
 {
 

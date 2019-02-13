@@ -1,0 +1,14 @@
+/*
+ * SAM_Bluetooth.c
+ *
+ *  Created on: 11.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#include "SAM_Bluetooth.h"
+
+void sam_bl_notifyEvent()
+{
+	db_cs_printString("Bluetooth Paket Received !\r");
+
+}

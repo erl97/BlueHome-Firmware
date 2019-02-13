@@ -25,8 +25,10 @@
 #define COMPARE_GREATER 2
 #define COMPARE_SMALLER 3
 
-Source sourceBuffer[SIZEOFSOURCEBUFFER];
 volatile uint8_t write_idx_source;
+volatile uint8_t read_idx_source;
+Source sourceBuffer[SIZEOFSOURCEBUFFER];
+
 
 //zu Programmstart leerer rules-Array
 Rule myRules[SIZEOFMYRULES];
@@ -37,6 +39,8 @@ Rule myRules[SIZEOFMYRULES];
 void rp_rc_init();
 
 void source_handler(Source source);
+
+void rp_rc_addSource(Source source);
 
 
 #endif /* SOURCE_H_ */

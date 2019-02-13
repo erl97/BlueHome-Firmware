@@ -13,6 +13,8 @@
 #include "SDK_EVAL_Button.h"
 #include "SDK_EVAL_Config.h"
 
+#include "Debug/DB_Console.h"
+
 #include "BlueNRG1_gpio.h"
 #include "misc.h"
 
@@ -31,13 +33,16 @@ void db_tc_init_Eval()
 	SdkEvalComUartInit(115200);
 	SdkEvalComUartIrqConfig(ENABLE);
 
-	char message[] =
-	{ 'B', 'l', 'u', 'e', ' ', 'H', 'o', 'm', 'e', '\n', '\r' };
+	db_cs_printString("Welcome to BlueHome Node !\r");
+	//db_cs_printString(">");
 
-	for (int i = 0; i < sizeof(message) / sizeof(char); i++)
-	{
-		SdkEvalComIOSendData((uint8_t) message[i]);
-	}
+//	char message[] =
+//	{ 'B', 'l', 'u', 'e', ' ', 'H', 'o', 'm', 'e', '\r', '\0' };
+//
+//	for (int i = 0; i < sizeof(message) / sizeof(char); i++)
+//	{
+//		SdkEvalComIOSendData((uint8_t) message[i]);
+//	}
 
 
 }

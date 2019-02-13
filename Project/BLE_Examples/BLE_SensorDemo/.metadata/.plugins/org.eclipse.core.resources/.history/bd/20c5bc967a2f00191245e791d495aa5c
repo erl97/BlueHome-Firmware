@@ -1,0 +1,33 @@
+/*
+ * SAM_Bluetooth.c
+ *
+ *  Created on: 11.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#include "SAM_Bluetooth.h"
+
+#include "RuleProcess/RP_RuleChecker.h"
+
+void sam_bl_init()
+{
+
+}
+
+void sam_bl_notifyEvent()
+{
+	db_cs_printString("Bluetooth Paket Received !\r");
+
+	rp_rc_addSource(sam_bl_generateSource());
+}
+
+Source sam_bl_generateSource()
+{
+	db_cs_printString("Building Source...\r");
+
+	Source blueSource;
+
+	blueSource.sourceType = SOURCETYPE_BLUETOOTH;
+	//blueSource.sourceID = //MAC
+
+}

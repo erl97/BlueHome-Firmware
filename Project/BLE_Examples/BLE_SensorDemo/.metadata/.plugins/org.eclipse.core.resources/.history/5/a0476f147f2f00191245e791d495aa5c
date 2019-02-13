@@ -1,0 +1,155 @@
+/*
+ * SAM_Bluetooth.c
+ *
+ *  Created on: 11.02.2019
+ *      Author: dinkelsv64505
+ */
+
+#include "SAM_Bluetooth.h"
+
+#include <stdlib.h>
+
+#include "bluenrg1_stack.h"
+#include "ble_status.h"
+
+#include "RuleProcess/RP_RuleChecker.h"
+#include "Debug/DB_Assert.h"
+
+void sam_bl_initLink();
+
+void sam_bl_init()
+{
+	sam_bl_initLink();
+}
+
+void sam_bl_notifyEvent()
+{
+	db_cs_printString("Bluetooth Paket Received !\r");
+
+	rp_rc_addSource(sam_bl_generateSource());
+}
+
+Source sam_bl_generateSource()
+{
+	db_cs_printString("Building Source...\r");
+
+	Source blueSource;
+
+	blueSource.sourceType = SOURCETYPE_BLUETOOTH;
+	//blueSource.sourceID = //MAC
+
+}
+
+void sam_bl_initLink()
+{
+
+	uint8_t bdaddr[] =
+	{ 0x12, 0x34, 0x00, 0xE1, 0x80, 0x02 };
+	uint8_t ret;
+	uint16_t service_handle, dev_name_char_handle, appearance_char_handle;
+	uint8_t device_name[] =
+	{ 'B', 'l', 'u', 'e', 'N', 'R', 'G' };
+
+	/* Set the device public address */
+	ret = aci_hal_write_config_data(CONFIG_DATA_PUBADDR_OFFSET,
+			CONFIG_DATA_PUBADDR_LEN, bdaddr);
+	if (ret != BLE_STATUS_SUCCESS)
+	{
+		PRINTF("aci_hal_write_config_data() failed: 0x%02x\r\n", ret);
+		return ret;
+	}
+
+	/* Set the TX power -2 dBm */
+	aci_hal_set_tx_power_level(1, 4);
+
+	/* GATT Init */
+	ret = aci_gatt_init();
+	if (ret != BLE_STATUS_SUCCESS)
+	{
+		PRINTF("aci_gatt_init() failed: 0x%02x\r\n", ret);
+		return ret;
+	}
+
+	/* GAP Init */
+	ret = aci_gap_init(GAP_PERIPHERAL_ROLE, 0, 0x07, &service_handle,
+			&dev_name_char_handle, &appearance_char_handle);
+	if (ret != BLE_STATUS_SUCCESS)
+	{
+		PRINTF("aci_gap_init() failed: 0x%02x\r\n", ret);
+		return ret;
+	}
+
+	/* Update device name */
+	ret = aci_gatt_update_char_value_ext(0, service_handle,
+			dev_name_char_handle, 0, sizeof(device_name), 0,
+			sizeof(device_name), device_name);
+	if (ret != BLE_STATUS_SUCCESS)
+	{
+		PRINTF("aci_gatt_update_char_value_ext() failed: 0x%02x\r\n", ret);
+		return ret;
+	}
+
+	ret = aci_gap_set_authentication_requirement(BONDING,
+			MITM_PROTECTION_REQUIRED, SC_IS_NOT_SUPPORTED,
+			KEYPRESS_IS_NOT_SUPPORTED, 7, 16, USE_FIXED_PIN_FOR_PAIRING, 123456,
+			0x00);
+	if (ret != BLE_STATUS_SUCCESS)
+	{
+		PRINTF("aci_gap_set_authentication_requirement()failed: 0x%02x\r\n",
+				ret);
+		return ret;
+	}
+
+	PRINTF("BLE Stack Initialized with SUCCESS\n");
+
+#ifndef SENSOR_EMULATION /* User Real sensors */
+	Init_Accelerometer();
+	Init_Pressure_Temperature_Sensor();
+#endif
+
+	/* Add ACC service and Characteristics */
+	ret = Add_Acc_Service();
+	if (ret == BLE_STATUS_SUCCESS)
+	{
+		PRINTF("Acceleration service added successfully.\n");
+	}
+	else
+	{
+		PRINTF("Error while adding Acceleration service: 0x%02x\r\n", ret);
+		return ret;
+	}
+
+	/* Add Environmental Sensor Service */
+	ret = Add_Environmental_Sensor_Service();
+	if (ret == BLE_STATUS_SUCCESS)
+	{
+		PRINTF("Environmental service added successfully.\n");
+	}
+	else
+	{
+		PRINTF("Error while adding Environmental service: 0x%04x\r\n", ret);
+		return ret;
+	}
+
+#if ST_OTA_FIRMWARE_UPGRADE_SUPPORT
+	ret = OTA_Add_Btl_Service();
+	if(ret == BLE_STATUS_SUCCESS)
+	PRINTF("OTA service added successfully.\n");
+	else
+	PRINTF("Error while adding OTA service.\n");
+#endif /* ST_OTA_FIRMWARE_UPGRADE_SUPPORT */
+
+	/* Start the Sensor Timer */
+	ret = HAL_VTimerStart_ms(SENSOR_TIMER, acceleration_update_rate);
+	if (ret != BLE_STATUS_SUCCESS)
+	{
+		PRINTF("HAL_VTimerStart_ms() failed; 0x%02x\r\n", ret);
+		return ret;
+	}
+	else
+	{
+		sensorTimer_expired = FALSE;
+	}
+
+	return BLE_STATUS_SUCCESS;
+}

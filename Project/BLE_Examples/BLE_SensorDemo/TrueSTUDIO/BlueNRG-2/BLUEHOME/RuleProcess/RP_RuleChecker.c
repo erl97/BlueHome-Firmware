@@ -9,12 +9,21 @@
 #include "RP_RuleChecker.h"
 #include "HardwareUtil/HW_Memory.h"
 
+#include "Debug/DB_Assert.h"
+
 void rp_rc_loadRules();
 
 void rp_rc_init()
 {
 	rp_rc_loadRules();
 
+	write_idx_source = 0;
+	read_idx_source = 0;
+
+	for (int i = 0; i < SIZEOFSOURCEBUFFER; i++)
+	{
+		sourceBuffer[i].sourceType = SOURCETYPE_NOSOURCE;
+	}
 }
 
 void rp_rc_loadRules()
@@ -48,6 +57,22 @@ void rp_rc_loadRules()
 			myRules[i].paramComp[l] = FLASH_ReadByte(
 			_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + k);
 		}
+	}
+}
+
+void rp_rc_addSource(Source source)
+{
+	// Overflow Detection
+	if (sourceBuffer[write_idx_source].sourceType != SOURCETYPE_NOSOURCE)
+	{
+		db_as_assert(DB_AS_ERROR_BOVERFLOW, "Source Buffer full !");
+	}
+	else
+	{
+		sourceBuffer[write_idx_source] = source;
+		write_idx_source++;
+		if (write_idx_source >= SIZEOFSOURCEBUFFER)
+			write_idx_source = 0;
 	}
 }
 
@@ -111,3 +136,4 @@ void source_handler(Source source)
 //		}
 //	}
 }
+
