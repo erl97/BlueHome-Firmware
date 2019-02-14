@@ -5,6 +5,7 @@
  *      Author: dinkelsv64505
  */
 
+#include <Bluetooth/BL_gatt_db.h>
 #include "RP_InterruptManager.h"
 
 #include "BlueNRG_x_device.h"
@@ -22,9 +23,6 @@
 
 #include "lsm6ds3.h"
 #include "lsm6ds3_hal.h"
-#include "Demo/gatt_db.h"
-
-// INTERRUPT SOURCES //
 #include "SourceActionManager/SAM_RTC.h"
 #include "SourceActionManager/SAM_TouchButton.h"
 
@@ -65,21 +63,6 @@ void GPIO_Handler(void)
 	// DEBUG //
 	//db_tc_GPIO_Int();
 
-	uint8_t free_fall_status;
-	/* Check if GPIO pin 12 interrupt event occured */
-	if (GPIO_GetITPendingBit(LSM6DS3_IRQ_PIN) == SET)
-	{
-		/* Clear the IRQ pending bit */
-		GPIO_ClearITPendingBit(LSM6DS3_IRQ_PIN);
-
-		/* Set the IRQ flag */
-		Imu6AxesDrvExt->Get_Status_Free_Fall_Detection(&free_fall_status);
-		if (free_fall_status == 1)
-		{
-			request_free_fall_notify = TRUE;
-		}
-	}
-	//////////////////////
 
 	// RTC INT //
 	if (SAM_PIN_RTC_INT != 0xffff

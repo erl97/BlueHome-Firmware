@@ -24,3 +24,6 @@
 1550072136692	Delete resource 'BLE_SensorDemo/BLUEHOME/Demo/BlueNRG1_conf.h'
 1550072156992	Delete 2 resources
 1550072231668	Delete resource 'BLE_SensorDemo/BLUEHOME/Demo/SensorDemo_main.c'
+1550136517157	Delete resource 'BLE_SensorDemo/BLUEHOME/Demo/sensor.h'
+1550136544834	Delete resource 'BLE_SensorDemo/BLUEHOME/HardwareUtil/HW_Bluetooth_KOM.c'
+1550136614799	Delete resource 'BLE_SensorDemo/BLUEHOME/Demo'

@@ -12,18 +12,17 @@
 #include "bluenrg1_api.h"
 #include <sys/_stdint.h>
 
-uint16_t chatServHandle, TXCharHandle, RXCharHandle;
+uint8_t Sensor_DeviceInit(void);
+void APP_Tick(void);
 
-/* UUIDs */
-Service_UUID_t service_uuid;
-Char_UUID_t char_uuid;
+extern uint8_t Application_Max_Attribute_Records[];
+
 
 //Assert Flag
 extern uint8_t BLUETOOTH_ERR_FLAG;
 
 void hw_bl_init();
 
-void hw_bl_SetDeviceConnectable(void);
-
+void hw_bl_setDeviceConnectable(void);
 
 #endif /* BLUEHOME_HARDWAREUTIL_HW_BLUETOOTH_H_ */
