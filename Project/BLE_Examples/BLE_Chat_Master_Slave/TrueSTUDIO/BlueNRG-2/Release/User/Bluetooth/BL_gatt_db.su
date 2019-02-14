@@ -1,0 +1,3 @@
+BL_gatt_db.c:84:12:bl_gatt_addHWInfoService	64	static
+BL_gatt_db.c:137:12:bl_gatt_addCMDService	64	static
+BL_gatt_db.c:182:12:bl_gatt_initHWInfo	32	static

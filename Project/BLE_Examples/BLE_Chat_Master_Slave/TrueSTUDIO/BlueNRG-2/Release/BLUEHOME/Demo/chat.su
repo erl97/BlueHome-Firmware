@@ -1,0 +1,17 @@
+chat.c:93:6:Process_InputData	32	static
+chat.c:129:6:Reset_DiscoveryContext	8	static
+chat.c:147:6:Setup_DeviceAddress	24	static
+chat.c:190:9:Find_DeviceName	8	static
+chat.c:218:9:CHAT_DeviceInit	24	static
+chat.c:257:6:Send_Data_Over_BLE	48	static
+chat.c:291:6:Connection_StateMachine	48	static
+chat.c:436:6:APP_Tick	56	static
+chat.c:493:6:aci_gap_proc_complete_event	0	static
+chat.c:525:6:hci_le_connection_complete_event	12	static
+chat.c:559:6:hci_disconnection_complete_event	8	static
+chat.c:585:6:hci_le_advertising_report_event	40	static
+chat.c:620:6:aci_gatt_attribute_modified_event	8	static
+chat.c:636:6:aci_gatt_notification_event	24	static
+chat.c:654:6:aci_gatt_disc_read_char_by_uuid_resp_event	8	static
+chat.c:676:6:aci_gatt_proc_complete_event	0	static
+chat.c:693:6:aci_gatt_tx_pool_available_event	0	static

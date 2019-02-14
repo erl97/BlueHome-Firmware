@@ -27,7 +27,7 @@
 #include <stdint.h>
 /** Documentation for C struct Whitelist_Entry_t */
 typedef struct Whitelist_Entry_t_s {
-  /** Address type. 
+  /** Address type.
   * Values:
   - 0x00: Public Device Address
   - 0x01: Random Device Address
@@ -40,7 +40,7 @@ to be added to the white list.
 } Whitelist_Entry_t;
 /** Documentation for C struct Bonded_Device_Entry_t */
 typedef struct Bonded_Device_Entry_t_s {
-  /** Address type. 
+  /** Address type.
   * Values:
   - 0x00: Public Device Address
   - 0x01: Random Device Address
@@ -53,7 +53,7 @@ to be added to the white list.
 } Bonded_Device_Entry_t;
 /** Documentation for C struct Whitelist_Identity_Entry_t */
 typedef struct Whitelist_Identity_Entry_t_s {
-  /** Identity address type. 
+  /** Identity address type.
   * Values:
   - 0x00: Public Identity Address
   - 0x01: Random (static) Identity Address
@@ -65,7 +65,7 @@ typedef struct Whitelist_Identity_Entry_t_s {
 } Whitelist_Identity_Entry_t;
 /** Documentation for C union Service_UUID_t */
 typedef union Service_UUID_t_s {
-  /** 16-bit UUID 
+  /** 16-bit UUID
   */
   uint16_t Service_UUID_16;
   /** 128-bit UUID
@@ -74,7 +74,7 @@ typedef union Service_UUID_t_s {
 } Service_UUID_t;
 /** Documentation for C union Include_UUID_t */
 typedef union Include_UUID_t_s {
-  /** 16-bit UUID 
+  /** 16-bit UUID
   */
   uint16_t Include_UUID_16;
   /** 128-bit UUID
@@ -83,7 +83,7 @@ typedef union Include_UUID_t_s {
 } Include_UUID_t;
 /** Documentation for C union Char_UUID_t */
 typedef union Char_UUID_t_s {
-  /** 16-bit UUID 
+  /** 16-bit UUID
   */
   uint16_t Char_UUID_16;
   /** 128-bit UUID
@@ -92,7 +92,7 @@ typedef union Char_UUID_t_s {
 } Char_UUID_t;
 /** Documentation for C union Char_Desc_Uuid_t */
 typedef union Char_Desc_Uuid_t_s {
-  /** 16-bit UUID 
+  /** 16-bit UUID
   */
   uint16_t Char_UUID_16;
   /** 128-bit UUID
@@ -101,7 +101,7 @@ typedef union Char_Desc_Uuid_t_s {
 } Char_Desc_Uuid_t;
 /** Documentation for C union UUID_t */
 typedef union UUID_t_s {
-  /** 16-bit UUID 
+  /** 16-bit UUID
   */
   uint16_t UUID_16;
   /** 128-bit UUID
@@ -110,7 +110,7 @@ typedef union UUID_t_s {
 } UUID_t;
 /** Documentation for C struct Handle_Entry_t */
 typedef struct Handle_Entry_t_s {
-  /** The handles for which the attribute value has to be read 
+  /** The handles for which the attribute value has to be read
   */
   uint16_t Handle;
 } Handle_Entry_t;
@@ -232,7 +232,7 @@ the current operational state will be lost, the Controller will enter standby mo
 and the Controller will automatically revert to the default values for the parameters
 for which default values are defined in the specification.
 Note: The Reset command will not necessarily perform a hardware reset. This
-is implementation defined. 
+is implementation defined.
 The Host shall not send additional HCI commands before the Command Complete
 event related to the Reset command has been received.
 (See Bluetooth Specification v.4.1, Vol. 2, Part E, 7.3.2)
@@ -295,7 +295,7 @@ Unsupported or undefined commands shall be set to 0.
 */
 tBleStatus hci_read_local_supported_commands(uint8_t Supported_Commands[64]);
 /**
-  * @brief This command requests a list of the supported features for the local 
+  * @brief This command requests a list of the supported features for the local
 Controller. This command will return a list of the LMP features. For details see
 Part C, Link Manager Protocol Specification on page 227.
 (See Bluetooth Specification v.4.1, Vol. 2, Part E, 7.4.3)
@@ -454,11 +454,11 @@ Parameter Value (0x11) error code.
   * @param Advertising_Interval_Min Minimum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @param Advertising_Interval_Max Maximum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @param Advertising_Type Advertising type.
   * Values:
   - 0x00: ADV_IND (Connectable undirected advertising)
@@ -586,12 +586,12 @@ if it is the Command Disallowed error code shall be used.
 its last LE scan until it begins the subsequent LE scan.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param LE_Scan_Window Amount of time for the duration of the LE scan. LE_Scan_Window
 shall be less than or equal to LE_Scan_Interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param Own_Address_Type Own address type.
  - 0x00: Public Device Address
  - 0x01 Random Device Address
@@ -613,7 +613,7 @@ shall be ignored.
 Directed advertising packets which are not addressed for this device
 shall be ignored
 0x02 Accept all undirected advertisement packets.
-Directed advertisement packets where initiator address is a RPA and 
+Directed advertisement packets where initiator address is a RPA and
 Directed advertisement packets addressed to this device shall be accepted.
 0x03 Accept all undirected advertisement packets from devices that are in
 the White List.Directed advertisement packets where initiator address is RPA and Directed advertisement packets addressed to this device shall be accepted.
@@ -685,12 +685,12 @@ Command Disallowed error code shall be used.
 its last LE scan until it begins the subsequent LE scan.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param LE_Scan_Window Amount of time for the duration of the LE scan. LE_Scan_Window
 shall be less than or equal to LE_Scan_Interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param Initiator_Filter_Policy 0x00 White list is not used to determine which advertiser to connect to.
 Peer_Address_Type and Peer_Address shall be used.
 0x01 White list is used to determine which advertiser to connect to.
@@ -728,12 +728,12 @@ device.
 than or equal to Conn_Interval_Max.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Interval_Max Maximum value for the connection event interval. This shall be
 greater than or equal to Conn_Interval_Min.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Latency Slave latency for the connection in number of connection events.
   * Values:
   - 0x0000 ... 0x01F3
@@ -741,7 +741,7 @@ Time = N * 1.25 msec.
 It shall be a multiple of 10 ms and larger than (1 + connSlaveLatency) * connInterval * 2.
 Time = N * 10 msec.
   * Values:
-  - 0x000A (100 ms)  ... 0x0C80 (32000 ms) 
+  - 0x000A (100 ms)  ... 0x0C80 (32000 ms)
   * @param Minimum_CE_Length Information parameter about the minimum length of connection
 needed for this LE connection.
 Time = N * 0.625 msec.
@@ -856,12 +856,12 @@ the parameter values provided by the Host through this command.
 than or equal to Conn_Interval_Max.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Interval_Max Maximum value for the connection event interval. This shall be
 greater than or equal to Conn_Interval_Min.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Latency Slave latency for the connection in number of connection events.
   * Values:
   - 0x0000 ... 0x01F3
@@ -869,7 +869,7 @@ Time = N * 1.25 msec.
 It shall be a multiple of 10 ms and larger than (1 + connSlaveLatency) * connInterval * 2.
 Time = N * 10 msec.
   * Values:
-  - 0x000A (100 ms)  ... 0x0C80 (32000 ms) 
+  - 0x000A (100 ms)  ... 0x0C80 (32000 ms)
   * @param Minimum_CE_Length Information parameter about the minimum length of connection
 needed for this LE connection.
 Time = N * 0.625 msec.
@@ -1236,7 +1236,7 @@ Default: N= 0x0384 (900 secs or 15 minutes)
 */
 tBleStatus hci_le_set_resolvable_private_address_timeout(uint16_t RPA_Timeout);
 /**
-  * @brief The LE_Read_Maximum_Data_Length command allows the Host to read the Controller  maximum supported payload octets and packet duration times for transmission and reception (supportedMaxTxOctets and supportedMaxTxTime, supportedMaxRxOctets, and supportedMaxRxTime, see [Vol 6] Part B, Section 4.5.10). 
+  * @brief The LE_Read_Maximum_Data_Length command allows the Host to read the Controller  maximum supported payload octets and packet duration times for transmission and reception (supportedMaxTxOctets and supportedMaxTxTime, supportedMaxRxOctets, and supportedMaxRxTime, see [Vol 6] Part B, Section 4.5.10).
   * @param[out] supportedMaxTxOctets Maximum number of payload octets that the local Controller supports for transmission of a single Link Layer Data Channel PDU.
 Range 0x001B-0x00FB (0x0000 - 0x001A and 0x00FC - 0xFFFF Reserved for future use)
   * @param[out] supportedMaxTxTime Maximum time, in microseconds, that the local Controller supports for transmission of a single Link Layer Data Channel PDU.
@@ -1328,7 +1328,7 @@ tBleStatus hci_le_test_end(uint16_t *Number_Of_Packets);
 tBleStatus aci_hal_get_fw_build_number(uint16_t *Build_Number);
 /**
   * @brief This command writes a value to a low level configure data structure. It is useful to setup
-directly some low level parameters for the system in the runtime.NOTE: This command shall not be called if a command different than Stack Init, HCI_RESET, ACI_HAL_WRITE_CONFIG_DATA or ACI_HAL_READ_CONFIG_DATA has already been called. 
+directly some low level parameters for the system in the runtime.NOTE: This command shall not be called if a command different than Stack Init, HCI_RESET, ACI_HAL_WRITE_CONFIG_DATA or ACI_HAL_READ_CONFIG_DATA has already been called.
   * @param Offset Offset of the element in the configuration data structure
 which has to be written. The valid offsets are:
 
@@ -1360,7 +1360,7 @@ tBleStatus aci_hal_write_config_data(uint8_t Offset,
                                      uint8_t Value[]);
 /**
   * @brief This command requests the value in the low level configure data structure.
-The number of read bytes changes for different Offset. 
+The number of read bytes changes for different Offset.
   * @param Offset Offset of the element in the configuration data structure
 which has to be read. The valid offsets are:
 
@@ -1389,7 +1389,7 @@ tBleStatus aci_hal_read_config_data(uint8_t Offset,
 /**
   * @brief This command sets the TX power level of the device. By controlling the
 EN_HIGH_POWER and the PA_LEVEL, the combination of the 2 determines the output
-power level (dBm). 
+power level (dBm).
 When the system starts up or reboots, the default TX power level will be used, which is the
 maximum value of 8 dBm. Once this command is given, the output power will be changed
 instantly, regardless if there is Bluetooth communication going on or not. For example, for
@@ -1417,10 +1417,10 @@ tBleStatus aci_hal_set_tx_power_level(uint8_t En_High_Power,
                                       uint8_t PA_Level);
 /**
   * @brief This command returns the number of packets sent in Direct Test Mode.
-When the Direct TX test is started, a 32-bit counter is used to count how many packets have been transmitted. 
+When the Direct TX test is started, a 32-bit counter is used to count how many packets have been transmitted.
 This command can be used to check how many packets have been sent during the Direct TX test.
-The counter starts from 0 and counts upwards. The counter can wrap and start from 0 again. 
-The counter is not cleared until the next Direct TX test starts. 
+The counter starts from 0 and counts upwards. The counter can wrap and start from 0 again.
+The counter is not cleared until the next Direct TX test starts.
   * @param[out] Number_Of_Packets Number of packets sent during the last Direct TX test.
   * @retval Value indicating success or error code.
 */
@@ -1459,7 +1459,7 @@ tBleStatus aci_hal_tone_stop(void);
 tBleStatus aci_hal_get_link_status(uint8_t Link_Status[8],
                                    uint16_t Link_Connection_Handle[16 / 2]);
 /**
-  * @brief This command set the bitmask associated to @ref aci_hal_end_of_radio_activity_event. 
+  * @brief This command set the bitmask associated to @ref aci_hal_end_of_radio_activity_event.
 Only the radio activities enabled in the mask will be reported to application by @ref aci_hal_end_of_radio_activity_event
   * @param Radio_Activity_Mask Bitmask of radio events
   * Flags:
@@ -1475,7 +1475,7 @@ Only the radio activities enabled in the mask will be reported to application by
 */
 tBleStatus aci_hal_set_radio_activity_mask(uint16_t Radio_Activity_Mask);
 /**
-  * @brief This command returns information about the Anchor Period to help application in selecting 
+  * @brief This command returns information about the Anchor Period to help application in selecting
                       slot timings when operating in multi-link scenarios.
   * @param[out] Anchor_Period Current anchor period.
 T = N * 0.625 ms.
@@ -1486,7 +1486,7 @@ T = N * 0.625 ms.
 tBleStatus aci_hal_get_anchor_period(uint32_t *Anchor_Period,
                                      uint32_t *Max_Free_Slot);
 /**
-  * @brief  
+  * @brief
   * @param Event_Mask Mask to enable/disable generation of HAL events
   * Flags:
   - 0x00000000: No events specified (Default)
@@ -1516,7 +1516,7 @@ The Adv_Interval_Min and Adv_Interval_Max parameters are optional. If both are s
 the GAP will use default values for adv intervals for limited discoverable mode (250 ms
 and 500 ms respectively).
 To allow a fast connection, the host can set Local_Name, Service_Uuid_List,
-Slave_Conn_Interval_Min and Slave_Conn_Interval_Max. If provided, these data will be 
+Slave_Conn_Interval_Min and Slave_Conn_Interval_Max. If provided, these data will be
 inserted into the advertising packet payload as AD data. These parameters are optional
 in this command. These values can be set in advertised data using GAP_Update_Adv_Data
 command separately.
@@ -1526,7 +1526,7 @@ standard AD types:
 - AD Flags
 - Power Level
 When advertising timeout happens (i.e. limited discovery period has elapsed), controller generates
-@ref aci_gap_limited_discoverable_event event. 
+@ref aci_gap_limited_discoverable_event event.
   * @param Advertising_Type Advertising type. Advertising_Type type cannot be any of GAP_ADV_HIGH_DC_DIRECT_IND or GAP_ADV_HIGH_DC_DIRECT_IND.
   * Values:
   - 0x00: ADV_IND (Connectable undirected advertising)
@@ -1536,25 +1536,25 @@ When advertising timeout happens (i.e. limited discovery period has elapsed), co
   * @param Advertising_Interval_Min Minimum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @param Advertising_Interval_Max Maximum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @param Own_Address_Type Own address type:
  - 0x00: Public Device Address (it is allowed only if privacy is disabled)
  - 0x01: Random Device Address (it is allowed only if privacy is disabled)
  - 0x02: Resolvable Private Address (it is allowed only if privacy is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @param Advertising_Filter_Policy Advertising filter policy: not applicable (the value of Advertising_Filter_Policy parameter is not used inside the Stack)
   * @param Local_Name_Length Length of the local_name field in octets.
 If length is set to 0x00, Local_Name parameter is not used.
-  * @param Local_Name Local name of the device. First byte must be 0x08 for Shortened Local Name 
+  * @param Local_Name Local name of the device. First byte must be 0x08 for Shortened Local Name
 or 0x09 for Complete Local Name. No NULL character at the end.
   * @param Service_Uuid_length Length of the Service Uuid List in octets.
 If there is no service to be advertised, set this field to 0x00.
@@ -1568,9 +1568,9 @@ data.
 Connection interval is defined in the following manner:
 connIntervalmin = Slave_Conn_Interval_Min x 1.25ms.
   * Values:
-  - 0x0000 (NaN) 
+  - 0x0000 (NaN)
   - 0xFFFF (NaN) : No specific minimum
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Slave_Conn_Interval_Max Slave connection interval maximum value suggested by Peripheral.
 If Slave_Conn_Interval_Min and Slave_Conn_Interval_Max are not 0x0000,
 Slave Connection Interval Range AD structure will be added in advertising
@@ -1578,9 +1578,9 @@ data.
 Connection interval is defined in the following manner:
 connIntervalmax = Slave_Conn_Interval_Max x 1.25ms
   * Values:
-  - 0x0000 (NaN) 
+  - 0x0000 (NaN)
   - 0xFFFF (NaN) : No specific maximum
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @retval Value indicating success or error code.
 */
 tBleStatus aci_gap_set_limited_discoverable(uint8_t Advertising_Type,
@@ -1596,16 +1596,16 @@ tBleStatus aci_gap_set_limited_discoverable(uint8_t Advertising_Type,
                                             uint16_t Slave_Conn_Interval_Max);
 /**
   * @brief Put the device in general discoverable mode (as defined in Bluetooth Specification v.4.1,
-Vol. 3, Part C, section 9.2.4). The device will be discoverable until the host issues 
+Vol. 3, Part C, section 9.2.4). The device will be discoverable until the host issues
 the @ref aci_gap_set_non_discoverable command. The Adv_Interval_Min and Adv_Interval_Max
 parameters are optional. If both are set to 0, the GAP uses the default values for adv
 intervals for general discoverable mode.
 When using connectable undirected advertising events:
-- Adv_Interval_Min = 30 ms 
+- Adv_Interval_Min = 30 ms
 - Adv_Interval_Max = 60 ms
 When using non-connectable advertising events or scannable undirected advertising events:
-- Adv_Interval_Min = 100 ms 
-- Adv_Interval_Max = 150 ms 
+- Adv_Interval_Min = 100 ms
+- Adv_Interval_Max = 150 ms
 Host can set the Local Name, a Service UUID list and the Slave Connection Interval Range.
 If provided, these data will be inserted into the advertising packet payload as AD data.
 These parameters are optional in this command. These values can be also set using
@@ -1624,25 +1624,25 @@ AD types:
   * @param Advertising_Interval_Min Minimum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @param Advertising_Interval_Max Maximum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @param Own_Address_Type Own address type:
  - 0x00: Public Device Address (it is allowed only if privacy is disabled)
  - 0x01: Random Device Address (it is allowed only if privacy is disabled)
  - 0x02: Resolvable Private Address (it is allowed only if privacy is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @param Advertising_Filter_Policy Advertising filter policy: not applicable (the value of Advertising_Filter_Policy parameter is not used inside the Stack)
   * @param Local_Name_Length Length of the local_name field in octets.
 If length is set to 0x00, Local_Name parameter is not used.
-  * @param Local_Name Local name of the device. First byte must be 0x08 for Shortened Local Name 
+  * @param Local_Name Local name of the device. First byte must be 0x08 for Shortened Local Name
 or 0x09 for Complete Local Name. No NULL character at the end.
   * @param Service_Uuid_length Length of the Service Uuid List in octets.
 If there is no service to be advertised, set this field to 0x00.
@@ -1656,9 +1656,9 @@ data.
 Connection interval is defined in the following manner:
 connIntervalmin = Slave_Conn_Interval_Min x 1.25ms.
   * Values:
-  - 0x0000 (NaN) 
+  - 0x0000 (NaN)
   - 0xFFFF (NaN) : No specific minimum
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Slave_Conn_Interval_Max Slave connection interval maximum value suggested by Peripheral.
 If Slave_Conn_Interval_Min and Slave_Conn_Interval_Max are not 0x0000,
 Slave Connection Interval Range AD structure will be added in advertising
@@ -1666,9 +1666,9 @@ data.
 Connection interval is defined in the following manner:
 connIntervalmax = Slave_Conn_Interval_Max x 1.25ms
   * Values:
-  - 0x0000 (NaN) 
+  - 0x0000 (NaN)
   - 0xFFFF (NaN) : No specific maximum
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @retval Value indicating success or error code.
 */
 tBleStatus aci_gap_set_discoverable(uint8_t Advertising_Type,
@@ -1683,7 +1683,7 @@ tBleStatus aci_gap_set_discoverable(uint8_t Advertising_Type,
                                     uint16_t Slave_Conn_Interval_Min,
                                     uint16_t Slave_Conn_Interval_Max);
 /**
-  * @brief 
+  * @brief
     Set the device in direct connectable mode (as defined in Bluetooth Specification v.4.1,
 Vol. 3, Part C, section 9.3.3). Device uses direct connectable mode to advertise using High Duty
 cycle advertisement events or Low Duty cycle advertisement events and the address as
@@ -1702,8 +1702,8 @@ If Host privacy (i.e. privacy 1.1) is enabled this command returns BLE_STATUS_IN
  - 0x01: Random Device Address (only if privacy is disabled)
  - 0x02: Resolvable Private Address (only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   * @param Directed_Advertising_Type Type of directed advertising.
   * Values:
@@ -1717,11 +1717,11 @@ If Host privacy (i.e. privacy 1.1) is enabled this command returns BLE_STATUS_IN
   * @param Advertising_Interval_Min Minimum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @param Advertising_Interval_Max Maximum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @retval Value indicating success or error code.
 */
 tBleStatus aci_gap_set_direct_connectable(uint8_t Own_Address_Type,
@@ -1820,7 +1820,7 @@ process.
   * @param Connection_Handle Connection handle for which the command is given.
   * Values:
   - 0x0000 ... 0x0EFF
-  * @param Pass_Key Pass key that will be used during the pairing process. 
+  * @param Pass_Key Pass key that will be used during the pairing process.
 Must be a six-digit decimal number.
   * Values:
   - 0 ... 999999
@@ -1873,7 +1873,7 @@ tBleStatus aci_gap_init(uint8_t Role,
                         uint16_t *Appearance_Char_Handle);
 /**
   * @brief Put the device into non connectable mode. This mode does not support connection. The
-privacy setting done in the @ref aci_gap_init command plays a role in deciding the valid 
+privacy setting done in the @ref aci_gap_init command plays a role in deciding the valid
 parameters for this command.
 Advertiser filter policy is internally set to 0x00
   * @param Advertising_Event_Type Advertising type.
@@ -1886,8 +1886,8 @@ Advertiser filter policy is internally set to 0x00
  - 0x02: Resolvable Private Address (it is allowed only if privacy is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @retval Value indicating success or error code.
@@ -1896,25 +1896,25 @@ tBleStatus aci_gap_set_non_connectable(uint8_t Advertising_Event_Type,
                                        uint8_t Own_Address_Type);
 /**
   * @brief Put the device into undirected connectable mode.
-If privacy is enabled in the device, a resolvable private address is generated and used as the 
+If privacy is enabled in the device, a resolvable private address is generated and used as the
 advertiser's address. If not, the address of the type specified in own_addr_type is used for
 advertising.
   * @param Advertising_Interval_Min Minimum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @param Advertising_Interval_Max Maximum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @param Own_Address_Type Own address type:
  - 0x00: Public Device Address (it is allowed only if privacy is disabled)
  - 0x01: Random Device Address (it is allowed only if privacy is disabled)
  - 0x02: Resolvable Private Address (it is allowed only if controller privacy is enabled or if Host privacy (i.e. privacy 1.1) is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if Host privacy (i.e. privacy 1.1) is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @param Adv_Filter_Policy Advertising filter policy.
@@ -1996,7 +1996,7 @@ tBleStatus aci_gap_get_security_level(uint16_t Connection_Handle,
 tBleStatus aci_gap_set_event_mask(uint16_t GAP_Evt_Mask);
 /**
   * @brief Add addresses of bonded devices into the controller's whitelist.
-The command will return an error if there are no devices in the database or if it was  
+The command will return an error if there are no devices in the database or if it was
 unable to add the device into the whitelist.
   * @retval Value indicating success or error code.
 */
@@ -2041,9 +2041,9 @@ tBleStatus aci_gap_allow_rebond(uint16_t Connection_Handle);
   * @brief Start the limited discovery procedure. The controller is commanded to start active scanning.
 When this procedure is started, only the devices in limited discoverable mode are returned
 to the upper layers.
-The procedure is terminated when either the upper layers issue a command to terminate 
-the procedure by issuing the command @ref aci_gap_terminate_gap_proc with the procedure 
-code set to 0x01 or a timeout happens. When the procedure is terminated due to any of the 
+The procedure is terminated when either the upper layers issue a command to terminate
+the procedure by issuing the command @ref aci_gap_terminate_gap_proc with the procedure
+code set to 0x01 or a timeout happens. When the procedure is terminated due to any of the
 above  reasons, @ref aci_gap_proc_complete_event event is returned with the procedure code
 set to 0x01.
 The device found when the procedure is ongoing is returned to the upper layers through the
@@ -2052,20 +2052,20 @@ event @ref hci_le_advertising_report_event.
 its last LE scan until it begins the subsequent LE scan.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param LE_Scan_Window Amount of time for the duration of the LE scan. LE_Scan_Window
 shall be less than or equal to LE_Scan_Interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param Own_Address_Type Own address type:
  - 0x00: Public Device Address (it is allowed only if privacy is disabled)
  - 0x01: Random Device Address (it is allowed only if privacy is disabled)
  - 0x02: Resolvable Private Address (it is allowed only if privacy is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @param Filter_Duplicates Enable/disable duplicate filtering.
@@ -2090,20 +2090,20 @@ is ongoing is returned to @ref hci_le_advertising_report_event.
 its last LE scan until it begins the subsequent LE scan.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param LE_Scan_Window Amount of time for the duration of the LE scan. LE_Scan_Window
 shall be less than or equal to LE_Scan_Interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param Own_Address_Type Own address type:
  - 0x00: Public Device Address (it is allowed only if privacy is disabled)
  - 0x01: Random Device Address (it is allowed only if privacy is disabled)
  - 0x02: Resolvable Private Address (it is allowed only if privacy is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @param Filter_Duplicates Enable/disable duplicate filtering.
@@ -2128,12 +2128,12 @@ device name was read successfully.
 its last LE scan until it begins the subsequent LE scan.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param LE_Scan_Window Amount of time for the duration of the LE scan. LE_Scan_Window
 shall be less than or equal to LE_Scan_Interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param Peer_Address_Type Address type.
   * Values:
   - 0x00: Public Device Address
@@ -2147,20 +2147,20 @@ device.
  - 0x02: Resolvable Private Address (it is allowed only if privacy is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @param Conn_Interval_Min Minimum value for the connection event interval. This shall be less
 than or equal to Conn_Interval_Max.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Interval_Max Maximum value for the connection event interval. This shall be
 greater than or equal to Conn_Interval_Min.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Latency Slave latency for the connection in number of connection events.
   * Values:
   - 0x0000 ... 0x01F3
@@ -2168,7 +2168,7 @@ Time = N * 1.25 msec.
 It shall be a multiple of 10 ms and larger than (1 + connSlaveLatency) * connInterval * 2.
 Time = N * 10 msec.
   * Values:
-  - 0x000A (100 ms)  ... 0x0C80 (32000 ms) 
+  - 0x000A (100 ms)  ... 0x0C80 (32000 ms)
   * @param Minimum_CE_Length Information parameter about the minimum length of connection
 needed for this LE connection.
 Time = N * 0.625 msec.
@@ -2204,32 +2204,32 @@ If controller privacy is enabled and the peer device (advertiser) is in the reso
 its last LE scan until it begins the subsequent LE scan.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param LE_Scan_Window Amount of time for the duration of the LE scan. LE_Scan_Window
 shall be less than or equal to LE_Scan_Interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param Own_Address_Type Own address type:
  - 0x00: Public Device Address (it is allowed only if privacy is disabled)
  - 0x01: Random Device Address (it is allowed only if privacy is disabled)
  - 0x02: Resolvable Private Address (it is allowed only if privacy is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @param Conn_Interval_Min Minimum value for the connection event interval. This shall be less
 than or equal to Conn_Interval_Max.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Interval_Max Maximum value for the connection event interval. This shall be
 greater than or equal to Conn_Interval_Min.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Latency Slave latency for the connection in number of connection events.
   * Values:
   - 0x0000 ... 0x01F3
@@ -2237,7 +2237,7 @@ Time = N * 1.25 msec.
 It shall be a multiple of 10 ms and larger than (1 + connSlaveLatency) * connInterval * 2.
 Time = N * 10 msec.
   * Values:
-  - 0x000A (100 ms)  ... 0x0C80 (32000 ms) 
+  - 0x000A (100 ms)  ... 0x0C80 (32000 ms)
   * @param Minimum_CE_Length Information parameter about the minimum length of connection
 needed for this LE connection.
 Time = N * 0.625 msec.
@@ -2283,20 +2283,20 @@ the link layer will generate a RPA, if it is not then the RPA/NRPA generated by 
 its last LE scan until it begins the subsequent LE scan.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param LE_Scan_Window Amount of time for the duration of the LE scan. LE_Scan_Window
 shall be less than or equal to LE_Scan_Interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param Own_Address_Type Own address type:
  - 0x00: Public Device Address (it is allowed only if privacy is disabled)
  - 0x01: Random Device Address (it is allowed only if privacy is disabled)
  - 0x02: Resolvable Private Address (it is allowed only if privacy is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @param Scanning_Filter_Policy Scanning filter policy:
@@ -2342,20 +2342,20 @@ If controller privacy is enabled and the peer device (advertiser) is in the reso
 its last LE scan until it begins the subsequent LE scan.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param LE_Scan_Window Amount of time for the duration of the LE scan. LE_Scan_Window
 shall be less than or equal to LE_Scan_Interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param Own_Address_Type Own address type:
  - 0x00: Public Device Address (it is allowed only if privacy is disabled)
  - 0x01: Random Device Address (it is allowed only if privacy is disabled)
  - 0x02: Resolvable Private Address (it is allowed only if privacy is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @param Scanning_Filter_Policy Scanning filter policy:
@@ -2393,7 +2393,7 @@ be terminated explicitly by the upper layer by issuing the command
 @ref aci_gap_terminate_gap_proc. When a command is issued to terminate the
 procedure by upper layer, a @ref hci_le_create_connection_cancel call will be made to the
 controller by GAP.
-On termination of the procedure, a @ref hci_le_connection_complete_event event is returned. The  
+On termination of the procedure, a @ref hci_le_connection_complete_event event is returned. The
 procedure can be explicitly terminated by the upper layer by issuing the command
 @ref aci_gap_terminate_gap_proc with the procedure_code set to 0x40.
 If controller privacy is enabled and the peer device (advertiser) is in the resolving list then
@@ -2402,12 +2402,12 @@ the link layer will generate a RPA, if it is not then the RPA/NRPA generated by 
 its last LE scan until it begins the subsequent LE scan.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param LE_Scan_Window Amount of time for the duration of the LE scan. LE_Scan_Window
 shall be less than or equal to LE_Scan_Interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param Peer_Address_Type Peer Address type.
   * Values:
   - 0x00: Public Device Address or Public Identity Address
@@ -2421,20 +2421,20 @@ device.
  - 0x02: Resolvable Private Address (it is allowed only if privacy is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @param Conn_Interval_Min Minimum value for the connection event interval. This shall be less
 than or equal to Conn_Interval_Max.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Interval_Max Maximum value for the connection event interval. This shall be
 greater than or equal to Conn_Interval_Min.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Latency Slave latency for the connection in number of connection events.
   * Values:
   - 0x0000 ... 0x01F3
@@ -2442,7 +2442,7 @@ Time = N * 1.25 msec.
 It shall be a multiple of 10 ms and larger than (1 + connSlaveLatency) * connInterval * 2.
 Time = N * 10 msec.
   * Values:
-  - 0x000A (100 ms)  ... 0x0C80 (32000 ms) 
+  - 0x000A (100 ms)  ... 0x0C80 (32000 ms)
   * @param Minimum_CE_Length Information parameter about the minimum length of connection
 needed for this LE connection.
 Time = N * 0.625 msec.
@@ -2490,12 +2490,12 @@ the upper layer.
 than or equal to Conn_Interval_Max.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Interval_Max Maximum value for the connection event interval. This shall be
 greater than or equal to Conn_Interval_Min.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Latency Slave latency for the connection in number of connection events.
   * Values:
   - 0x0000 ... 0x01F3
@@ -2503,7 +2503,7 @@ Time = N * 1.25 msec.
 It shall be a multiple of 10 ms and larger than (1 + connSlaveLatency) * connInterval * 2.
 Time = N * 10 msec.
   * Values:
-  - 0x000A (100 ms)  ... 0x0C80 (32000 ms) 
+  - 0x000A (100 ms)  ... 0x0C80 (32000 ms)
   * @param Minimum_CE_Length Information parameter about the minimum length of connection
 needed for this LE connection.
 Time = N * 0.625 msec.
@@ -2554,11 +2554,11 @@ Own_Addr_Type parameter of the command.
   * @param Advertising_Interval_Min Minimum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @param Advertising_Interval_Max Maximum advertising interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0020 (20.000 ms)  ... 0x4000 (10240.000 ms)
   * @param Advertising_Type Non connectable advertising type
   * Values:
   - 0x02: ADV_SCAN_IND (Scannable undirected advertising)
@@ -2595,12 +2595,12 @@ the link layer will generate a RPA, if it is not then the RPA/NRPA generated by 
 its last LE scan until it begins the subsequent LE scan.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param LE_Scan_Window Amount of time for the duration of the LE scan. LE_Scan_Window
 shall be less than or equal to LE_Scan_Interval.
 Time = N * 0.625 msec.
   * Values:
-  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms) 
+  - 0x0004 (2.500 ms)  ... 0x4000 (10240.000 ms)
   * @param LE_Scan_Type Passive or active scanning. With active scanning SCAN_REQ packets are sent.
   * Values:
   - 0x00: Passive Scanning
@@ -2611,8 +2611,8 @@ Time = N * 0.625 msec.
  - 0x02: Resolvable Private Address (it is allowed only if privacy is enabled)
  - 0x03: Non Resolvable Private Address (it is allowed only if privacy is enabled)
   * Values:
-  - 0x00: Public Device Address 
-  - 0x01: Random Device Address 
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
   - 0x02: Resolvable Private Address
   - 0x03: Non Resolvable Private Address
   * @param Filter_Duplicates Enable/disable duplicate filtering.
@@ -2779,10 +2779,10 @@ tBleStatus aci_gap_remove_bonded_device(uint8_t Peer_Identity_Address_Type,
  *@{
  */
 /**
-  * @brief Initialize the GATT layer for server and client roles. 
-It adds also the GATT service with Service Changed Characteristic. 
-Until this command is issued the GATT channel will not process any commands even if the 
-connection is opened. This command has to be given before using any of the GAP features. 
+  * @brief Initialize the GATT layer for server and client roles.
+It adds also the GATT service with Service Changed Characteristic.
+Until this command is issued the GATT channel will not process any commands even if the
+connection is opened. This command has to be given before using any of the GAP features.
   * @retval Value indicating success or error code.
 */
 tBleStatus aci_gatt_init(void);
@@ -2792,7 +2792,7 @@ reserve the handle ranges for this service using Max_Attribute_Records parameter
 parameter specifies the maximum number of attribute records that can be added to this
 service (including the service attribute, include attribute, characteristic attribute,
 characteristic value attribute and characteristic descriptor attribute). Handle of the created
-service is returned in command complete event. Service declaration is taken from the service pool. 
+service is returned in command complete event. Service declaration is taken from the service pool.
 The attributes for characteristics and descriptors are allocated from the attribute pool.
   * @param Service_UUID_Type UUID type.
   * @param Service_UUID See @ref Service_UUID_t
@@ -2802,7 +2802,7 @@ The attributes for characteristics and descriptors are allocated from the attrib
   - 0x02: Secondary Service
   * @param Max_Attribute_Records Maximum number of attribute records that can be added to this service
   * @param[out] Service_Handle Handle of the Service.
-When this service is added, a handle is allocated by the server for this service. 
+When this service is added, a handle is allocated by the server for this service.
 Server also allocates a range of handles for this service from serviceHandle to <serviceHandle + max_attr_records - 1>
   * @retval Value indicating success or error code.
 */
@@ -2812,8 +2812,8 @@ tBleStatus aci_gatt_add_service(uint8_t Service_UUID_Type,
                                 uint8_t Max_Attribute_Records,
                                 uint16_t *Service_Handle);
 /**
-  * @brief Include a service given by Include_Start_Handle and Include_End_Handle to another 
-service given by Service_Handle. Attribute server creates an INCLUDE definition 
+  * @brief Include a service given by Include_Start_Handle and Include_End_Handle to another
+service given by Service_Handle. Attribute server creates an INCLUDE definition
 attribute and return the handle of this attribute in Included_handle.
   * @param Service_Handle Handle of the Service to which another service has to be included.
   * @param Include_Start_Handle Start Handle of the Service which has to be included in service
@@ -2869,10 +2869,10 @@ a variable length.
   * Values:
   - 0x00: Fixed length
   - 0x01: Variable length
-  * @param[out] Char_Handle Handle of the Characteristic that has been added. 
-It is the handle of the characteristic declaration. 
-The attribute that holds the characteristic value is allocated at the next handle, 
-followed by the Client Characteristic Configuration descriptor if the characteristic 
+  * @param[out] Char_Handle Handle of the Characteristic that has been added.
+It is the handle of the characteristic declaration.
+The attribute that holds the characteristic value is allocated at the next handle,
+followed by the Client Characteristic Configuration descriptor if the characteristic
 has CHAR_PROP_NOTIFY or CHAR_PROP_INDICATE properties.
   * @retval Value indicating success or error code.
 */
@@ -2942,25 +2942,25 @@ tBleStatus aci_gatt_add_char_desc(uint16_t Service_Handle,
                                   uint8_t Is_Variable,
                                   uint16_t *Char_Desc_Handle);
 /**
-  * @brief Update a characteristic value in a service. 
-If notifications (or indications) are enabled on that characteristic, 
-a notification (or indication) will be sent to the client after sending 
-this command to the BlueNRG. The command is queued into the BlueNRG command queue. 
+  * @brief Update a characteristic value in a service.
+If notifications (or indications) are enabled on that characteristic,
+a notification (or indication) will be sent to the client after sending
+this command to the BlueNRG. The command is queued into the BlueNRG command queue.
 If the buffer is full, because previous commands could not be still processed,
-the function will return BLE_STATUS_INSUFFICIENT_RESOURCES. This will happen 
-if notifications (or indications) are enabled and the application calls 
-@ref aci_gatt_update_char_value at an higher rate than what is allowed by the link. 
-Throughput on BLE link depends on connection interval and connection length 
-parameters (decided by the master, see aci_l2cap_connection_parameter_update_request() 
-for more info on how to suggest new connection parameters from a slave). If the 
-application does not want to lose notifications because BlueNRG buffer becomes full, 
+the function will return BLE_STATUS_INSUFFICIENT_RESOURCES. This will happen
+if notifications (or indications) are enabled and the application calls
+@ref aci_gatt_update_char_value at an higher rate than what is allowed by the link.
+Throughput on BLE link depends on connection interval and connection length
+parameters (decided by the master, see aci_l2cap_connection_parameter_update_request()
+for more info on how to suggest new connection parameters from a slave). If the
+application does not want to lose notifications because BlueNRG buffer becomes full,
 it has to retry again till the function returns BLE_STATUS_SUCCESS or any other error code.
 DEPRECATED API (still supported but not recommended).
   * @param Service_Handle Handle of service to which the characteristic belongs
   * @param Char_Handle Handle of the characteristic
-  * @param Val_Offset The offset from which the attribute value has to be updated. 
-If this is set to 0 and the attribute value is of variable length, then the length of the attribute will be set to the Char_Value_Length. 
-If the Val_Offset is set to a value greater than 0, then the length of the attribute will be set to the maximum length as 
+  * @param Val_Offset The offset from which the attribute value has to be updated.
+If this is set to 0 and the attribute value is of variable length, then the length of the attribute will be set to the Char_Value_Length.
+If the Val_Offset is set to a value greater than 0, then the length of the attribute will be set to the maximum length as
 specified for the attribute while adding the characteristic.
   * @param Char_Value_Length Length of the characteristic value in octets
   * @param Char_Value Characteristic value
@@ -3032,7 +3032,7 @@ tBleStatus aci_gatt_exchange_config(uint16_t Connection_Handle);
 /**
   * @brief Send a Find Information Request.
 This command is used to obtain the mapping of attribute handles with their associated
-types. The responses of the procedure are given through the 
+types. The responses of the procedure are given through the
 @ref aci_att_find_info_resp_event event. The end of the procedure is indicated by
 a @ref aci_gatt_proc_complete_event event.
   * @param Connection_Handle Connection handle for which the command is given.
@@ -3088,12 +3088,12 @@ tBleStatus aci_att_read_by_type_req(uint16_t Connection_Handle,
                                     uint8_t UUID_Type,
                                     UUID_t *UUID);
 /**
-  * @brief Send a Read By Group Type Request. 
+  * @brief Send a Read By Group Type Request.
 The Read By Group Type Request is used to obtain the values of grouping attributes where
-the attribute type is known but the handle is not known. Grouping attributes are defined 
-at GATT layer. The grouping attribute types are: "Primary Service", "Secondary Service" 
-and "Characteristic". 
-The responses of the procedure are given through the @ref aci_att_read_by_group_type_resp_event event. 
+the attribute type is known but the handle is not known. Grouping attributes are defined
+at GATT layer. The grouping attribute types are: "Primary Service", "Secondary Service"
+and "Characteristic".
+The responses of the procedure are given through the @ref aci_att_read_by_group_type_resp_event event.
 The end of the procedure is indicated by a @ref aci_gatt_proc_complete_event.
   * @param Connection_Handle Connection handle for which the command is given.
   * Values:
@@ -3111,9 +3111,9 @@ tBleStatus aci_att_read_by_group_type_req(uint16_t Connection_Handle,
                                           UUID_t *UUID);
 /**
   * @brief Send a Prepare Write Request.
-The Prepare Write Request is used to request the server to prepare to write the value of an attribute. 
-The responses of the procedure are given through the @ref aci_att_prepare_write_resp_event event. 
-The end of the procedure is indicated by a @ref aci_gatt_proc_complete_event. 
+The Prepare Write Request is used to request the server to prepare to write the value of an attribute.
+The responses of the procedure are given through the @ref aci_att_prepare_write_resp_event event.
+The end of the procedure is indicated by a @ref aci_gatt_proc_complete_event.
   * @param Connection_Handle Connection handle for which the command is given.
   * Values:
   - 0x0000 ... 0x0EFF
@@ -3130,10 +3130,10 @@ tBleStatus aci_att_prepare_write_req(uint16_t Connection_Handle,
                                      uint8_t Attribute_Val[]);
 /**
   * @brief Send an Execute Write Request.
-The Execute Write Request is used to request the server to write or cancel the write 
-of all the prepared values currently held in the prepare queue from this client. 
-The result of the procedure is given through the @ref aci_att_exec_write_resp_event event. 
-The end of the procedure is indicated by a @ref aci_gatt_proc_complete_event event. 
+The Execute Write Request is used to request the server to write or cancel the write
+of all the prepared values currently held in the prepare queue from this client.
+The result of the procedure is given through the @ref aci_att_exec_write_resp_event event.
+The end of the procedure is indicated by a @ref aci_gatt_proc_complete_event event.
   * @param Connection_Handle Connection handle for which the command is given.
   * Values:
   - 0x0000 ... 0x0EFF
@@ -3548,7 +3548,7 @@ tBleStatus aci_gatt_read_handle_value(uint16_t Attr_Handle,
   * @param Char_Handle Handle of the characteristic
   * @param Update_Type Allow Notification or Indication generation, if enabled in the client characteristic configuration descriptor. It also allows to enable the no retry feature if supported
   * Flags:
-  - 0x00: No notification or indication (local characteristic value update) 
+  - 0x00: No notification or indication (local characteristic value update)
   - 0x01: Notification
   - 0x02: Indication
   - 0x04: Disable standard BLE Link Layer retransmission mechanism for notifications PDUs that are not acknowledged by the Link Layer of the peer device
@@ -3611,7 +3611,7 @@ tBleStatus aci_gatt_set_access_permission(uint16_t Serv_Handle,
  */
 /**
   * @brief Send an L2CAP connection parameter update request from the slave to the master.
-An @ref aci_l2cap_connection_update_resp_event event will be raised when the master will respond to the 
+An @ref aci_l2cap_connection_update_resp_event event will be raised when the master will respond to the
 request (accepts or rejects).
   * @param Connection_Handle Connection handle for which the command is given.
   * Values:
@@ -3620,12 +3620,12 @@ request (accepts or rejects).
 than or equal to Conn_Interval_Max.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Interval_Max Maximum value for the connection event interval. This shall be
 greater than or equal to Conn_Interval_Min.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Slave_latency Slave latency for the connection in number of connection events.
   * Values:
   - 0x0000 ... 0x01F3
@@ -3648,12 +3648,12 @@ set if the connection parameters given in the event are acceptable.
 than or equal to Conn_Interval_Max.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Conn_Interval_Max Maximum value for the connection event interval. This shall be
 greater than or equal to Conn_Interval_Min.
 Time = N * 1.25 msec.
   * Values:
-  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms) 
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
   * @param Slave_latency Slave latency for the connection in number of connection events.
   * Values:
   - 0x0000 ... 0x01F3

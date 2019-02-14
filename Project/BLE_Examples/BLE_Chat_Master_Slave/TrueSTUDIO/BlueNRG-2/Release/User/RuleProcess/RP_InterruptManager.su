@@ -1,0 +1,5 @@
+RP_InterruptManager.c:32:6:rp_im_init	0	static
+RP_InterruptManager.c:40:6:Blue_Handler	8	static
+RP_InterruptManager.c:46:6:SysTick_Handler	8	static
+RP_InterruptManager.c:54:6:UART_Handler	8	static
+RP_InterruptManager.c:62:6:GPIO_Handler	16	static

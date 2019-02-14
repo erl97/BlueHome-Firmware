@@ -1,0 +1,2 @@
+SAM_TouchButton.c:13:6:sam_tb_init	8	static
+SAM_TouchButton.c:21:6:sam_tb_notifyEvent	0	static

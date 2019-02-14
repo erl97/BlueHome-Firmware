@@ -1,0 +1,3 @@
+DB_Assert.c:12:6:db_as_init	0	static
+DB_Assert.c:25:9:db_as_checkInit	0	static
+DB_Assert.c:33:6:db_as_assert	8	static

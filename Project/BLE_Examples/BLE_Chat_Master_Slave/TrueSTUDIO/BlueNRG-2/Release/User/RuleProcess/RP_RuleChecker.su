@@ -1,0 +1,4 @@
+RP_RuleChecker.c:30:6:rp_rc_loadRules	24	static
+RP_RuleChecker.c:17:6:rp_rc_init	8	static
+RP_RuleChecker.c:64:6:rp_rc_addSource	16	static
+RP_RuleChecker.c:95:6:source_handler	0	static

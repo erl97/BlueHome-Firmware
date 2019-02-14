@@ -1,0 +1,4 @@
+HW_UART.c:16:6:hw_uart_init	0	static
+HW_UART.c:21:6:hw_uart_receiveISR	8	static
+HW_UART.c:65:6:hw_uart_sendChar	8	static
+HW_UART.c:55:6:hw_uart_sendString	8	static

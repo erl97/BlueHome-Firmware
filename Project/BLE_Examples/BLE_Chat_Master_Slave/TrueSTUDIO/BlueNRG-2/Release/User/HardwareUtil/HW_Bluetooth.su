@@ -1,0 +1,9 @@
+HW_Bluetooth.c:106:9:sam_bl_initLink	72	static
+HW_Bluetooth.c:59:6:hw_bl_init	8	static
+HW_Bluetooth.c:225:6:hw_bl_setDeviceConnectable	56	static
+HW_Bluetooth.c:247:12:hw_bl_sendPacket	64	static
+HW_Bluetooth.c:302:6:hci_le_connection_complete_event	8	static
+HW_Bluetooth.c:342:6:hci_disconnection_complete_event	8	static
+HW_Bluetooth.c:361:6:aci_gatt_read_permit_req_event	8	static
+HW_Bluetooth.c:376:6:aci_gatt_attribute_modified_event	8	static
+HW_Bluetooth.c:393:6:aci_hal_end_of_radio_activity_event	8	static
