@@ -24,7 +24,7 @@
 #define NUM_APP_GATT_SERVICES 2
 
 /* Number of attributes requests from the sensor demo */
-#define NUM_APP_GATT_ATTRIBUTES 21
+#define NUM_APP_GATT_ATTRIBUTES 32
 
 /* OTA characteristics maximum lenght */
 #define OTA_MAX_ATT_SIZE (0)
@@ -46,7 +46,7 @@
 #define MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_1 (12)
 
 /* Maximum number of attribute records that can be added to the second application service: cmd service */
-#define MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_2 (9)
+#define MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_2 (20)
 
 /* Number of GATT attributes needed for the sensor demo. */
 #define NUM_GATT_ATTRIBUTES     (DEFAULT_NUM_GATT_ATTRIBUTES + NUM_APP_GATT_ATTRIBUTES)

@@ -55,6 +55,15 @@ void db_cs_printInt(uint32_t i){
 	hw_uart_sendString(c);
 }
 
+void db_cs_printMAC(uint8_t *mac){
+	db_cs_printString("MAC (Dezimal): ");
+	for(int i = 0; i < 6; i++){
+		db_cs_printInt(mac[i]);
+		if(i != 5) db_cs_printString(" : ");
+	}
+	db_cs_printString("\r");
+}
+
 char* itoa(int i, char b[]){
     char const digit[] = "0123456789";
     char* p = b;

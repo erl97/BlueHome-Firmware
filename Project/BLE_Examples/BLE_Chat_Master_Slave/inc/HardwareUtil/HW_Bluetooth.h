@@ -26,6 +26,6 @@ void hw_bl_init();
 
 void hw_bl_setDeviceConnectable(void);
 
-tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data);
+tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, uint16_t charHandle);
 
 #endif /* BLUEHOME_HARDWAREUTIL_HW_BLUETOOTH_H_ */

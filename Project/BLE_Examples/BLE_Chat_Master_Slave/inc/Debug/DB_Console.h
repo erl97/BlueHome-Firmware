@@ -17,5 +17,6 @@ void db_cs_executeCommand(char *cmd);
 
 void db_cs_printString(char *message);
 void db_cs_printInt(uint32_t i);
+void db_cs_printMAC(uint8_t *mac);
 
 #endif /* BLUEHOME_DEBUG_DB_CONSOLE_H_ */

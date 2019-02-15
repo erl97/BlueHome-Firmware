@@ -23,6 +23,7 @@
 #include "HardwareUtil/HW_Bluetooth.h"
 
 extern uint8_t hw_bl_connectedDeviceAddr[6];
+extern uint16_t cmdServHandle, cmdCharHandle, pollCharHandle;
 
 void sam_bl_addServices();
 Source sam_bl_generateSource(uint8_t attr_data_length, uint8_t *attr_data);
@@ -60,9 +61,9 @@ void sam_bl_triggerAction(Action action){
 
 	db_cs_printString("Trigger BL Action...\r");
 
-	uint8_t addr[6];
-	hw_mac_getMac(action.targetID, addr);
-
-	hw_bl_sendPacket(addr, action.paramNum, action.param);
+	//uint8_t addr[6];
+	//hw_mac_getMac(action.targetID, addr);
+	uint8_t bdaddr[6] = {0x12, 0x34, 0x00, 0xE1, 0x80, 0x11}; // Test Connect Addr
+	hw_bl_sendPacket(bdaddr, action.paramNum, action.param, cmdCharHandle);
 
 }
