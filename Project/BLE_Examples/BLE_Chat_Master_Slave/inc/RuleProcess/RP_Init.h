@@ -10,10 +10,14 @@
 
 // Array-Sizes
 // Must fit to memory spaces defined in HW_Memory.h
-#define SIZEOFSOURCEBUFFER		10
-#define SIZEOFMYRULES			100
-#define SIZEOFMYACTIONS			100
-#define SIZEOFMAC				50
+#define SIZEOF_SOURCEBUFFER			10
+#define SIZEOF_ACTIONBUFFER			10
+
+#define SIZEOFMYRULES				100
+
+#define SIZEOFMAC					50
+
+#define SIZEOF_PROG_ACTIONS			100
 
 
 

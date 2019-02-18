@@ -12,6 +12,7 @@
 
 #define DB_AS_ERROR_BOVERFLOW 		1
 #define DB_AS_ERROR_BLUETOOTH 		2
+#define DB_AS_ERROR_VALUEFCT		3
 
 char *errorMsg[32];
 

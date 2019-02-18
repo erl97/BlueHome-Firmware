@@ -12,8 +12,7 @@
 
 void sam_bl_init();
 
-void sam_bl_notifyEvent(uint8_t attr_data_length, uint8_t *attr_data);
-
+void sam_bl_triggerSource(uint8_t paramLen, uint8_t *param);
 void sam_bl_triggerAction(Action action);
 
 #endif /* BLUEHOME_SOURCEACTIONMANAGER_SAM_BLUETOOTH_H_ */

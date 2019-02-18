@@ -27,9 +27,9 @@
 #include "Bluetooth/BL_gatt_db.h"
 #include "Bluetooth/BL_config.h"
 
-#include "SourceActionManager/SAM_Bluetooth.h"
+#include "SourceActionManager/SAM_Init.h"
 
-#include "RuleProcess/RP_InterruptManager.h"
+#include "RuleProcess/RP_SourceManager.h"
 
 #include "Debug/DB_Console.h"
 #include "Debug/DB_Assert.h"
@@ -57,8 +57,11 @@ typedef struct discoveryContext_s {
 
 volatile uint8_t hw_bl_setConnectable = 1;
 volatile uint16_t connection_handle = 0;
-uint8_t connInfo[20];
-extern uint16_t cmdCharHandle;
+
+//Handels
+extern uint16_t infoServHandle, errorCharHandle, fwVerCharHandle, hwVerCharHandle, hwIdCharHandle;
+extern uint16_t cmdServHandle, cmdCharHandle, pollCharHandle;
+extern uint16_t directServHandle, paramCharHandle, paramCompCharHandle, optionsCharHandle;
 
 volatile int connected = FALSE;
 volatile uint8_t transmitionDone = 0;
@@ -67,7 +70,7 @@ volatile uint8_t receivedChar = 0;
 
 UUID_t tx_uuid;
 
-uint8_t Services_Max_Attribute_Records[NUMBER_OF_APPLICATION_SERVICES] = { MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_1,	MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_2 };
+uint8_t Services_Max_Attribute_Records[NUMBER_OF_APPLICATION_SERVICES] = { MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_1,	MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_2, MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_3};
 
 uint8_t device_name[] =
 	{ 'B', 'l', 'u', 'e', '0', '1', '1' };
@@ -217,6 +220,17 @@ uint8_t sam_bl_initLink()
 		return ret;
 	}
 
+	ret = bl_gatt_addDirectService();
+	if (ret == BLE_STATUS_SUCCESS)
+	{
+		db_cs_printString("Add BL Direct Service --> SUCCESS\r");
+	}
+	else
+	{
+		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error adding BL Direct Service");
+		return ret;
+	}
+
 	/* Start the Sensor Timer */
 //	ret = HAL_VTimerStart_ms(SENSOR_TIMER, acceleration_update_rate);
 //	if (ret != BLE_STATUS_SUCCESS)
@@ -348,20 +362,14 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 		const uint8_t charUuid128_TX[16] = {0x1b,0xc5,0xd5,0xa5, 0x02,0x00, 0xb4,0x9a, 0xe1,0x11, 0x3a,0xcf,0x80,0x6e,0x36,0x02};
 
 		Osal_MemCpy(&tx_uuid.UUID_128, charUuid128_TX, 16);
-		//Osal_MemCpy(&tx_uuid.UUID_128, charUuid128_TX, 16);
-		//Osal_MemCpy(&UUID_Tx.UUID_16, charUuid128_TX, 16);
 		db_cs_printString("GET UUID\r");
-		txHandle = 0;
 
 		aci_gatt_disc_char_by_uuid(connection_handle, 0x0001, 0xFFFF, UUID_TYPE_128, &tx_uuid);
 
-		while(receivedChar == 0){
+		while(txHandle == 0){
 			BTLE_StackTick();
 		}
-
-		for(uint16_t i = 0; i < 1000; i++){ //WAIT
-			BTLE_StackTick();
-		}
+		txHandle = 0;
 
 		//Send data
 		for(uint8_t i = 0; i < 24; i++){
@@ -386,8 +394,8 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 //			return ret;
 //		}
 
-		tBleStatus ret = aci_gatt_write_without_resp(connection_handle, txHandle+1, 20, d); //ONLY FIRST TIME..
-		//tBleStatus ret = aci_gatt_write_char_value(connection_handle, txHandle, 1, d);
+		//tBleStatus ret = aci_gatt_write_without_resp(connection_handle, txHandle+1, 20, d); //ONLY FIRST TIME..
+		tBleStatus ret = aci_gatt_write_char_value(connection_handle, txHandle+1, 20, d);
 		if (ret != BLE_STATUS_SUCCESS)
 		{
 			db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error while writing characteristic !");
@@ -498,6 +506,16 @@ void aci_gatt_read_permit_req_event(uint16_t Connection_Handle,
 	//TODO Implement Polling Option
 	//Reminder: SensorDemo Read CB -> Update data right before sending
 	db_cs_printString("READ CB\r");
+
+	char buff[4];
+	tBleStatus ret;
+
+	buff[0] = 0xAA;
+	ret = aci_gatt_update_char_value(cmdServHandle, pollCharHandle, 0, 1, (uint8_t *) buff);
+	if (ret != BLE_STATUS_SUCCESS){
+		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error while updating Error characteristic");
+	}
+
 	aci_gatt_allow_read(Connection_Handle);
 }
 
@@ -522,10 +540,10 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 		uint8_t Attr_Data[])
 {
 	db_cs_printString("Receive Packet !\r");
-	//TODO UUID ??
-	//if(Attr_Handle == cmdCharHandle){
-		sam_bl_notifyEvent(Attr_Data_Length, Attr_Data);
-	//}
+
+	if(Attr_Handle == cmdCharHandle){
+		rp_sm_triggerSource(SAM_ID_BLUETOOTH, Attr_Data_Length, Attr_Data);
+	}
 
 }
 
@@ -539,10 +557,6 @@ void aci_gatt_proc_complete_event(uint16_t Connection_Handle, uint8_t Error_Code
 	db_cs_printString("Transmition done\r");
 	transmitionDone = 1;
 }
-
-//void Attribute_Modified_CB(uint16_t handle, uint16_t data_length, uint8_t *attData){
-//	db_cs_printString("ATT Modify\r");
-//}
 
 void aci_gatt_disc_read_char_by_uuid_resp_event(uint16_t Connection_Handle,
                                                 uint16_t Attribute_Handle,
@@ -559,7 +573,6 @@ void aci_gatt_disc_read_char_by_uuid_resp_event(uint16_t Connection_Handle,
 	db_cs_printString("\r");
 
  	txHandle = Attribute_Handle;
- 	receivedChar = 1;
 
 } /* end aci_gatt_disc_read_char_by_uuid_resp_event() */
 

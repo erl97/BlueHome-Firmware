@@ -1,4 +1,4 @@
-SAM_Bluetooth.c:31:6:sam_bl_init	0	static
-SAM_Bluetooth.c:43:8:sam_bl_generateSource	56	static
-SAM_Bluetooth.c:36:6:sam_bl_notifyEvent	64	static
-SAM_Bluetooth.c:60:6:sam_bl_triggerAction	16	static
+SAM_Bluetooth.c:56:6:sam_bl_triggerAction	16	static
+SAM_Bluetooth.c:36:6:sam_bl_init	8	static
+SAM_Bluetooth.c:67:8:sam_bl_generateSource	40	static
+SAM_Bluetooth.c:49:6:sam_bl_triggerSource	48	static

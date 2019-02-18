@@ -27,20 +27,23 @@
 
 volatile uint8_t write_idx_source;
 volatile uint8_t read_idx_source;
-Source sourceBuffer[SIZEOFSOURCEBUFFER];
+Source sourceBuffer[SIZEOF_SOURCEBUFFER];
 
 
-//zu Programmstart leerer rules-Array
-Rule myRules[SIZEOFMYRULES];
+//programmed rules
+Rule progRules[SIZEOFMYRULES];
 
 
 //funktionen
 //source.handler
 void rp_rc_init();
 
-void source_handler(Source source);
 
 void rp_rc_addSource(Source source);
+
+void rp_rc_tick();
+
+void source_handler(Source source);
 
 
 #endif /* SOURCE_H_ */

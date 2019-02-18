@@ -35,6 +35,8 @@ void hw_init_init();
 uint8_t hw_init_registerPinIdentfier(uint8_t pinID, uint32_t* addr);
 uint8_t hw_init_registerBusAddrIdentfier(uint8_t samID, uint8_t* addr);
 
+uint32_t hw_init_getIntPinFromSAM(uint8_t samID);
+
 void hw_init_gpio();
 
 #endif /* BLUEHOME_HWMANAGER_H_ */

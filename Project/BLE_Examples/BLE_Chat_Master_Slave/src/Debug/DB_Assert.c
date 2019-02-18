@@ -19,6 +19,7 @@ void db_as_init()
 	// SET ERROR MSGs //
 	errorMsg[DB_AS_ERROR_BOVERFLOW] = "OVERFLOW ERROR";
 	errorMsg[DB_AS_ERROR_BLUETOOTH] = "BLUETOOTH ERROR";
+	errorMsg[DB_AS_ERROR_VALUEFCT] = "VALUEFCT ERROR";
 }
 
 

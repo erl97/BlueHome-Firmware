@@ -46,7 +46,10 @@
 #define MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_1 (12)
 
 /* Maximum number of attribute records that can be added to the second application service: cmd service */
-#define MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_2 (20)
+#define MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_2 (10)
+
+/* Maximum number of attribute records that can be added to the second application service: direct service */
+#define MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_3 (20)
 
 /* Number of GATT attributes needed for the sensor demo. */
 #define NUM_GATT_ATTRIBUTES     (DEFAULT_NUM_GATT_ATTRIBUTES + NUM_APP_GATT_ATTRIBUTES)

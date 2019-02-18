@@ -39,6 +39,7 @@ void hw_init_init()
 	hw_bl_init();
 }
 
+
 //TODO: Error Check
 uint8_t hw_init_registerPinIdentfier(uint8_t pinID, uint32_t *value)
 {
@@ -50,6 +51,11 @@ uint8_t hw_init_registerBusAddrIdentfier(uint8_t samID, uint8_t* addr)
 {
 	setBusAddrVar[samID] = addr;
 	return 0;
+}
+
+uint32_t hw_init_getIntPinFromSAM(uint8_t samID){
+	if(setPinVar[samID] == PIN_ERR_FLAG) return 0xffff;
+	else return setPinVar[samID];
 }
 
 //TODO INIT GPIO PINS

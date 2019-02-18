@@ -1,4 +1,5 @@
 HW_Init.c:20:6:hw_init_init	8	static
-HW_Init.c:43:9:hw_init_registerPinIdentfier	0	static
-HW_Init.c:49:9:hw_init_registerBusAddrIdentfier	0	static
-HW_Init.c:56:6:hw_init_gpio	24	static
+HW_Init.c:44:9:hw_init_registerPinIdentfier	0	static
+HW_Init.c:50:9:hw_init_registerBusAddrIdentfier	0	static
+HW_Init.c:56:10:hw_init_getIntPinFromSAM	0	static
+HW_Init.c:62:6:hw_init_gpio	24	static

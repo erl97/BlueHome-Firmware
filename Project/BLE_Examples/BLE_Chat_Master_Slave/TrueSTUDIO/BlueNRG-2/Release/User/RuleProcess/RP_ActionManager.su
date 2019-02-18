@@ -1,3 +1,8 @@
-RP_ActionManager.c:21:6:rp_am_loadActions	24	static
-RP_ActionManager.c:16:6:rp_am_init	8	static
-RP_ActionManager.c:49:9:rp_am_registerSAMIdentfier	0	static
+RP_ActionManager.c:35:6:rp_am_loadActions	24	static
+RP_ActionManager.c:22:6:rp_am_init	8	static
+RP_ActionManager.c:59:9:rp_am_registerSAMValueIdentfier	0	static
+RP_ActionManager.c:65:9:rp_am_registerSAMActionIdentfier	0	static
+RP_ActionManager.c:70:6:rp_am_addAction	16	static
+RP_ActionManager.c:97:6:rp_am_addActionID	40	static
+RP_ActionManager.c:102:6:rp_am_tick	16	static
+RP_ActionManager.c:118:6:rp_am_triggerAction	8	static

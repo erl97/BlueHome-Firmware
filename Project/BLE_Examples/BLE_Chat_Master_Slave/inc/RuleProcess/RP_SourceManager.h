@@ -8,6 +8,16 @@
 #ifndef BLUEHOME_RULEPROCESS_RP_INTERRUPTMANAGER_H_
 #define BLUEHOME_RULEPROCESS_RP_INTERRUPTMANAGER_H_
 
+#include <stdint.h>
+
+typedef void (*SamSource_Fct)(uint8_t paramLen, uint8_t *param);
+
+SamSource_Fct sourceFct[255];
+
 void rp_im_init();
+
+uint8_t rp_sm_registerSAMSourceIdentfier(uint8_t samId, SamSource_Fct fct);
+
+void rp_sm_triggerSource(uint8_t samId, uint8_t paramLen, uint8_t *param);
 
 #endif /* BLUEHOME_RULEPROCESS_RP_INTERRUPTMANAGER_H_ */

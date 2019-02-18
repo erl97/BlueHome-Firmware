@@ -54,6 +54,9 @@ do {\
                 uuid_struct[12] = uuid_12; uuid_struct[13] = uuid_13; uuid_struct[14] = uuid_14; uuid_struct[15] = uuid_15; \
 }while(0)
 
+#define COPY_SERVICE_CMD_UUID(uuid_struct) 		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x1a)
+#define COPY_CHAR_CMD_UUID(uuid_struct)  		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x1b)
+#define COPY_CHAR_POLL_UUID(uuid_struct)  		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x1c)
 
 #define COPY_SERVICE_INFO_UUID(uuid_struct)  	COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x2a)
 #define COPY_CHAR_ERROR_UUID(uuid_struct)  		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x2b)
@@ -61,17 +64,14 @@ do {\
 #define COPY_CHAR_HARDWARE_UUID(uuid_struct)  	COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x2d)
 #define COPY_CHAR_HWID_UUID(uuid_struct)  		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x2e)
 
-#define COPY_SERVICE_CMD_UUID(uuid_struct) 		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x1a)
-#define COPY_CHAR_CMD_UUID(uuid_struct)  		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x1b)
-#define COPY_CHAR_POLL_UUID(uuid_struct)  		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x1c)
-
-#define COPY_ENV_SENS_SERVICE_UUID(uuid_struct)  COPY_UUID_128(uuid_struct,0x42,0x82,0x1a,0x40, 0xe4,0x77, 0x11,0xe2, 0x82,0xd0, 0x00,0x02,0xa5,0xd5,0xc5,0x1b)
-#define COPY_TEMP_CHAR_UUID(uuid_struct)         COPY_UUID_128(uuid_struct,0xa3,0x2e,0x55,0x20, 0xe4,0x77, 0x11,0xe2, 0xa9,0xe3, 0x00,0x02,0xa5,0xd5,0xc5,0x1b)
-#define COPY_PRESS_CHAR_UUID(uuid_struct)        COPY_UUID_128(uuid_struct,0xcd,0x20,0xc4,0x80, 0xe4,0x8b, 0x11,0xe2, 0x84,0x0b, 0x00,0x02,0xa5,0xd5,0xc5,0x1b)
+#define COPY_SERVICE_DIRECT_UUID(uuid_struct) 	COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x3a)
+#define COPY_CHAR_PARAM_UUID(uuid_struct)  		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x3b)
+#define COPY_CHAR_PARAMCOMP_UUID(uuid_struct)  	COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x3c)
+#define COPY_CHAR_OPTIONS_UUID(uuid_struct)  	COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x3d)
 
 uint16_t infoServHandle, errorCharHandle, fwVerCharHandle, hwVerCharHandle, hwIdCharHandle;
 uint16_t cmdServHandle, cmdCharHandle, pollCharHandle;
-uint16_t envSensServHandle, tempCharHandle, pressCharHandle, humidityCharHandle;
+uint16_t directServHandle, paramCharHandle, paramCompCharHandle, optionsCharHandle;
 
 /* UUIDS */
 Service_UUID_t service_uuid;
@@ -147,7 +147,6 @@ tBleStatus bl_gatt_addCMDService(void)
 			Services_Max_Attribute_Records[CMD_SERVICE_INDEX],
 			&cmdServHandle);
 	if (ret != BLE_STATUS_SUCCESS){
-		db_as_assert(DB_AS_ERROR_BLUETOOTH, "1");
 		goto fail;
 	}
 	// Add Characteristics
@@ -158,17 +157,6 @@ tBleStatus bl_gatt_addCMDService(void)
 	ret =  aci_gatt_add_char(cmdServHandle, UUID_TYPE_128, &char_uuid, 20, CHAR_PROP_NOTIFY | CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_NOTIFY_ATTRIBUTE_WRITE,
 						   16, 0, &cmdCharHandle);
 	if (ret != BLE_STATUS_SUCCESS){
-		db_as_assert(DB_AS_ERROR_BLUETOOTH, "2");
-		goto fail;
-	}
-
-	//Poll Char
-	COPY_CHAR_POLL_UUID(uuid);
-	Osal_MemCpy(&char_uuid.Char_UUID_128, uuid, 16);
-	ret =  aci_gatt_add_char(cmdServHandle, UUID_TYPE_128, &char_uuid, 20, CHAR_PROP_NOTIFY | CHAR_PROP_READ, ATTR_PERMISSION_NONE, GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
-						   16, 0, &pollCharHandle);
-	if (ret != BLE_STATUS_SUCCESS){
-		db_as_assert(DB_AS_ERROR_BLUETOOTH, "3");
 		goto fail;
 	}
 
@@ -177,6 +165,58 @@ tBleStatus bl_gatt_addCMDService(void)
 	fail:
 		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error at CMD Service");
 		return BLE_STATUS_ERROR;
+}
+
+tBleStatus bl_gatt_addDirectService(void)
+{
+	tBleStatus ret;
+	uint8_t uuid[16];
+
+	COPY_SERVICE_DIRECT_UUID(uuid);
+
+	//Add Direct Service
+	Osal_MemCpy(&service_uuid.Service_UUID_128, uuid, 16);
+	ret = aci_gatt_add_service(UUID_TYPE_128, &service_uuid, PRIMARY_SERVICE,
+			Services_Max_Attribute_Records[DIRECT_SERVICE_INDEX],
+			&directServHandle);
+	if (ret != BLE_STATUS_SUCCESS){
+		goto fail;
+	}
+	// Add Characteristics
+
+	//PARAM Char
+	COPY_CHAR_PARAM_UUID(uuid);
+	Osal_MemCpy(&char_uuid.Char_UUID_128, uuid, 16);
+	ret =  aci_gatt_add_char(directServHandle, UUID_TYPE_128, &char_uuid, 20, CHAR_PROP_NOTIFY | CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_DONT_NOTIFY_EVENTS,
+						   16, 0, &paramCharHandle);
+	if (ret != BLE_STATUS_SUCCESS){
+		goto fail;
+	}
+
+	//PARAMCOMP Char
+	COPY_CHAR_PARAM_UUID(uuid);
+	Osal_MemCpy(&char_uuid.Char_UUID_128, uuid, 16);
+	ret =  aci_gatt_add_char(directServHandle, UUID_TYPE_128, &char_uuid, 20, CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_DONT_NOTIFY_EVENTS,
+						   16, 0, &paramCompCharHandle);
+	if (ret != BLE_STATUS_SUCCESS){
+		goto fail;
+	}
+
+	//OPTIONS Char
+	COPY_CHAR_PARAM_UUID(uuid);
+	Osal_MemCpy(&char_uuid.Char_UUID_128, uuid, 16);
+	ret =  aci_gatt_add_char(directServHandle, UUID_TYPE_128, &char_uuid, 20,  CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_NOTIFY_ATTRIBUTE_WRITE,
+						   16, 0, &optionsCharHandle);
+	if (ret != BLE_STATUS_SUCCESS){
+		goto fail;
+	}
+
+	return BLE_STATUS_SUCCESS;
+
+	fail:
+		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error at Direct Service");
+		return BLE_STATUS_ERROR;
+
 }
 
 tBleStatus bl_gatt_initHWInfo()

@@ -13,7 +13,7 @@
 /**
  * @brief Number of application services
  */
-#define NUMBER_OF_APPLICATION_SERVICES (2)
+#define NUMBER_OF_APPLICATION_SERVICES (3)
 
 extern uint8_t HW_ID;
 extern uint8_t HW_VERSION;
@@ -21,11 +21,13 @@ extern uint8_t HW_BUS_DEV_NUM;
 
 enum {
   INFO_SERVICE_INDEX = 0,
-  CMD_SERVICE_INDEX = 1
+  CMD_SERVICE_INDEX = 1,
+  DIRECT_SERVICE_INDEX = 2
 };
 
 tBleStatus bl_gatt_addHWInfoService(void);
 tBleStatus bl_gatt_addCMDService(void);
+tBleStatus bl_gatt_addDirectService(void);
 
 tBleStatus bl_gatt_initHWInfo(void);
 

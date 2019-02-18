@@ -1,0 +1,7 @@
+RP_SourceManager.c:34:6:rp_im_init	0	static
+RP_SourceManager.c:39:9:rp_sm_registerSAMSourceIdentfier	0	static
+RP_SourceManager.c:44:6:rp_sm_triggerSource	16	static
+RP_SourceManager.c:53:6:Blue_Handler	8	static
+RP_SourceManager.c:58:6:SysTick_Handler	8	static
+RP_SourceManager.c:66:6:UART_Handler	8	static
+RP_SourceManager.c:74:6:GPIO_Handler	16	static

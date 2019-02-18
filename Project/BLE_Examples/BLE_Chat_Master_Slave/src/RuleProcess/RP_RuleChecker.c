@@ -4,13 +4,19 @@
  *  Created on: 08.01.2019
  *      Author: dinkelsv64505
  */
-#include "BlueNRG1_flash.h"
 
 #include "RuleProcess/RP_RuleChecker.h"
+#include "RuleProcess/RP_Types.h"
+
 #include "HardwareUtil/HW_Memory.h"
 
 #include "Debug/DB_Assert.h"
 #include "Debug/DB_Console.h"
+
+#include "SourceActionManager/SAM_Init.h"
+
+#include "BlueNRG1_flash.h"
+
 
 void rp_rc_loadRules();
 
@@ -21,10 +27,14 @@ void rp_rc_init()
 	write_idx_source = 0;
 	read_idx_source = 0;
 
-	for (int i = 0; i < SIZEOFSOURCEBUFFER; i++)
+	for (int i = 0; i < SIZEOF_SOURCEBUFFER; i++)
 	{
-		sourceBuffer[i].sourceType = SOURCETYPE_NOSOURCE;
+		sourceBuffer[i].sourceSAM = SAM_ID_UNKNWON;
 	}
+}
+
+void rp_rc_tick(){
+
 }
 
 void rp_rc_loadRules()
@@ -32,30 +42,26 @@ void rp_rc_loadRules()
 	int i;
 	i = 0;
 
-	//'hardcoding' some rules
-	//myRules[i] = {;;;};
-	//i++;
-
 	//ein Schleifendurchlauf entspricht einer Rule
 	for (int j = 0; i < SIZEOFMYRULES; i++, j++)
 	{
-		myRules[i].actionID = FLASH_ReadByte(
+		progRules[i].actionMemID = FLASH_ReadByte(
 		_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + 0);
-		myRules[i].sourceType = FLASH_ReadByte(
+		progRules[i].sourceSAM = FLASH_ReadByte(
 		_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + 1);
-		myRules[i].sourceID = FLASH_ReadByte(
+		progRules[i].sourceID = FLASH_ReadByte(
 		_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + 2);
-		myRules[i].paramNum = FLASH_ReadByte(
+		progRules[i].paramNum = FLASH_ReadByte(
 		_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + 3);
 
-		for (int k = 4, l = 0; l < 24; k++, l++)
+		for (int k = 4, l = 0; l < 20; k++, l++)
 		{
-			myRules[i].param[l] = FLASH_ReadByte(
+			progRules[i].param[l] = FLASH_ReadByte(
 			_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + k);
 		}
-		for (int k = 28, l = 0; l < 24; k++, l++)
+		for (int k = 28, l = 0; l < 20; k++, l++)
 		{
-			myRules[i].paramComp[l] = FLASH_ReadByte(
+			progRules[i].paramComp[l] = FLASH_ReadByte(
 			_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + k);
 		}
 	}
@@ -64,15 +70,15 @@ void rp_rc_loadRules()
 void rp_rc_addSource(Source source)
 {
 	// Overflow Detection
-	if (sourceBuffer[write_idx_source].sourceType != SOURCETYPE_NOSOURCE)
+	if (sourceBuffer[write_idx_source].sourceSAM != SAM_ID_UNKNWON)
 	{
 		db_as_assert(DB_AS_ERROR_BOVERFLOW, "Source Buffer full !");
 	}
 	else
 	{
 		db_cs_printString("Adding Source:\r");
-		db_cs_printString("SourceType: ");
-		db_cs_printInt(source.sourceType);
+		db_cs_printString("SAM: ");
+		db_cs_printInt(source.sourceSAM);
 		db_cs_printString(" SourceID: ");
 		db_cs_printInt(source.sourceID);
 		db_cs_printString("\rParams: ");
@@ -85,7 +91,7 @@ void rp_rc_addSource(Source source)
 
 		sourceBuffer[write_idx_source] = source;
 		write_idx_source++;
-		if (write_idx_source >= SIZEOFSOURCEBUFFER)
+		if (write_idx_source >= SIZEOF_SOURCEBUFFER)
 			write_idx_source = 0;
 	}
 }
