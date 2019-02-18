@@ -63,7 +63,7 @@ void sam_bl_triggerAction(Action action){
 
 	//uint8_t addr[6];
 	//hw_mac_getMac(action.targetID, addr);
-	uint8_t bdaddr[6] = {0x12, 0x34, 0x00, 0xE1, 0x80, 0x11}; // Test Connect Addr
+	uint8_t bdaddr[6] = {0x12, 0x34, 0x00, 0xE1, 0x80, 0x10}; // Test Connect Addr
 	hw_bl_sendPacket(bdaddr, action.paramNum, action.param, cmdCharHandle);
 
 }

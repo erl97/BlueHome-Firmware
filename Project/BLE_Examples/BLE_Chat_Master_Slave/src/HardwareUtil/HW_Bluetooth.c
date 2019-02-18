@@ -36,6 +36,7 @@
 
 #include "HardwareUtil/HW_UART.h"
 
+#include "gp_timer.h"
 
 #define UPDATE_CONN_PARAM 0
 #define  ADV_INTERVAL_MIN_MS  1000
@@ -55,21 +56,25 @@ typedef struct discoveryContext_s {
 } discoveryContext_t;
 
 volatile uint8_t hw_bl_setConnectable = 1;
-uint16_t connection_handle = 0;
+volatile uint16_t connection_handle = 0;
 uint8_t connInfo[20];
 extern uint16_t cmdCharHandle;
 
 volatile int connected = FALSE;
-volatile int transmitionDone = FALSE;
+volatile uint8_t transmitionDone = 0;
 volatile uint16_t txHandle = 0;
+volatile uint8_t receivedChar = 0;
+
 UUID_t tx_uuid;
 
 uint8_t Services_Max_Attribute_Records[NUMBER_OF_APPLICATION_SERVICES] = { MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_1,	MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_2 };
 
 uint8_t device_name[] =
-	{ 'B', 'l', 'u', 'e', '0', '1', '0' };
+	{ 'B', 'l', 'u', 'e', '0', '1', '1' };
 uint8_t device_bdaddr[] =
-	{0x12, 0x34, 0x00, 0xE1, 0x80, 0x10};
+	{0x12, 0x34, 0x00, 0xE1, 0x80, 0x11};
+
+uint8_t d[24];
 
 uint8_t sam_bl_initLink();
 
@@ -343,24 +348,57 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 		const uint8_t charUuid128_TX[16] = {0x1b,0xc5,0xd5,0xa5, 0x02,0x00, 0xb4,0x9a, 0xe1,0x11, 0x3a,0xcf,0x80,0x6e,0x36,0x02};
 
 		Osal_MemCpy(&tx_uuid.UUID_128, charUuid128_TX, 16);
+		//Osal_MemCpy(&tx_uuid.UUID_128, charUuid128_TX, 16);
+		//Osal_MemCpy(&UUID_Tx.UUID_16, charUuid128_TX, 16);
 		db_cs_printString("GET UUID\r");
+		txHandle = 0;
+
 		aci_gatt_disc_char_by_uuid(connection_handle, 0x0001, 0xFFFF, UUID_TYPE_128, &tx_uuid);
 
-		while(txHandle == 0){
+		while(receivedChar == 0){
+			BTLE_StackTick();
+		}
+
+		for(uint16_t i = 0; i < 1000; i++){ //WAIT
 			BTLE_StackTick();
 		}
 
 		//Send data
-		tBleStatus ret = aci_gatt_write_char_value(connection_handle, txHandle, data_length, data);
+		for(uint8_t i = 0; i < 24; i++){
+			d[i] = i;
+		}
+
+		//tBleStatus ret = aci_gatt_write_char_value(connection_handle, txHandle, 1, d);
+//		struct timer t;
+//		Timer_Set(&t, CLOCK_SECOND*10);
+//
+//		while(aci_gatt_write_without_resp(connection_handle, txHandle+1, 0, 6, d) == BLE_STATUS_NOT_ALLOWED) {
+//			db_cs_printString("Not allowed\r");
+//			// Radio is busy.
+//			if(Timer_Expired(&t)) break;
+//		}
+
+//		if (ret != BLE_STATUS_SUCCESS)
+//		{
+//			db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error while writing characteristic !");
+//			db_cs_printInt(ret);
+//			db_cs_printString("\r");
+//			return ret;
+//		}
+
+		tBleStatus ret = aci_gatt_write_without_resp(connection_handle, txHandle+1, 20, d); //ONLY FIRST TIME..
+		//tBleStatus ret = aci_gatt_write_char_value(connection_handle, txHandle, 1, d);
 		if (ret != BLE_STATUS_SUCCESS)
 		{
 			db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error while writing characteristic !");
-			return ret;
+			db_cs_printInt(ret);
+			db_cs_printString("\r");
 		}
-		while(!transmitionDone){
+
+		while(transmitionDone == 0){
 			BTLE_StackTick();
 		};
-		transmitionDone = FALSE;
+		transmitionDone = 0;
 
 		//Disconnect
 		hw_bl_terminateConnection();
@@ -383,6 +421,18 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 
 
 /* ***************** BlueNRG-1 Stack Callbacks ********************************/
+
+void aci_att_prepare_write_resp_event(uint16_t Connection_Handle,
+                                      uint16_t Attribute_Handle,
+                                      uint16_t Offset,
+                                      uint8_t Part_Attribute_Value_Length,
+                                      uint8_t Part_Attribute_Value[]){
+	db_cs_printString("Prepare write\r");
+}
+
+void aci_att_exec_write_resp_event(uint16_t Connection_Handle){
+	db_cs_printString("Exec write\r");
+}
 
 /*******************************************************************************
  * Function Name  : hci_le_connection_complete_event.
@@ -412,15 +462,6 @@ void hci_le_connection_complete_event(uint8_t Status,
 	for(int i = 0; i < 6; i++){
 		hw_bl_connectedDeviceAddr[i] = Peer_Address[i];
 	}
-
-
-#if UPDATE_CONN_PARAM
-	l2cap_request_sent = FALSE;
-	HAL_VTimerStart_ms(UPDATE_TIMER, CLOCK_SECOND*2);
-	{
-		l2cap_req_timer_expired = FALSE;
-	}
-#endif
 
 }/* end hci_le_connection_complete_event() */
 
@@ -457,6 +498,16 @@ void aci_gatt_read_permit_req_event(uint16_t Connection_Handle,
 	//TODO Implement Polling Option
 	//Reminder: SensorDemo Read CB -> Update data right before sending
 	db_cs_printString("READ CB\r");
+	aci_gatt_allow_read(Connection_Handle);
+}
+
+void aci_gatt_write_permit_req_event(uint16_t Connection_Handle,
+                                     uint16_t Attribute_Handle,
+                                     uint8_t Data_Length,
+                                     uint8_t Data[]){
+	db_cs_printString("WRITE CB\r");
+	aci_gatt_write_resp(Connection_Handle, Attribute_Handle, 0x00, 0x00, Data_Length, Data);
+
 }
 
 /*******************************************************************************
@@ -485,7 +536,8 @@ void aci_gatt_proc_complete_event(uint16_t Connection_Handle, uint8_t Error_Code
 		db_cs_printInt(Error_Code);
 		db_cs_printString("\r");
 	}
-	 transmitionDone = TRUE;
+	db_cs_printString("Transmition done\r");
+	transmitionDone = 1;
 }
 
 //void Attribute_Modified_CB(uint16_t handle, uint16_t data_length, uint8_t *attData){
@@ -498,7 +550,16 @@ void aci_gatt_disc_read_char_by_uuid_resp_event(uint16_t Connection_Handle,
                                                 uint8_t Attribute_Value[])
 {
 	db_cs_printString("aci_gatt_disc_read_char_by_uuid_resp_event, Connection Handle\r");
+	db_cs_printString("Attributes: ");
+	db_cs_printInt(Attribute_Value_Length);
+	for(int i = 0; i < Attribute_Value_Length; i++){
+		db_cs_printString(" ");
+		db_cs_printInt(Attribute_Value[i]);
+	}
+	db_cs_printString("\r");
+
  	txHandle = Attribute_Handle;
+ 	receivedChar = 1;
 
 } /* end aci_gatt_disc_read_char_by_uuid_resp_event() */
 
