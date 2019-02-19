@@ -14,11 +14,12 @@
  *******************************************************************************/
 /* Includes ------------------------------------------------------------------*/
 #include "HardwareUtil/HW_Bluetooth.h"
+#include "HardwareUtil/HW_MAC.h"
+#include "HardwareUtil/HW_UART.h"
 
 #include <stdio.h>
 #include <string.h>
 
-#include "BlueNRG1_conf.h"
 #include "ble_const.h"
 #include "bluenrg1_stack.h"
 #include "gp_timer.h"
@@ -28,17 +29,17 @@
 #include "Bluetooth/BL_config.h"
 
 #include "SourceActionManager/SAM_Init.h"
+#include "SourceActionManager/SAM_Programming.h"
 
 #include "RuleProcess/RP_SourceManager.h"
+#include "RuleProcess/RP_ActionManager.h"
 
 #include "Debug/DB_Console.h"
 #include "Debug/DB_Assert.h"
 
-#include "HardwareUtil/HW_UART.h"
-
 #include "gp_timer.h"
 
-#define UPDATE_CONN_PARAM 0
+#define  UPDATE_CONN_PARAM 0
 #define  ADV_INTERVAL_MIN_MS  1000
 #define  ADV_INTERVAL_MAX_MS  1200
 
@@ -60,32 +61,41 @@ volatile uint16_t connection_handle = 0;
 
 //Handels
 extern uint16_t infoServHandle, errorCharHandle, fwVerCharHandle, hwVerCharHandle, hwIdCharHandle;
-extern uint16_t cmdServHandle, cmdCharHandle, pollCharHandle;
+extern uint16_t cmdServHandle, cmdCharHandle;
 extern uint16_t directServHandle, paramCharHandle, paramCompCharHandle, optionsCharHandle;
+
+uint16_t service_handle, dev_name_char_handle, appearance_char_handle;
+
 
 volatile int connected = FALSE;
 volatile uint8_t transmitionDone = 0;
 volatile uint16_t txHandle = 0;
 volatile uint8_t receivedChar = 0;
 
-UUID_t tx_uuid;
-
 uint8_t Services_Max_Attribute_Records[NUMBER_OF_APPLICATION_SERVICES] = { MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_1,	MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_2, MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_3};
 
-uint8_t device_name[] =
-	{ 'B', 'l', 'u', 'e', '0', '1', '1' };
-uint8_t device_bdaddr[] =
-	{0x12, 0x34, 0x00, 0xE1, 0x80, 0x11};
+uint8_t initMacCandidate[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-uint8_t d[24];
+extern uint8_t defaultAddr[6];
+extern uint8_t DEVICE_BDADDR[6];
+extern uint8_t DEVICE_NAME[16];
+
+uint8_t directParam[MAX_PARAM];
+uint8_t directCompParam[MAX_PARAM];
+uint32_t directMask;
+uint8_t directActionMemID;
+uint8_t directRuleMemID;
+uint8_t directActionSAMID;
+uint8_t directActionID;
+uint8_t directSourceSAMID;
+uint8_t directSourceID;
 
 uint8_t sam_bl_initLink();
-
 
 void hw_bl_init()
 {
 	db_cs_printString("Init Bluetooth Stack...\r");
-	db_cs_printMAC(device_bdaddr);
+	db_cs_printMAC(DEVICE_BDADDR);
 
 	tBleStatus ret = BlueNRG_Stack_Initialization(&BlueNRG_Stack_Init_params);
 	if (ret != BLE_STATUS_SUCCESS)
@@ -95,7 +105,7 @@ void hw_bl_init()
 		BLUETOOTH_ERR_FLAG = 1;
 	}
 
-	ret = sam_bl_initLink(); //Sensor_DeviceInit();
+	ret = sam_bl_initLink();
 	if (ret != BLE_STATUS_SUCCESS)
 	{
 		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Bluetooth Init failed");
@@ -108,44 +118,19 @@ void hw_bl_init()
 
 }
 
-//void Setup_DeviceAddress(void)
-//{
-//  tBleStatus ret;
-//  uint8_t bdaddr[] = {0x00, 0x00, 0x00, 0xE1, 0x80, 0x02};
-//  uint8_t random_number[8];
-//
-//  /* get a random number from BlueNRG */
-//  ret = hci_le_rand(random_number);
-//
-//  /* Setup last 3 bytes of public address with random number */
-//  bdaddr[0] = (uint8_t) (random_number[0]);
-//  bdaddr[1] = (uint8_t) (random_number[3]);
-//  bdaddr[2] = (uint8_t) (random_number[6]);
-//
-//  ret = aci_hal_write_config_data(CONFIG_DATA_PUBADDR_OFFSET, CONFIG_DATA_PUBADDR_LEN, bdaddr);
-//  if (ret != BLE_STATUS_SUCCESS)
-//  	{
-//	  db_as_assert(DB_AS_ERROR_BLUETOOTH,
-//	  				"aci_hal_write_config_data() failed");
-//  	}
-//}
-
 uint8_t sam_bl_initLink()
 {
 
 	tBleStatus ret;
-	uint16_t service_handle, dev_name_char_handle, appearance_char_handle;
 
 	/* Set the device public address */
 	ret = aci_hal_write_config_data(CONFIG_DATA_PUBADDR_OFFSET,
-	CONFIG_DATA_PUBADDR_LEN, device_bdaddr);
+	CONFIG_DATA_PUBADDR_LEN, DEVICE_BDADDR);
 	if (ret != BLE_STATUS_SUCCESS)
 	{
 		db_as_assert(DB_AS_ERROR_BLUETOOTH,
 				"aci_hal_write_config_data() failed");
 	}
-
-	//Setup_DeviceAddress();
 
 	/* Set the TX power -2 dBm */
 	aci_hal_set_tx_power_level(1, 4);
@@ -159,7 +144,7 @@ uint8_t sam_bl_initLink()
 	}
 
 	/* GAP Init */
-	ret = aci_gap_init(GAP_CENTRAL_ROLE|GAP_PERIPHERAL_ROLE, 0, 0x07, &service_handle,
+	ret = aci_gap_init(GAP_CENTRAL_ROLE|GAP_PERIPHERAL_ROLE, 0, 0x10, &service_handle,
 			&dev_name_char_handle, &appearance_char_handle);
 	if (ret != BLE_STATUS_SUCCESS)
 	{
@@ -170,8 +155,8 @@ uint8_t sam_bl_initLink()
 
 	/* Update device name */
 	ret = aci_gatt_update_char_value_ext(0, service_handle,
-			dev_name_char_handle, 0, sizeof(device_name), 0,
-			sizeof(device_name), device_name);
+			dev_name_char_handle, 0, sizeof(DEVICE_NAME), 0,
+			sizeof(DEVICE_NAME), DEVICE_NAME);
 	if (ret != BLE_STATUS_SUCCESS)
 	{
 		db_as_assert(DB_AS_ERROR_BLUETOOTH,
@@ -231,6 +216,19 @@ uint8_t sam_bl_initLink()
 		return ret;
 	}
 
+	//Search Mac if unitialized
+	if(MAC_UNINITIALIZED){
+		hw_mac_generateDeviceAddress(initMacCandidate);
+		tBleStatus ret = aci_gap_start_general_discovery_proc(0x4000, 0x4000, PUBLIC_ADDR, 0x00);
+		if (ret != BLE_STATUS_SUCCESS)
+		{
+			db_as_assert(DB_AS_ERROR_BLUETOOTH, "aci_gap_start_general_discovery_proc() failed");
+		}
+		else
+		{
+			db_cs_printString("aci_gap_start_general_discovery_proc() --> SUCCESS\r");
+		}
+	}
 	/* Start the Sensor Timer */
 //	ret = HAL_VTimerStart_ms(SENSOR_TIMER, acceleration_update_rate);
 //	if (ret != BLE_STATUS_SUCCESS)
@@ -258,11 +256,11 @@ uint8_t sam_bl_initLink()
 void hw_bl_setDeviceConnectable(void)
 {
 	uint8_t ret;
-	uint8_t local_name[sizeof(device_name)/sizeof(uint8_t)+1];
+	uint8_t local_name[sizeof(DEVICE_NAME)/sizeof(uint8_t)+1];
 
 	local_name[0] = AD_TYPE_COMPLETE_LOCAL_NAME;
-	for(int i = 1; i <= sizeof(device_name)/sizeof(uint8_t); i++){
-		local_name[i] = device_name[i-1];
+	for(int i = 1; i <= sizeof(DEVICE_NAME)/sizeof(uint8_t); i++){
+		local_name[i] = DEVICE_NAME[i-1];
 	}
 
 	hci_le_set_scan_response_data(0, NULL);
@@ -300,16 +298,27 @@ tBleStatus hw_bl_makeConnection(uint8_t* addr){
 		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error while starting connection!");
 		return ret;
 	}else{
-		db_cs_printString("Trying to connect...");
+		db_cs_printString("Trying to connect...\r");
 	}
 
 	uint32_t timeout = 100000;
 	while(!connected && timeout != 0){
 		BTLE_StackTick();
+		timeout--;
 	};
 
-	if(timeout == 0) return BLE_STATUS_TIMEOUT;
-	else return BLE_STATUS_SUCCESS;
+	if(timeout == 0){
+//		ret = aci_gap_terminate_gap_proc(GAP_GENERAL_CONNECTION_ESTABLISHMENT_PROC);
+//		if (ret != BLE_STATUS_SUCCESS)
+//		{
+//			db_as_assert(DB_AS_ERROR_BLUETOOTH, "Failed to stop connection attempt!");
+//			return ret;
+//		}else{
+//			db_cs_printString("Could not connect !");
+//		}
+
+		return BLE_STATUS_TIMEOUT;
+	}else return BLE_STATUS_SUCCESS;
 }
 
 tBleStatus hw_bl_terminateConnection(){
@@ -357,9 +366,10 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 	//Make connection
 	if(hw_bl_makeConnection(addr) == BLE_STATUS_SUCCESS){
 
+		UUID_t tx_uuid;
 		//Get Handle
-//		const uint8_t charUuid128_TX[16] = {0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x1b}; 	//ENDIANESS
-		const uint8_t charUuid128_TX[16] = {0x1b,0xc5,0xd5,0xa5, 0x02,0x00, 0xb4,0x9a, 0xe1,0x11, 0x3a,0xcf,0x80,0x6e,0x36,0x02};
+		const uint8_t charUuid128_TX[16] = {0x1b,0xc5,0xd5,0xa5, 0x02,0x00, 0xb4,0x9a, 0xe1,0x11, 0x3a,0xcf,0x80,0x6e,0x36,0x02}; //UUID from CMD Service
+		//COPY_CHAR_CMD_UUID(tx_uuid);
 
 		Osal_MemCpy(&tx_uuid.UUID_128, charUuid128_TX, 16);
 		db_cs_printString("GET UUID\r");
@@ -371,31 +381,8 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 		}
 		txHandle = 0;
 
-		//Send data
-		for(uint8_t i = 0; i < 24; i++){
-			d[i] = i;
-		}
-
-		//tBleStatus ret = aci_gatt_write_char_value(connection_handle, txHandle, 1, d);
-//		struct timer t;
-//		Timer_Set(&t, CLOCK_SECOND*10);
-//
-//		while(aci_gatt_write_without_resp(connection_handle, txHandle+1, 0, 6, d) == BLE_STATUS_NOT_ALLOWED) {
-//			db_cs_printString("Not allowed\r");
-//			// Radio is busy.
-//			if(Timer_Expired(&t)) break;
-//		}
-
-//		if (ret != BLE_STATUS_SUCCESS)
-//		{
-//			db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error while writing characteristic !");
-//			db_cs_printInt(ret);
-//			db_cs_printString("\r");
-//			return ret;
-//		}
-
-		//tBleStatus ret = aci_gatt_write_without_resp(connection_handle, txHandle+1, 20, d); //ONLY FIRST TIME..
-		tBleStatus ret = aci_gatt_write_char_value(connection_handle, txHandle+1, 20, d);
+		tBleStatus ret = aci_gatt_write_without_resp(connection_handle, txHandle+1, data_length, data);
+		//tBleStatus ret = aci_gatt_write_char_value(connection_handle, txHandle+1, MAX_PARAM, d);
 		if (ret != BLE_STATUS_SUCCESS)
 		{
 			db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error while writing characteristic !");
@@ -458,14 +445,8 @@ void hci_le_connection_complete_event(uint8_t Status,
 	connected = TRUE;
 	connection_handle = Connection_Handle;
 
-	db_cs_printString("Connect !");
-	hw_uart_sendChar((char) Peer_Address[0]);
-	hw_uart_sendChar((char) Peer_Address[1]);
-	hw_uart_sendChar((char) Peer_Address[2]);
-	hw_uart_sendChar((char) Peer_Address[3]);
-	hw_uart_sendChar((char) Peer_Address[4]);
-	hw_uart_sendChar((char) Peer_Address[5]);
-	hw_uart_sendChar('\r');
+	db_cs_printString("Connect ! From ");
+	db_cs_printMAC(Peer_Address);
 
 	for(int i = 0; i < 6; i++){
 		hw_bl_connectedDeviceAddr[i] = Peer_Address[i];
@@ -503,19 +484,8 @@ void hci_disconnection_complete_event(uint8_t Status,
 void aci_gatt_read_permit_req_event(uint16_t Connection_Handle,
 		uint16_t Attribute_Handle, uint16_t Offset)
 {
-	//TODO Implement Polling Option
-	//Reminder: SensorDemo Read CB -> Update data right before sending
+
 	db_cs_printString("READ CB\r");
-
-	char buff[4];
-	tBleStatus ret;
-
-	buff[0] = 0xAA;
-	ret = aci_gatt_update_char_value(cmdServHandle, pollCharHandle, 0, 1, (uint8_t *) buff);
-	if (ret != BLE_STATUS_SUCCESS){
-		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error while updating Error characteristic");
-	}
-
 	aci_gatt_allow_read(Connection_Handle);
 }
 
@@ -541,8 +511,67 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 {
 	db_cs_printString("Receive Packet !\r");
 
-	if(Attr_Handle == cmdCharHandle){
-		rp_sm_triggerSource(SAM_ID_BLUETOOTH, Attr_Data_Length, Attr_Data);
+	if(Attr_Handle == cmdCharHandle+1){
+
+		if(Attr_Data[0] > MAX_PARAM){
+			rp_sm_triggerSource(SAM_ID_BLUETOOTH, MAX_PARAM, Attr_Data);
+			db_as_assert(DB_AS_ERROR_BOVERFLOW, "Param Num to large !");
+		}else rp_sm_triggerSource(SAM_ID_BLUETOOTH, Attr_Data[0], Attr_Data);
+
+	}else if(Attr_Handle == optionsCharHandle+1){
+
+		//Build Action
+		Action action;
+
+		action.actionSAM = Attr_Data[0];
+		action.actionID = Attr_Data[1];
+
+		if(action.actionSAM != SAM_ID_PROGRAMMING){ //Execute Action
+			action.paramMask = (Attr_Data[5] << 24) | (Attr_Data[4] << 16) | (Attr_Data[3] << 8) | (Attr_Data[2] << 0);
+			action.paramNum = Attr_Data[6];
+		}else{ //Programm
+
+			action.paramMask = 0x00;
+
+			if(action.actionID == SAM_PROGRAMMING_ACT_ID_WRITE_RULE){
+				directActionMemID = Attr_Data[2];
+				directRuleMemID = Attr_Data[3];
+				directSourceSAMID = Attr_Data[4];
+				directSourceID = Attr_Data[5];
+				action.paramNum = Attr_Data[6];
+
+			}else if(action.actionID == SAM_PROGRAMMING_ACT_ID_WRITE_ACTION){
+				directMask = (Attr_Data[8] << 24) | (Attr_Data[7] << 16) | (Attr_Data[6] << 8) | (Attr_Data[5] << 0);
+				directActionMemID = Attr_Data[2];
+				directActionSAMID = Attr_Data[3];
+				directActionID = Attr_Data[4];
+				action.paramNum = Attr_Data[9];
+
+			}else if(action.actionID == SAM_PROGRAMMING_ACT_ID_WRITE_MAC){
+				action.paramNum = Attr_Data[2];
+			}
+		}
+
+		if(action.paramNum > MAX_PARAM){
+			action.paramNum = MAX_PARAM;
+			db_as_assert(DB_AS_ERROR_BOVERFLOW, "Param Num to large !");
+		}
+
+		for(int i = 0; i < action.paramNum; i++){
+			action.param[i] = directParam[i];
+		}
+
+		//Add to Action Buffer
+		rp_am_addAction(action);
+
+	}else if(Attr_Handle == paramCharHandle+1){
+		for(int i = 0; i < Attr_Data_Length; i++){
+			directParam[i] = Attr_Data[i];
+		}
+	}else if(Attr_Handle == paramCompCharHandle+1){
+		for(int i = 0; i < Attr_Data_Length; i++){
+			directCompParam[i] = Attr_Data[i];
+		}
 	}
 
 }
@@ -608,54 +637,72 @@ void aci_hal_end_of_radio_activity_event(uint8_t Last_State, uint8_t Next_State,
 
 //tBleStatus ret = aci_gap_start_general_discovery_proc(0x4000, 0x4000, PUBLIC_ADDR, 0x00);
 
-//void hci_le_advertising_report_event(uint8_t Num_Reports,
-//                                     Advertising_Report_t Advertising_Report[])
-//{
-//	db_cs_printString("Report\r");
-//	uint8_t evt_type = Advertising_Report[0].Event_Type ;
-//	uint8_t data_length = Advertising_Report[0].Length_Data;
-//	uint8_t bdaddr_type = Advertising_Report[0].Address_Type;
-//	uint8_t bdaddr[6];
-//
-//	Osal_MemCpy(bdaddr, Advertising_Report[0].Address,6);
-//	db_cs_printInt(bdaddr_type);
-//	db_cs_printString("\r");
-//	db_cs_printString("MAC (Dezimal): ");
-//	for(int i = 0; i < 6; i++){
-//		db_cs_printInt(bdaddr[i]);
-//		if(i != 5) db_cs_printString(" : ");
-//	}
-//
-//	/* BLE New Chat device not yet found: check current device found */
-//	//if (!(discovery.is_device_found)) {
-//	/* BLE New Chat device not yet found: check current device found */
-//		//if ((evt_type == ADV_IND) && Find_DeviceName(data_length, Advertising_Report[0].Data)) {
-//		  discovery.is_device_found = TRUE;
-//		  discovery.do_connect = TRUE;
-//		  discovery.check_disc_proc_timer = FALSE;
-//		  discovery.check_disc_mode_timer = FALSE;
-//		  /* store first device found:  address type and address value */
-//		  discovery.device_found_address_type = bdaddr_type;
-//		  Osal_MemCpy(discovery.device_found_address, bdaddr, 6);
-//		  /* device is found: terminate discovery procedure */
-//		  discovery.device_state = 0;
-//		//}
-//	//}
-//} /* hci_le_advertising_report_event() */
-//
-//void aci_gap_proc_complete_event(uint8_t Procedure_Code,
-//                                 uint8_t Status,
-//                                 uint8_t Data_Length,
-//                                 uint8_t Data[])
-//{
-//	db_cs_printString("Complete\r");
-//  if (Procedure_Code == GAP_GENERAL_DISCOVERY_PROC) {
-//	  db_cs_printString("Try connect\r");
-//    /* gap procedure complete has been raised as consequence of a GAP
-//       terminate procedure done after a device found event during the discovery procedure */
-//	  tBleStatus ret = aci_gap_create_connection(0x4000, 0x4000,
-//	                                        discovery.device_found_address_type, discovery.device_found_address,
-//	                                        PUBLIC_ADDR, 40, 40, 0, 60, 2000 , 2000);
-//  }
-//}
+void hci_le_advertising_report_event(uint8_t Num_Reports,
+                                     Advertising_Report_t Advertising_Report[])
+{
+
+	for(uint8_t i = 0; i < Num_Reports; i++){
+		uint8_t evt_type = Advertising_Report[i].Event_Type;
+		//uint8_t data_length = Advertising_Report[i].Length_Data;
+		//uint8_t bdaddr_type = Advertising_Report[i].Address_Type;
+		uint8_t bdaddr[6];
+
+		if (evt_type == ADV_IND){
+
+			Osal_MemCpy(bdaddr, Advertising_Report[0].Address,6);
+			db_cs_printString("Found ");
+			db_cs_printMAC(bdaddr);
+
+			if(hw_mac_compareMac(bdaddr, initMacCandidate)){
+				db_cs_printString("MAC Collision -> selecting new Mac\r");
+				hw_mac_generateDeviceAddress(initMacCandidate);
+			}
+
+		}
+	}
+} /* hci_le_advertising_report_event() */
+
+void aci_gap_proc_complete_event(uint8_t Procedure_Code,
+                                 uint8_t Status,
+                                 uint8_t Data_Length,
+                                 uint8_t Data[])
+{
+	if (Procedure_Code == GAP_GENERAL_DISCOVERY_PROC) {
+		db_cs_printString("Scan Complete\r");
+		uint8_t bdaddr[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+
+		if(!hw_mac_compareMac(bdaddr, initMacCandidate)){
+			db_cs_printString("Setting new MAC\r");
+			db_cs_printMAC(initMacCandidate);
+
+			for(int i = 0; i < 6; i++){
+				DEVICE_BDADDR[i] = initMacCandidate[i];
+			}
+			hw_mac_generateDeviceName();
+
+			/* Set the device public address */
+			tBleStatus ret = aci_hal_write_config_data(CONFIG_DATA_PUBADDR_OFFSET,
+			CONFIG_DATA_PUBADDR_LEN, DEVICE_BDADDR);
+			if (ret != BLE_STATUS_SUCCESS)
+			{
+				db_as_assert(DB_AS_ERROR_BLUETOOTH,
+						"aci_hal_write_config_data() failed");
+			}
+
+			/* Update device name */
+			ret = aci_gatt_update_char_value_ext(0, service_handle,
+					dev_name_char_handle, 0, sizeof(DEVICE_NAME), 0,
+					sizeof(DEVICE_NAME), DEVICE_NAME);
+			if (ret != BLE_STATUS_SUCCESS)
+			{
+				db_as_assert(DB_AS_ERROR_BLUETOOTH,
+						"aci_gatt_update_char_value_ext() failed");
+			}
+
+			//Save current MAC
+			hw_mac_writeCurrentMactoFlash();
+			MAC_UNINITIALIZED = 0;
+		}
+	}
+}
 

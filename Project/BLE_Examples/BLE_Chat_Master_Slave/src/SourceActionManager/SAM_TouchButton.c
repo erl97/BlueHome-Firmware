@@ -14,7 +14,7 @@ void sam_tb_init()
 {
 
 	SAM_PIN_TB_INT = 0xffff;
-	hw_init_registerPinIdentfier(SAM_PIN_ID_TBINT, &SAM_PIN_TB_INT);
+	hw_init_registerPinIdentfier(SAM_ID_TOUCHBUTTON, &SAM_PIN_TB_INT);
 
 }
 

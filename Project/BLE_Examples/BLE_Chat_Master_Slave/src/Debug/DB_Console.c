@@ -14,9 +14,11 @@
 #include "HardwareUtil/HW_UART.h"
 
 #include "RuleProcess/RP_Types.h"
-#include "SourceActionManager/SAM_Bluetooth.h"
+#include "RuleProcess/RP_SourceManager.h"
+#include "RuleProcess/RP_ActionManager.h"
 
-char* itoa(int i, char b[]);
+#include "SourceActionManager/SAM_Bluetooth.h"
+#include "SourceActionManager/SAM_Init.h"
 
 void db_cs_executeCommand(char *cmd)
 {
@@ -29,12 +31,13 @@ void db_cs_executeCommand(char *cmd)
 	else if (strcmp(cmd, DB_CS_CMD_SENDTESTBL) == 0)
 	{
 		Action action;
-		action.targetID = 100;
+		action.actionSAM = SAM_ID_BLUETOOTH;
+		action.actionID = 100;
 		action.paramNum = 3;
 		action.param[0] = 0x43;
 		action.param[1] = 0xFF;
 		action.param[2] = 0x10;
-		sam_bl_triggerAction(action);
+		rp_am_addAction(action);
 	}
 	else
 	{
@@ -51,20 +54,56 @@ void db_cs_printString(char *message)
 
 void db_cs_printInt(uint32_t i){
 	char c[10];
-	itoa(i, c);
+	db_cs_itoa(i, c);
 	hw_uart_sendString(c);
 }
 
 void db_cs_printMAC(uint8_t *mac){
-	db_cs_printString("MAC (Dezimal): ");
-	for(int i = 0; i < 6; i++){
-		db_cs_printInt(mac[i]);
-		if(i != 5) db_cs_printString(" : ");
+	db_cs_printString("MAC: ");
+	for(int i = 5; i >= 0; i--){
+		uint8_t temp = mac[i];
+		char res[3];
+		res[0] = TO_HEX(((temp & 0xF0) >> 4));
+		res[1] = TO_HEX((temp & 0x0F));
+		res[2] = '\0';
+		db_cs_printString(res);
+		if(i != 0) db_cs_printString(" : ");
 	}
 	db_cs_printString("\r");
 }
 
-char* itoa(int i, char b[]){
+
+void db_cs_printAction(Action *action){
+	db_cs_printString("Action: ");
+	db_cs_printString("SAM:");
+	db_cs_printInt(action->actionSAM);
+	db_cs_printString(" ID:");
+	db_cs_printInt(action->actionID);
+	db_cs_printString(" MASK:");
+	db_cs_printInt(action->paramMask);
+	db_cs_printString(" PARMS: [");
+	for(int i = 0; i < action->paramNum; i++){
+		db_cs_printString(" ");
+		db_cs_printInt(action->param[i]);
+	}
+	db_cs_printString(" ]\r");
+}
+
+void db_cs_printSource(Source *source){
+	db_cs_printString("Source: ");
+	db_cs_printString("SAM: ");
+	db_cs_printInt(source->sourceSAM);
+	db_cs_printString(" SOURCEID: ");
+	db_cs_printInt(source->sourceID);
+	db_cs_printString(" PARAMS: [");
+	for(int i = 0; i < source->paramNum; i++){
+		db_cs_printString(" ");
+		db_cs_printInt(source->param[i]);
+	}
+	db_cs_printString("]\r");
+}
+
+char* db_cs_itoa(int i, char b[]){
     char const digit[] = "0123456789";
     char* p = b;
     if(i<0){

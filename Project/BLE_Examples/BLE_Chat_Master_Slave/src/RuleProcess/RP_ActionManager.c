@@ -8,6 +8,7 @@
 
 #include "RuleProcess/RP_ActionManager.h"
 #include "RuleProcess/RP_Types.h"
+#include "RuleProcess/RP_RuleChecker.h"
 
 #include "BlueNRG1_flash.h"
 #include "HardwareUtil/HW_Memory.h"
@@ -17,15 +18,36 @@
 #include "Debug/DB_Console.h"
 #include "Debug/DB_Assert.h"
 
-uint8_t rp_am_noValue(){
+#include <stddef.h>
+
+void rp_am_noAction(Action *action){
+	db_as_assert(DB_AS_ERROR_ACTIONFCT, " Action Fct not assigned ! ");
+}
+
+uint8_t rp_am_noValue(uint8_t samValueID){
 	db_as_assert(DB_AS_ERROR_VALUEFCT, " Value Fct not assigned ! ");
 	return 0xff;
+}
+
+uint8_t rp_am_unknownValue(uint8_t samValueID){
+	db_as_assert(DB_AS_ERROR_VALUEFCT, " Asked ValueFct with SAM_ID_UNKOWN ! ");
+	return 0xff;
+}
+
+uint8_t rp_am_sourceValue(uint8_t samValueID){
+	if(samValueID > MAX_PARAM){
+		db_as_assert(DB_AS_ERROR_VALUEFCT, " Value Fct - Unknown Source Param ! ");
+		return 0xff;
+	}else return currentSource->param[samValueID-1];
 }
 
 void rp_am_loadActions();
 
 void rp_am_init()
 {
+
+	currentAction = NULL;
+
 	write_idx_action = 0;
 	read_idx_action = 0;
 
@@ -34,9 +56,16 @@ void rp_am_init()
 		actionBuffer[i].actionSAM = SAM_ID_UNKNWON;
 	}
 
-	for (int i = 0; i < 255; i++)
+	valueFcts[0] = rp_am_unknownValue;
+	for (int i = 1; i < 255; i++)
 	{
-		valueFct[i] = rp_am_noValue;
+		if(i <= MAX_PARAM) valueFcts[i] = rp_am_sourceValue;
+		else valueFcts[i] = rp_am_noValue;
+	}
+
+	for (int i = 0; i < SAM_NUM; i++)
+	{
+		actionFcts[i] = rp_am_noAction;
 	}
 
 	rp_am_loadActions();
@@ -56,7 +85,7 @@ void rp_am_loadActions()
 		progActions[i].paramNum = FLASH_ReadByte(
 				_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + 2);
 
-		for (int k = 3, l = 0; l < 20; k++, l++)
+		for (int k = 3, l = 0; l < MAX_PARAM; k++, l++)
 		{
 			progActions[i].param[l] = FLASH_ReadByte(
 					_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + k);
@@ -113,33 +142,44 @@ uint8_t rp_am_tick(){
 
 	//Check if direct action queue is empty
 	if(actionBuffer[read_idx_action].actionSAM != SAM_ID_UNKNWON){
-		rp_am_triggerAction(actionBuffer[read_idx_action]);
+
+		currentAction = &actionBuffer[read_idx_action];
+
+		rp_am_triggerAction(currentAction);
 
 		// Delete Action from queue and count up
 		actionBuffer[read_idx_action].actionSAM = SAM_ID_UNKNWON;
 		read_idx_action++;
 		if (read_idx_action >= SIZEOF_ACTIONBUFFER)
 			read_idx_action = 0;
+
 		return 1;
 	}else return 0;
 
 }
 
 void rp_am_replaceMask(Action *action){
-
 	//Build Action - Replace Mask
 	for(uint8_t i = 0; i < action->paramNum; i++){
 		if(action->paramMask & (1 << i)){
-			action->param = valueFcts[i]();
+			action->param[i] = valueFcts[i](i);
 		}
 	}
-
 }
 
 
-void rp_am_triggerAction(Action action){
-	db_cs_printString("Trigger Action: ");
+void rp_am_triggerAction(Action *action){
+	db_cs_printString("Trigger Action: \r");
+	db_cs_printAction(action);
 
+	//Replace Action Masked Fields
+	rp_am_replaceMask(action);
+
+	//Call Action Function
+	if(action->actionSAM < SAM_NUM) actionFcts[action->actionSAM](action);
+	else{
+		db_as_assert(DB_AS_ERROR_ACTIONFCT, "Action: SAM ID unknown!");
+	}
 
 }
 

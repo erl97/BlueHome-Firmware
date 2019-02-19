@@ -12,13 +12,6 @@
 #include "RP_Types.h"
 #include "RP_Init.h"
 
-//SourceTypes
-#define SOURCETYPE_NOSOURCE 0
-#define SOURCETYPE_BLUETOOTH 1
-#define SOURCETYPE_RTC 2
-#define SOURCETYPE_BUTTON 3
-#define SOURCETYPE_SENSOR 4
-
 //How-To-Compare(Rules)
 #define COMPARE_NOT_IMPORTANT 0
 #define COMPARE_EQUALS 1
@@ -29,6 +22,7 @@ volatile uint8_t write_idx_source;
 volatile uint8_t read_idx_source;
 Source sourceBuffer[SIZEOF_SOURCEBUFFER];
 
+Source *currentSource;
 
 //programmed rules
 Rule progRules[SIZEOFMYRULES];
@@ -41,9 +35,9 @@ void rp_rc_init();
 
 void rp_rc_addSource(Source source);
 
-void rp_rc_tick();
+uint8_t rp_rc_tick();
 
-void source_handler(Source source);
+void source_handler(Source *source);
 
 
 #endif /* SOURCE_H_ */

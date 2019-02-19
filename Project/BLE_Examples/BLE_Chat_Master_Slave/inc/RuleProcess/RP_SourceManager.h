@@ -10,9 +10,11 @@
 
 #include <stdint.h>
 
+#include "SourceActionManager/SAM_Init.h"
+
 typedef void (*SamSource_Fct)(uint8_t paramLen, uint8_t *param);
 
-SamSource_Fct sourceFct[255];
+SamSource_Fct sourceFct[SAM_NUM];
 
 void rp_im_init();
 

@@ -190,16 +190,6 @@
 			<locationURI>PARENT-5-PROJECT_LOC/Library/CMSIS/Device/ST/BlueNRG1/source/system_bluenrg1.c</locationURI>
 		</link>
 		<link>
-			<name>User/BLE_Chat_Master_Slave_main.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/BLE_Chat_Master_Slave_main.c</locationURI>
-		</link>
-		<link>
-			<name>User/BlueNRG1_it.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/BlueNRG1_it.c</locationURI>
-		</link>
-		<link>
 			<name>User/Bluetooth</name>
 			<type>2</type>
 			<locationURI>PARENT-2-PROJECT_LOC/src/Bluetooth</locationURI>
@@ -228,16 +218,6 @@
 			<name>User/SourceActionManager</name>
 			<type>2</type>
 			<locationURI>PARENT-2-PROJECT_LOC/src/SourceActionManager</locationURI>
-		</link>
-		<link>
-			<name>User/chat.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/chat.c</locationURI>
-		</link>
-		<link>
-			<name>User/gatt_db.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/gatt_db.c</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

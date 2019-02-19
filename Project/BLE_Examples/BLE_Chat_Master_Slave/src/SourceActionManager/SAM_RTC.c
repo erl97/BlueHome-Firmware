@@ -40,7 +40,7 @@ void sam_rtc_triggerSource(uint8_t paramLen, uint8_t *param)
 	//Add to buffer
 }
 
-void sam_rtc_triggerAction(Action action)
+void sam_rtc_triggerAction(Action *action)
 {
-
+	db_cs_printString("RTC Action\r");
 }

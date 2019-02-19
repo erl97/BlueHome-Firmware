@@ -18,7 +18,12 @@
 
 #include "HardwareUtil/HW_Init.h"
 #include "HardwareUtil/HW_Bluetooth.h"
+#include "HardwareUtil/HW_MAC.h"
+
 #include "SourceActionManager/SAM_Init.h"
+
+#include "RuleProcess/RP_RuleChecker.h"
+#include "RuleProcess/RP_ActionManager.h"
 
 #include "Debug/DB_Console.h"
 #include <stdint.h>
@@ -51,9 +56,11 @@ int main(void)
 //		while (1)
 //			;
 //	}
+	//RP INIT//
+	rp_init_init();
 
 //	//SAM INITS//
-	//sam_init_init();
+	sam_init_init();
 //
 //	//HW INIT//
 	hw_init_gpio();
@@ -122,7 +129,7 @@ SleepModes App_SleepMode_Check(SleepModes sleepMode)
 void APP_Tick(void)
 {
 	/* Make the device discoverable */
-	if (hw_bl_setConnectable)
+	if (hw_bl_setConnectable && !MAC_UNINITIALIZED)
 	{
 		hw_bl_setDeviceConnectable();
 		hw_bl_setConnectable = FALSE;

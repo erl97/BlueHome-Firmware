@@ -18,6 +18,6 @@ uint8_t SAM_BUS_ADDR_RTC;
 void sam_rtc_init();
 
 void sam_rtc_triggerSource(uint8_t paramLen, uint8_t *param);
-void sam_rtc_triggerAction(Action action);
+void sam_rtc_triggerAction(Action *action);
 
 #endif /* BLUEHOME_SOURCEACTIONMANAGER_SAM_RTC_H_ */

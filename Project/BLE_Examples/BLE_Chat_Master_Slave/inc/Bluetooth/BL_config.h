@@ -21,7 +21,7 @@
 #define OTA_MAX_ATT_MTU_SIZE    (DEFAULT_ATT_MTU)          /* DEFAULT_ATT_MTU size = 23 bytes */
 
 /* Number of services requests from the sensor demo */
-#define NUM_APP_GATT_SERVICES 2
+#define NUM_APP_GATT_SERVICES 3
 
 /* Number of attributes requests from the sensor demo */
 #define NUM_APP_GATT_ATTRIBUTES 32
@@ -49,7 +49,7 @@
 #define MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_2 (10)
 
 /* Maximum number of attribute records that can be added to the second application service: direct service */
-#define MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_3 (20)
+#define MAX_NUMBER_ATTRIBUTES_RECORDS_SERVICE_3 (12)
 
 /* Number of GATT attributes needed for the sensor demo. */
 #define NUM_GATT_ATTRIBUTES     (DEFAULT_NUM_GATT_ATTRIBUTES + NUM_APP_GATT_ATTRIBUTES)
@@ -61,7 +61,7 @@
 #define OTA_ATT_VALUE_ARRAY_SIZE (0)       /* No OTA service is used */
 
 /* Array size for the attribute value */ // NOT EXACTLY CALCULATED -> MAYBE TO BIG
-#define ATT_VALUE_ARRAY_SIZE    (44 + 300  + OTA_ATT_VALUE_ARRAY_SIZE) //(GATT + GAP) = 43 (Device Name: BlueNRG) + Acceleration (Acceleration (27) + Free Fall (21) characteristics) +  Environmental Sensor (Temperature (28), Pressure (29)  characteristics)  Services
+#define ATT_VALUE_ARRAY_SIZE    (44 + 500  + OTA_ATT_VALUE_ARRAY_SIZE) //(GATT + GAP) = 43 (Device Name: BlueNRG) + Acceleration (Acceleration (27) + Free Fall (21) characteristics) +  Environmental Sensor (Temperature (28), Pressure (29)  characteristics)  Services
 
 
 /* Flash security database size */

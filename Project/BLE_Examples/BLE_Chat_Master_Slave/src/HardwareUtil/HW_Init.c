@@ -13,6 +13,7 @@
 #include "BlueNRG1_flash.h"
 
 #include "HardwareUtil/HW_Memory.h"
+#include "HardwareUtil/HW_MAC.h"
 #include "HardwareUtil/HW_Bluetooth.h"
 
 uint32_t rtc_pin = 0;
@@ -20,9 +21,9 @@ uint32_t rtc_pin = 0;
 void hw_init_init()
 {
 	// INIT GPIO PIN ASSIGNMENTS
-	HW_ID = 0x00;
-	HW_VERSION = 0x00;
-	HW_BUS_DEV_NUM = 0x00;
+	HW_ID = FLASH_ReadByte(_MEMORY_HWCONFIG_BEGIN_);
+	HW_VERSION = FLASH_ReadByte(_MEMORY_HWCONFIG_BEGIN_ + 1);
+	HW_BUS_DEV_NUM = FLASH_ReadByte(_MEMORY_HWCONFIG_BEGIN_ + 2);
 
 	setPinVar[0] = &PIN_OPEN_FLAG;
 	for (int i = 1; i < sizeof(setPinVar) / sizeof(uint32_t*); i++)
@@ -36,6 +37,7 @@ void hw_init_init()
 	}
 
 	// INIT HARDWARE MODULES
+	hw_mac_init();
 	hw_bl_init();
 }
 
@@ -54,18 +56,13 @@ uint8_t hw_init_registerBusAddrIdentfier(uint8_t samID, uint8_t* addr)
 }
 
 uint32_t hw_init_getIntPinFromSAM(uint8_t samID){
-	if(setPinVar[samID] == PIN_ERR_FLAG) return 0xffff;
-	else return setPinVar[samID];
+	if(*setPinVar[samID] == PIN_ERR_FLAG) return 0xffff;
+	else return *setPinVar[samID];
 }
 
 //TODO INIT GPIO PINS
 void hw_init_gpio()
 {
-
-	// Read HW Info
-	HW_ID = FLASH_ReadByte(_MEMORY_HWCONFIG_BEGIN_);
-	HW_VERSION = FLASH_ReadByte(_MEMORY_HWCONFIG_BEGIN_ + 1);
-	HW_BUS_DEV_NUM = FLASH_ReadByte(_MEMORY_HWCONFIG_BEGIN_ + 2);
 
 	if (HW_BUS_DEV_NUM > NUM_MAX_BUSADDR)
 	{

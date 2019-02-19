@@ -19,7 +19,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "RuleProcess/RP_InterruptManager.h"
+
+#include "RuleProcess/RP_SourceManager.h"
+#include "RuleProcess/RP_Init.h"
+
 #include "BlueNRG1_conf.h"
 #include "ble_const.h"
 #include "bluenrg1_stack.h"
@@ -34,29 +37,17 @@
 #include "HardwareUtil/HW_Bluetooth.h"
 #include "Debug/DB_Assert.h"
 
-#ifndef DEBUG
-#define DEBUG 0
-#endif
-
-#if DEBUG
-#include <stdio.h>
-#define PRINTF(...) printf(__VA_ARGS__)
-#else
-#define PRINTF(...)
-#endif
-
-
 #define COPY_UUID_128(uuid_struct, uuid_15, uuid_14, uuid_13, uuid_12, uuid_11, uuid_10, uuid_9, uuid_8, uuid_7, uuid_6, uuid_5, uuid_4, uuid_3, uuid_2, uuid_1, uuid_0) \
 do {\
     uuid_struct[0] = uuid_0; uuid_struct[1] = uuid_1; uuid_struct[2] = uuid_2; uuid_struct[3] = uuid_3; \
         uuid_struct[4] = uuid_4; uuid_struct[5] = uuid_5; uuid_struct[6] = uuid_6; uuid_struct[7] = uuid_7; \
             uuid_struct[8] = uuid_8; uuid_struct[9] = uuid_9; uuid_struct[10] = uuid_10; uuid_struct[11] = uuid_11; \
                 uuid_struct[12] = uuid_12; uuid_struct[13] = uuid_13; uuid_struct[14] = uuid_14; uuid_struct[15] = uuid_15; \
-}while(0)
+}while(0);
+
 
 #define COPY_SERVICE_CMD_UUID(uuid_struct) 		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x1a)
 #define COPY_CHAR_CMD_UUID(uuid_struct)  		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x1b)
-#define COPY_CHAR_POLL_UUID(uuid_struct)  		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x1c)
 
 #define COPY_SERVICE_INFO_UUID(uuid_struct)  	COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x2a)
 #define COPY_CHAR_ERROR_UUID(uuid_struct)  		COPY_UUID_128(uuid_struct,0x02,0x36,0x6e,0x80, 0xcf,0x3a, 0x11,0xe1, 0x9a,0xb4, 0x00,0x02,0xa5,0xd5,0xc5,0x2b)
@@ -154,7 +145,7 @@ tBleStatus bl_gatt_addCMDService(void)
 	//CMD Char
 	COPY_CHAR_CMD_UUID(uuid);
 	Osal_MemCpy(&char_uuid.Char_UUID_128, uuid, 16);
-	ret =  aci_gatt_add_char(cmdServHandle, UUID_TYPE_128, &char_uuid, 20, CHAR_PROP_NOTIFY | CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_NOTIFY_ATTRIBUTE_WRITE,
+	ret =  aci_gatt_add_char(cmdServHandle, UUID_TYPE_128, &char_uuid, MAX_PARAM, CHAR_PROP_NOTIFY | CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_NOTIFY_ATTRIBUTE_WRITE,
 						   16, 0, &cmdCharHandle);
 	if (ret != BLE_STATUS_SUCCESS){
 		goto fail;
@@ -187,23 +178,23 @@ tBleStatus bl_gatt_addDirectService(void)
 	//PARAM Char
 	COPY_CHAR_PARAM_UUID(uuid);
 	Osal_MemCpy(&char_uuid.Char_UUID_128, uuid, 16);
-	ret =  aci_gatt_add_char(directServHandle, UUID_TYPE_128, &char_uuid, 20, CHAR_PROP_NOTIFY | CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_DONT_NOTIFY_EVENTS,
+	ret =  aci_gatt_add_char(directServHandle, UUID_TYPE_128, &char_uuid, MAX_PARAM, CHAR_PROP_NOTIFY | CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_NOTIFY_ATTRIBUTE_WRITE,
 						   16, 0, &paramCharHandle);
 	if (ret != BLE_STATUS_SUCCESS){
 		goto fail;
 	}
 
 	//PARAMCOMP Char
-	COPY_CHAR_PARAM_UUID(uuid);
+	COPY_CHAR_PARAMCOMP_UUID(uuid);
 	Osal_MemCpy(&char_uuid.Char_UUID_128, uuid, 16);
-	ret =  aci_gatt_add_char(directServHandle, UUID_TYPE_128, &char_uuid, 20, CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_DONT_NOTIFY_EVENTS,
+	ret =  aci_gatt_add_char(directServHandle, UUID_TYPE_128, &char_uuid, MAX_PARAM, CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_NOTIFY_ATTRIBUTE_WRITE,
 						   16, 0, &paramCompCharHandle);
 	if (ret != BLE_STATUS_SUCCESS){
 		goto fail;
 	}
 
 	//OPTIONS Char
-	COPY_CHAR_PARAM_UUID(uuid);
+	COPY_CHAR_OPTIONS_UUID(uuid);
 	Osal_MemCpy(&char_uuid.Char_UUID_128, uuid, 16);
 	ret =  aci_gatt_add_char(directServHandle, UUID_TYPE_128, &char_uuid, 20,  CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_NOTIFY_ATTRIBUTE_WRITE,
 						   16, 0, &optionsCharHandle);

@@ -17,12 +17,16 @@
 
 #include "BlueNRG1_flash.h"
 
+#include <stddef.h>
+
 
 void rp_rc_loadRules();
 
 void rp_rc_init()
 {
 	rp_rc_loadRules();
+
+	currentSource = NULL;
 
 	write_idx_source = 0;
 	read_idx_source = 0;
@@ -33,8 +37,18 @@ void rp_rc_init()
 	}
 }
 
-void rp_rc_tick(){
+uint8_t rp_rc_tick(){
+	//Source *nextSource = NULL;
 
+	//Fead from FIFO
+
+	//Store current source
+	//currentSource = nextSource;
+
+	//Compare
+	source_handler(currentSource);
+
+	return 0;
 }
 
 void rp_rc_loadRules()
@@ -54,12 +68,12 @@ void rp_rc_loadRules()
 		progRules[i].paramNum = FLASH_ReadByte(
 		_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + 3);
 
-		for (int k = 4, l = 0; l < 20; k++, l++)
+		for (int k = 4, l = 0; l < MAX_PARAM; k++, l++)
 		{
 			progRules[i].param[l] = FLASH_ReadByte(
 			_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + k);
 		}
-		for (int k = 28, l = 0; l < 20; k++, l++)
+		for (int k = 28, l = 0; l < MAX_PARAM; k++, l++)
 		{
 			progRules[i].paramComp[l] = FLASH_ReadByte(
 			_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + k);
@@ -77,17 +91,8 @@ void rp_rc_addSource(Source source)
 	else
 	{
 		db_cs_printString("Adding Source:\r");
-		db_cs_printString("SAM: ");
-		db_cs_printInt(source.sourceSAM);
-		db_cs_printString(" SourceID: ");
-		db_cs_printInt(source.sourceID);
-		db_cs_printString("\rParams: ");
-		db_cs_printString("[");
-		for(int i = 0; i < source.paramNum; i++){
-			db_cs_printInt(source.param[i]);
-			db_cs_printString(" ");
-		}
-		db_cs_printString("]\r");
+		db_cs_printSource(&source);
+
 
 		sourceBuffer[write_idx_source] = source;
 		write_idx_source++;
@@ -98,8 +103,9 @@ void rp_rc_addSource(Source source)
 
 
 //Vergleich der source auf Gleichheit mit Inhalt des myRules-Array.
-void source_handler(Source source)
+void source_handler(Source *source)
 {
+
 //	uint8_t i; //änderbar, innere schleife
 //	uint8_t rules_idx;    //Array-Index auf Rules
 //	for (rules_idx = 0; rules_idx < SIZEOFMYRULES; rules_idx++)

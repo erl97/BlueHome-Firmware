@@ -15,6 +15,7 @@
  */
 #define NUMBER_OF_APPLICATION_SERVICES (3)
 
+
 extern uint8_t HW_ID;
 extern uint8_t HW_VERSION;
 extern uint8_t HW_BUS_DEV_NUM;

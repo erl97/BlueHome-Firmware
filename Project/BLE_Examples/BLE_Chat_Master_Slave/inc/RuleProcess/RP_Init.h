@@ -10,16 +10,18 @@
 
 // Array-Sizes
 // Must fit to memory spaces defined in HW_Memory.h
-#define SIZEOF_SOURCEBUFFER			10
-#define SIZEOF_ACTIONBUFFER			10
+#define SIZEOF_SOURCEBUFFER			8
+#define SIZEOF_ACTIONBUFFER			8
 
-#define SIZEOFMYRULES				100
+#define MAX_PARAM 19
 
-#define SIZEOFMAC					50
+#define SIZEOFMYRULES				64
 
-#define SIZEOF_PROG_ACTIONS			100
+#define SIZEOF_MAC					64
+
+#define SIZEOF_PROG_ACTIONS			64
 
 
-
+void rp_init_init();
 
 #endif /* BLUEHOME_RULEPROCESS_RP_INIT_H_ */

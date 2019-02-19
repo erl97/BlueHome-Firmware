@@ -14,8 +14,6 @@
 #include "bluenrg1_stack.h"
 #include "ble_status.h"
 
-
-
 #include "Debug/DB_Console.h"
 #include "Debug/DB_Assert.h"
 
@@ -29,6 +27,8 @@
 
 extern uint8_t hw_bl_connectedDeviceAddr[6];
 extern uint16_t cmdServHandle, cmdCharHandle, pollCharHandle;
+
+extern uint8_t defaultAddr[6];
 
 void sam_bl_addServices();
 Source sam_bl_generateSource(uint8_t attr_data_length, uint8_t *attr_data);
@@ -50,33 +50,27 @@ void sam_bl_triggerSource(uint8_t paramLen, uint8_t *param)
 {
 	db_cs_printString("Bluetooth Source\r");
 
-	rp_rc_addSource(sam_bl_generateSource(paramLen, param));
-}
-
-void sam_bl_triggerAction(Action action){
-
-	db_cs_printString("Trigger BL Action...\r");
-
-	//uint8_t addr[6];
-	//hw_mac_getMac(action.targetID, addr);
-	uint8_t bdaddr[6] = {0x12, 0x34, 0x00, 0xE1, 0x80, 0x10}; // Test Connect Addr
-	hw_bl_sendPacket(bdaddr, action.paramNum, action.param, cmdCharHandle);
-
-}
-
-Source sam_bl_generateSource(uint8_t attr_data_length, uint8_t *attr_data)
-{
-
 	Source blueSource;
 
 	blueSource.sourceSAM = SAM_ID_BLUETOOTH;
 	blueSource.sourceID = hw_mac_getMacId(hw_bl_connectedDeviceAddr);
-	blueSource.paramNum = attr_data_length;
+	blueSource.paramNum = paramLen;
 
 	for(int i = 0; i < blueSource.paramNum; i++){
-		blueSource.param[i] = attr_data[i];
+		blueSource.param[i] = param[i];
 	}
 
-	return blueSource;
+	rp_rc_addSource(blueSource);
+}
+
+void sam_bl_triggerAction(Action *action){
+
+	db_cs_printString("Bluetooth Action\r");
+
+	uint8_t bdaddr[6];
+	hw_mac_getMac(action->actionID, bdaddr);
+
+	hw_bl_sendPacket(bdaddr, action->paramNum, action->param, cmdCharHandle);
+
 }
 
