@@ -11,9 +11,9 @@ HW_Bluetooth.c:439:6:hci_le_connection_complete_event	8	static
 HW_Bluetooth.c:465:6:hci_disconnection_complete_event	8	static
 HW_Bluetooth.c:484:6:aci_gatt_read_permit_req_event	8	static
 HW_Bluetooth.c:492:6:aci_gatt_write_permit_req_event	32	static
-HW_Bluetooth.c:508:6:aci_gatt_attribute_modified_event	80	static
-HW_Bluetooth.c:579:6:aci_gatt_proc_complete_event	8	static
-HW_Bluetooth.c:590:6:aci_gatt_disc_read_char_by_uuid_resp_event	24	static
-HW_Bluetooth.c:609:6:aci_hal_end_of_radio_activity_event	8	static
-HW_Bluetooth.c:640:6:hci_le_advertising_report_event	32	static
-HW_Bluetooth.c:665:6:aci_gap_proc_complete_event	40	static
+HW_Bluetooth.c:508:6:aci_gatt_attribute_modified_event	64	static
+HW_Bluetooth.c:576:6:aci_gatt_proc_complete_event	8	static
+HW_Bluetooth.c:587:6:aci_gatt_disc_read_char_by_uuid_resp_event	24	static
+HW_Bluetooth.c:606:6:aci_hal_end_of_radio_activity_event	8	static
+HW_Bluetooth.c:637:6:hci_le_advertising_report_event	32	static
+HW_Bluetooth.c:662:6:aci_gap_proc_complete_event	40	static

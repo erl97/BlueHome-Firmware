@@ -32,6 +32,7 @@ tBleStatus bl_gatt_addDirectService(void);
 
 tBleStatus bl_gatt_initHWInfo(void);
 
+tBleStatus bl_gatt_updateDirectParam(uint8_t *param);
 tBleStatus bl_gatt_updateErrorCode(void);
 
 tBleStatus Add_Environmental_Sensor_Service(void);

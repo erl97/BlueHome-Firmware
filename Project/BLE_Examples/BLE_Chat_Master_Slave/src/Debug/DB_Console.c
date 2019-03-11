@@ -13,6 +13,7 @@
 #include "Main/BlueHomeApp.h"
 #include "HardwareUtil/HW_UART.h"
 
+#include "RuleProcess/RP_Init.h"
 #include "RuleProcess/RP_Types.h"
 #include "RuleProcess/RP_SourceManager.h"
 #include "RuleProcess/RP_ActionManager.h"
@@ -32,8 +33,11 @@ void db_cs_executeCommand(char *cmd)
 	{
 		Action action;
 		action.actionSAM = SAM_ID_BLUETOOTH;
-		action.actionID = 100;
-		action.paramNum = 3;
+		action.actionID = 0;
+		action.paramMask = 0;
+		for(int i = 0; i < MAX_PARAM; i++){
+			action.param[i] = 0;
+		}
 		action.param[0] = 0x43;
 		action.param[1] = 0xFF;
 		action.param[2] = 0x10;
@@ -44,7 +48,7 @@ void db_cs_executeCommand(char *cmd)
 		db_cs_printString("Unknown Command !");
 		db_cs_printString("\r");
 	}
-	//db_cs_printString(">");
+
 }
 
 void db_cs_printString(char *message)
@@ -82,7 +86,7 @@ void db_cs_printAction(Action *action){
 	db_cs_printString(" MASK:");
 	db_cs_printInt(action->paramMask);
 	db_cs_printString(" PARMS: [");
-	for(int i = 0; i < action->paramNum; i++){
+	for(int i = 0; i < MAX_PARAM; i++){
 		db_cs_printString(" ");
 		db_cs_printInt(action->param[i]);
 	}
@@ -96,7 +100,7 @@ void db_cs_printSource(Source *source){
 	db_cs_printString(" SOURCEID: ");
 	db_cs_printInt(source->sourceID);
 	db_cs_printString(" PARAMS: [");
-	for(int i = 0; i < source->paramNum; i++){
+	for(int i = 0; i < MAX_PARAM; i++){
 		db_cs_printString(" ");
 		db_cs_printInt(source->param[i]);
 	}

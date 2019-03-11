@@ -7,13 +7,16 @@
 
 
 #include "SourceActionManager/SAM_Programming.h"
-
 #include "SourceActionManager/SAM_Init.h"
+
 #include "HardwareUtil/HW_Init.h"
+#include "HardwareUtil/HW_MAC.h"
+
 #include "RuleProcess/RP_SourceManager.h"
 #include "RuleProcess/RP_ActionManager.h"
 
 #include "Debug/DB_Console.h"
+#include "Debug/DB_Assert.h"
 
 extern uint8_t directParam[MAX_PARAM];
 extern uint8_t directCompParam[MAX_PARAM];
@@ -47,4 +50,42 @@ void sam_prog_triggerSource(uint8_t paramLen, uint8_t *param)
 void sam_prog_triggerAction(Action *action)
 {
 	db_cs_printString("Prog Action\r");
+
+	switch(action->actionID){
+		case SAM_PROGRAMMING_ACT_ID_WRITE_RULE:{
+			db_cs_printString("Programming Rule...\r");
+			break;
+		}
+		case SAM_PROGRAMMING_ACT_ID_WRITE_ACTION:{
+			db_cs_printString("Programming Action...\r");
+			break;
+		}
+		case SAM_PROGRAMMING_ACT_ID_WRITE_MAC:{
+			for(int i = 0; i < MAX_PARAM; i += 7){
+
+				uint8_t macID = action->param[i];
+
+				if(macID == 0)
+					return;
+
+				uint8_t mac[6];
+				for(int j = 0; j < 6; j++){
+					mac[5-j] = action->param[i+1+j];
+				}
+
+				db_cs_printString("Programming MAC...\r");
+				db_cs_printString("ID: ");
+				db_cs_printInt(macID);
+				db_cs_printString("\r");
+				db_cs_printMAC(mac);
+				db_cs_printString("\r");
+
+				//Programming MAC
+				hw_mac_writeMacToFlash(mac, macID);
+
+			}
+			break;
+		}
+	}
+
 }

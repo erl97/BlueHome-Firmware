@@ -23,7 +23,8 @@ uint8_t hw_mac_getMacId(uint8_t macAddr[6]);
 void hw_mac_getMac(uint8_t id, uint8_t* macAddr);
 
 uint8_t hw_mac_compareMac(uint8_t macAddr1[6], uint8_t macAddr2[6]);
-void hw_mac_writeCurrentMactoFlash();
+void hw_mac_writeCurrentMacToFlash();
+void hw_mac_writeMacToFlash(uint8_t *b_addr, uint8_t id);
 void hw_mac_generateDeviceName();
 void hw_mac_generateDeviceAddress(uint8_t *addr);
 

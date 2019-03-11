@@ -10,16 +10,19 @@
 
 // Array-Sizes
 // Must fit to memory spaces defined in HW_Memory.h
+
+//TODO Calculate MAX Number !!
+
 #define SIZEOF_SOURCEBUFFER			8
 #define SIZEOF_ACTIONBUFFER			8
 
-#define MAX_PARAM 19
+#define MAX_PARAM 					19
 
-#define SIZEOFMYRULES				64
+#define SIZEOF_RULES				64
 
-#define SIZEOF_MAC					64
+#define SIZEOF_MAC					32
 
-#define SIZEOF_PROG_ACTIONS			64
+#define SIZEOF_PROG_ACTIONS			32
 
 
 void rp_init_init();

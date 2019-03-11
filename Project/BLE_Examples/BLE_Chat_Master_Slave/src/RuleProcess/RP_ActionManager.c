@@ -9,6 +9,7 @@
 #include "RuleProcess/RP_ActionManager.h"
 #include "RuleProcess/RP_Types.h"
 #include "RuleProcess/RP_RuleChecker.h"
+#include "RuleProcess/RP_Init.h"
 
 #include "BlueNRG1_flash.h"
 #include "HardwareUtil/HW_Memory.h"
@@ -82,8 +83,8 @@ void rp_am_loadActions()
 				_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + 0);
 		progActions[i].actionID = FLASH_ReadByte(
 				_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + 1);
-		progActions[i].paramNum = FLASH_ReadByte(
-				_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + 2);
+		//progActions[i].paramNum = FLASH_ReadByte(
+		//		_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + 2);
 
 		for (int k = 3, l = 0; l < MAX_PARAM; k++, l++)
 		{
@@ -114,17 +115,7 @@ void rp_am_addAction(Action action){
 		else
 		{
 			db_cs_printString("Adding Action:\r");
-			db_cs_printString("SAM: ");
-			db_cs_printInt(action.actionSAM);
-			db_cs_printString(" ActionID: ");
-			db_cs_printInt(action.actionID);
-			db_cs_printString("\rParams: ");
-			db_cs_printString("[");
-			for(int i = 0; i < action.paramNum; i++){
-				db_cs_printInt(action.param[i]);
-				db_cs_printString(" ");
-			}
-			db_cs_printString("]\r");
+			db_cs_printAction(&action);
 
 			actionBuffer[write_idx_action] = action;
 			write_idx_action++;
@@ -160,7 +151,7 @@ uint8_t rp_am_tick(){
 
 void rp_am_replaceMask(Action *action){
 	//Build Action - Replace Mask
-	for(uint8_t i = 0; i < action->paramNum; i++){
+	for(uint8_t i = 0; i < MAX_PARAM; i++){
 		if(action->paramMask & (1 << i)){
 			action->param[i] = valueFcts[i](i);
 		}

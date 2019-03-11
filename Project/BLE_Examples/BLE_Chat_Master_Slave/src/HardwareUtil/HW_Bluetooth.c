@@ -367,7 +367,7 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 	if(hw_bl_makeConnection(addr) == BLE_STATUS_SUCCESS){
 
 		UUID_t tx_uuid;
-		//Get Handle
+		//TODO: Hardcoded - Get Handle
 		const uint8_t charUuid128_TX[16] = {0x1b,0xc5,0xd5,0xa5, 0x02,0x00, 0xb4,0x9a, 0xe1,0x11, 0x3a,0xcf,0x80,0x6e,0x36,0x02}; //UUID from CMD Service
 		//COPY_CHAR_CMD_UUID(tx_uuid);
 
@@ -513,10 +513,10 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 
 	if(Attr_Handle == cmdCharHandle+1){
 
-		if(Attr_Data[0] > MAX_PARAM){
-			rp_sm_triggerSource(SAM_ID_BLUETOOTH, MAX_PARAM, Attr_Data);
-			db_as_assert(DB_AS_ERROR_BOVERFLOW, "Param Num to large !");
-		}else rp_sm_triggerSource(SAM_ID_BLUETOOTH, Attr_Data[0], Attr_Data);
+		//if(Attr_Data[0] > MAX_PARAM){
+		rp_sm_triggerSource(SAM_ID_BLUETOOTH, MAX_PARAM, Attr_Data);
+		//	db_as_assert(DB_AS_ERROR_BOVERFLOW, "Param Num to large !");
+		//}else rp_sm_triggerSource(SAM_ID_BLUETOOTH, Attr_Data[0], Attr_Data);
 
 	}else if(Attr_Handle == optionsCharHandle+1){
 
@@ -528,7 +528,6 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 
 		if(action.actionSAM != SAM_ID_PROGRAMMING){ //Execute Action
 			action.paramMask = (Attr_Data[5] << 24) | (Attr_Data[4] << 16) | (Attr_Data[3] << 8) | (Attr_Data[2] << 0);
-			action.paramNum = Attr_Data[6];
 		}else{ //Programm
 
 			action.paramMask = 0x00;
@@ -538,26 +537,24 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 				directRuleMemID = Attr_Data[3];
 				directSourceSAMID = Attr_Data[4];
 				directSourceID = Attr_Data[5];
-				action.paramNum = Attr_Data[6];
 
 			}else if(action.actionID == SAM_PROGRAMMING_ACT_ID_WRITE_ACTION){
 				directMask = (Attr_Data[8] << 24) | (Attr_Data[7] << 16) | (Attr_Data[6] << 8) | (Attr_Data[5] << 0);
 				directActionMemID = Attr_Data[2];
 				directActionSAMID = Attr_Data[3];
 				directActionID = Attr_Data[4];
-				action.paramNum = Attr_Data[9];
 
 			}else if(action.actionID == SAM_PROGRAMMING_ACT_ID_WRITE_MAC){
-				action.paramNum = Attr_Data[2];
+
 			}
 		}
 
-		if(action.paramNum > MAX_PARAM){
-			action.paramNum = MAX_PARAM;
-			db_as_assert(DB_AS_ERROR_BOVERFLOW, "Param Num to large !");
-		}
+	//	if(action.paramNum > MAX_PARAM){
+	//		action.paramNum = MAX_PARAM;
+	//		db_as_assert(DB_AS_ERROR_BOVERFLOW, "Param Num to large !");
+	//	}
 
-		for(int i = 0; i < action.paramNum; i++){
+		for(int i = 0; i < MAX_PARAM; i++){
 			action.param[i] = directParam[i];
 		}
 
@@ -700,7 +697,7 @@ void aci_gap_proc_complete_event(uint8_t Procedure_Code,
 			}
 
 			//Save current MAC
-			hw_mac_writeCurrentMactoFlash();
+			hw_mac_writeCurrentMacToFlash();
 			MAC_UNINITIALIZED = 0;
 		}
 	}

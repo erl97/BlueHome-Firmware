@@ -6,6 +6,7 @@
  */
 
 #include "RuleProcess/RP_RuleChecker.h"
+#include "RuleProcess/RP_Init.h"
 #include "RuleProcess/RP_Types.h"
 
 #include "HardwareUtil/HW_Memory.h"
@@ -38,17 +39,23 @@ void rp_rc_init()
 }
 
 uint8_t rp_rc_tick(){
-	//Source *nextSource = NULL;
 
-	//Fead from FIFO
+	//Check if direct action queue is empty
+	if(sourceBuffer[read_idx_source].sourceSAM != SAM_ID_UNKNWON){
 
-	//Store current source
-	//currentSource = nextSource;
+		currentSource = &sourceBuffer[read_idx_source];
 
-	//Compare
-	source_handler(currentSource);
+		//Check for matching rule
+		rp_rc_check(currentSource);
 
-	return 0;
+		// Delete Action from queue and count up
+		sourceBuffer[read_idx_source].sourceSAM = SAM_ID_UNKNWON;
+		read_idx_source++;
+		if (read_idx_source >= SIZEOF_SOURCEBUFFER)
+			read_idx_source = 0;
+
+		return 1;
+	}else return 0;
 }
 
 void rp_rc_loadRules()
@@ -57,7 +64,7 @@ void rp_rc_loadRules()
 	i = 0;
 
 	//ein Schleifendurchlauf entspricht einer Rule
-	for (int j = 0; i < SIZEOFMYRULES; i++, j++)
+	for (int j = 0; i < SIZEOF_RULES; i++, j++)
 	{
 		progRules[i].actionMemID = FLASH_ReadByte(
 		_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + 0);
@@ -103,63 +110,44 @@ void rp_rc_addSource(Source source)
 
 
 //Vergleich der source auf Gleichheit mit Inhalt des myRules-Array.
-void source_handler(Source *source)
+void rp_rc_check(Source *source)
 {
 
-//	uint8_t i; //änderbar, innere schleife
-//	uint8_t rules_idx;    //Array-Index auf Rules
-//	for (rules_idx = 0; rules_idx < SIZEOFMYRULES; rules_idx++)
-//	{
-//		if (myRules[rules_idx].sourceType == source.sourceType)
-//		{
-//			if (myRules[rules_idx].sourceID == source.sourceID)
-//			{
-//				for (i = 0; i < myRules->paramNum; i++)
-//				{
-//					if (myRules->paramComp[i] == COMPARE_NOT_IMPORTANT)
-//					{
-//						//do nothing
-//					}
-//					else if (myRules->paramComp[i] == COMPARE_EQUALS)
-//					{
-//						if (myRules->param[i] == source.param[i])
-//						{
-//							//true, do nothing
-//						}
-//						else
-//							break;
-//					}
-//					else if (myRules->paramComp[i] == COMPARE_GREATER)
-//					{
-//						if (myRules->param[i] > source.param[i])
-//						{
-//							//true, do nothing
-//						}
-//						else
-//							break;
-//					}
-//					else if (myRules->paramComp[i] == COMPARE_SMALLER)
-//					{
-//						if (myRules->param[i] < source.param[i])
-//						{
-//							//true, do nothing
-//						}
-//						else
-//							break;
-//					}
-//				}
-//				if (i == myRules->paramNum)
-//				{
-//					//write actionID in actionBuffer
-//					actionBuffer[write_idx_action] =
-//							myRules[rules_idx].actionID;
-//					write_idx_action++;
-//					if (write_idx_action == SIZEOFACTIONBUFFER)
-//						write_idx_action = 0;
-//					break;
-//				}
-//			}
-//		}
-//	}
+	uint8_t i, rules_idx;    //Array-Index auf Rules
+
+	for (rules_idx = 0; rules_idx < SIZEOF_RULES; rules_idx++)
+	{
+		if (progRules[rules_idx].sourceSAM == source.sourceSAM)
+		{
+			if (progRules[rules_idx].sourceID == source.sourceID)
+			{
+				for (i = 0; i < MAX_PARAM; i++)
+				{
+					if (progRules->paramComp[i] != COMPARE_NOT_IMPORTANT)
+					{
+						if (progRules->paramComp[i] == COMPARE_EQUALS)
+						{
+							if (progRules->param[i] != source.param[i])
+								break;
+						}
+						else if (progRules->paramComp[i] == COMPARE_GREATER)
+						{
+							if (progRules->param[i] <= source.param[i])
+								break;
+						}
+						else if (progRules->paramComp[i] == COMPARE_SMALLER)
+						{
+							if (progRules->param[i] >= source.param[i])
+								break;
+						}
+					}
+				}
+				if (i == MAX_PARAM)
+				{
+					rp_am_addActionID(progRules[rules_idx].actionID);
+				}
+			}
+		}
+	}
 }
 

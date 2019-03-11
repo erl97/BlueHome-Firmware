@@ -35,7 +35,9 @@
 #include "lsm6ds3.h"
 
 #include "HardwareUtil/HW_Bluetooth.h"
+
 #include "Debug/DB_Assert.h"
+#include "Debug/DB_Console.h"
 
 #define COPY_UUID_128(uuid_struct, uuid_15, uuid_14, uuid_13, uuid_12, uuid_11, uuid_10, uuid_9, uuid_8, uuid_7, uuid_6, uuid_5, uuid_4, uuid_3, uuid_2, uuid_1, uuid_0) \
 do {\
@@ -208,6 +210,16 @@ tBleStatus bl_gatt_addDirectService(void)
 		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error at Direct Service");
 		return BLE_STATUS_ERROR;
 
+}
+
+tBleStatus bl_gatt_updateDirectParam(uint8_t *param){
+	db_cs_printString("Update param characteristic...\r");
+	tBleStatus ret = aci_gatt_update_char_value_ext(connection_handle, directServHandle, paramCharHandle, 0x01, MAX_PARAM, 0, MAX_PARAM, param);
+	if (ret != BLE_STATUS_SUCCESS){
+		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error while updating Param characteristic");
+		return BLE_STATUS_ERROR;
+	}
+	return BLE_STATUS_SUCCESS;
 }
 
 tBleStatus bl_gatt_initHWInfo()

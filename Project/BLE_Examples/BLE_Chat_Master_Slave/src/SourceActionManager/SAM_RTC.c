@@ -43,4 +43,5 @@ void sam_rtc_triggerSource(uint8_t paramLen, uint8_t *param)
 void sam_rtc_triggerAction(Action *action)
 {
 	db_cs_printString("RTC Action\r");
+
 }

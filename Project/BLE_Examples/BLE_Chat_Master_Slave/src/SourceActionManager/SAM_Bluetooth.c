@@ -18,12 +18,16 @@
 #include "Debug/DB_Assert.h"
 
 #include "RuleProcess/RP_RuleChecker.h"
+#include "RuleProcess/RP_Init.h"
 #include "RuleProcess/RP_Types.h"
 #include "RuleProcess/RP_SourceManager.h"
 #include "RuleProcess/RP_ActionManager.h"
 
 #include "HardwareUtil/HW_MAC.h"
 #include "HardwareUtil/HW_Bluetooth.h"
+
+#include "Bluetooth/BL_gatt_db.h"
+
 
 extern uint8_t hw_bl_connectedDeviceAddr[6];
 extern uint16_t cmdServHandle, cmdCharHandle, pollCharHandle;
@@ -54,9 +58,8 @@ void sam_bl_triggerSource(uint8_t paramLen, uint8_t *param)
 
 	blueSource.sourceSAM = SAM_ID_BLUETOOTH;
 	blueSource.sourceID = hw_mac_getMacId(hw_bl_connectedDeviceAddr);
-	blueSource.paramNum = paramLen;
 
-	for(int i = 0; i < blueSource.paramNum; i++){
+	for(int i = 0; i < MAX_PARAM; i++){
 		blueSource.param[i] = param[i];
 	}
 
@@ -67,10 +70,13 @@ void sam_bl_triggerAction(Action *action){
 
 	db_cs_printString("Bluetooth Action\r");
 
-	uint8_t bdaddr[6];
-	hw_mac_getMac(action->actionID, bdaddr);
+	if(action->actionID == 0){ //Publish on own GATT
+		bl_gatt_updateDirectParam(action->param);
+	}else{ //Send to other node
+		uint8_t bdaddr[6];
+		hw_mac_getMac(action->actionID, bdaddr);
 
-	hw_bl_sendPacket(bdaddr, action->paramNum, action->param, cmdCharHandle);
-
+		hw_bl_sendPacket(bdaddr, MAX_PARAM, action->param, cmdCharHandle);
+	}
 }
 

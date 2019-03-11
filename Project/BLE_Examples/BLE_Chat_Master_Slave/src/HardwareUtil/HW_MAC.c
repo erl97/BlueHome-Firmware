@@ -31,12 +31,12 @@ void hw_mac_init()
 	// MAC-ID 0 is own MAC
 	for (int i = 0; i < SIZEOF_MAC; i++)
 	{
-		MAC_Addr[i][0] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 0);
-		MAC_Addr[i][1] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 1);
-		MAC_Addr[i][2] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 2);
-		MAC_Addr[i][3] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 3);
-		MAC_Addr[i][4] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 4);
-		MAC_Addr[i][5] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 6) + 5);
+		MAC_Addr[i][0] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 0);
+		MAC_Addr[i][1] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 1);
+		MAC_Addr[i][2] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 2);
+		MAC_Addr[i][3] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 3);
+		MAC_Addr[i][4] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 4);
+		MAC_Addr[i][5] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 5);
 	}
 
 	// Set own MAC
@@ -60,18 +60,26 @@ void hw_mac_init()
 	hw_mac_generateDeviceName();
 }
 
-void hw_mac_writeCurrentMactoFlash(){
+void hw_mac_writeCurrentMacToFlash(){
+	hw_mac_writeMacToFlash(DEVICE_BDADDR, 0);
+}
+
+void hw_mac_writeMacToFlash(uint8_t *b_addr, uint8_t id){
+	db_cs_printString("Write MAC to Flash...\r");
 	uint8_t addr[8];
 	for(int i = 0; i < 6; i++){
-		addr[i] = DEVICE_BDADDR[i];
+		addr[i] = b_addr[i];
+		MAC_Addr[id][i] = b_addr[i];
 	}
-	addr[6] = MAC_Addr[1][0]; //For 32 bit flash
-	addr[7] = MAC_Addr[1][1];
+
+	//Can only write 32 bit - alignment
+	addr[6] = 0;
+	addr[7] = 0;
 
 	uint32_t temp = (addr[3] << 24) | (addr[2] << 16) | (addr[1] << 8) | (addr[0] << 0);
-	FLASH_ProgramWord(_MEMORY_MAC_BEGIN_, temp);
+	FLASH_ProgramWord(_MEMORY_MAC_BEGIN_+ (id*8), temp);
 	temp = (addr[7] << 24) | (addr[6] << 16) | (addr[5] << 8) | (addr[4] << 0);
-	FLASH_ProgramWord(_MEMORY_MAC_BEGIN_ + 4, temp);
+	FLASH_ProgramWord(_MEMORY_MAC_BEGIN_ + (id*8) + 4, temp);
 }
 
 void hw_mac_generateDeviceName(){

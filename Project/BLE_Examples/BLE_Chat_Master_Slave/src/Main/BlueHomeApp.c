@@ -71,6 +71,9 @@ int main(void)
 		SdkEvalLedOn(LED3);
 
 
+	//uint8_t mac[] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06};
+	//hw_mac_writeMacToFlash(mac, 2);
+
 	while (1)
 	{
 		/* BLE Stack Tick */

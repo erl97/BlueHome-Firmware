@@ -25,7 +25,7 @@ Source sourceBuffer[SIZEOF_SOURCEBUFFER];
 Source *currentSource;
 
 //programmed rules
-Rule progRules[SIZEOFMYRULES];
+Rule progRules[SIZEOF_RULES];
 
 
 //funktionen
@@ -37,7 +37,7 @@ void rp_rc_addSource(Source source);
 
 uint8_t rp_rc_tick();
 
-void source_handler(Source *source);
+void rp_rc_check(Source *source);
 
 
 #endif /* SOURCE_H_ */
