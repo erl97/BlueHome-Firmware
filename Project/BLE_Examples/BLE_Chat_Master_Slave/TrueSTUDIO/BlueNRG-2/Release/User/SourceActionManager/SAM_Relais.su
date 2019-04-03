@@ -1,0 +1,3 @@
+SAM_Relais.c:47:6:sam_relay_triggerSource	8	static
+SAM_Relais.c:55:6:sam_relay_triggerAction	8	static
+SAM_Relais.c:22:6:sam_relay_init	16	static

@@ -13,7 +13,24 @@
 #include "RuleProcess/RP_Types.h"
 
 #define DB_CS_CMD_GETVERSION	"version"
+#define DB_CS_CMD_GETHELP		"help"
 #define DB_CS_CMD_SENDTESTBL	"testBL"
+#define DB_CS_CMD_SHOW_MAC		"showMacs"
+#define DB_CS_CMD_PROGRAM_MAC	"progMac"
+#define DB_CS_CMD_SEND_BL		"sendBL"
+
+#define DB_CS_CMD_HELP "\
+BlueHome Debug Console Help\r\
+===========================\r\
+Commands:\r\
+ showMacs\r\
+ progMac <ID> <MAC>\r\
+ sendBL <TargetID> <CharID> <Data>\r"
+
+#define DB_CS_CMD_PROGRAM_MAC_HELP	"Usage: progMac <ID> <MAC>\r"
+#define DB_CS_CMD_SEND_BL_HELP "\
+Usage: sendBL <TargetID> <CharID> <Data>\r\
+         CharIDs: 0 - CMD Char\r"
 
 #define TO_HEX(i) (i <= 9 ? '0' + i : 'A' - 10 + i)
 

@@ -18,7 +18,7 @@
 
 #define MAX_PARAM 					19
 
-#define SIZEOF_RULES				64
+#define SIZEOF_RULES				32
 
 #define SIZEOF_MAC					32
 

@@ -19,7 +19,7 @@
 							<option id="com.atollic.truestudio.toolchain_options.vendor.432019497" name="Vendor name" superClass="com.atollic.truestudio.toolchain_options.vendor" useByScannerDiscovery="false" value="STMicroelectronics" valueType="string"/>
 							<option id="com.atollic.truestudio.general.runtimelib.1714910016" name="Runtime Library" superClass="com.atollic.truestudio.general.runtimelib" useByScannerDiscovery="false" value="com.atollic.truestudio.ld.general.clib.standard" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.atollic.truestudio.exe.release.toolchain.platform.1152452323" isAbstract="false" name="release platform" superClass="com.atollic.truestudio.exe.release.toolchain.platform"/>
-							<builder buildPath="${workspace_loc:/BLE_Chat_Master_Slave}/Release" customBuilderProperties="toolChainpathString=C:\\Program Files (x86)\\Atollic\\TrueSTUDIO for STM32 9.1.0\\ARMTools\\bin|com.atollic.truestudio.common_options.target.mcu=BlueNRG-232|toolChainpathType=1|com.atollic.truestudio.common_options.target.vendor=STMicroelectronics|" id="com.atollic.truestudio.mbs.builder1.341046858" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="com.atollic.truestudio.mbs.builder1"/>
+							<builder buildPath="${workspace_loc:/BLE_Chat_Master_Slave}/Release" customBuilderProperties="toolChainpathString=C:\\Program Files (x86)\\Atollic\\TrueSTUDIO for STM32 9.1.0\\ARMTools\\bin|toolChainpathType=1|com.atollic.truestudio.common_options.target.vendor=STMicroelectronics|com.atollic.truestudio.common_options.target.mcu=BlueNRG-232|" id="com.atollic.truestudio.mbs.builder1.341046858" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="com.atollic.truestudio.mbs.builder1"/>
 							<tool id="com.atollic.truestudio.exe.release.toolchain.as.1863431031" name="Assembler" superClass="com.atollic.truestudio.exe.release.toolchain.as">
 								<option id="com.atollic.truestudio.common_options.target.mcpu.1206032164" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" useByScannerDiscovery="false" value="BlueNRG-232" valueType="enumerated"/>
 								<option id="com.atollic.truestudio.common_options.target.endianess.67124955" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess" useByScannerDiscovery="false" value="com.atollic.truestudio.common_options.target.endianess.little" valueType="enumerated"/>
@@ -34,9 +34,9 @@
 							<tool id="com.atollic.truestudio.exe.release.toolchain.gcc.149190271" name="C Compiler" superClass="com.atollic.truestudio.exe.release.toolchain.gcc">
 								<option id="com.atollic.truestudio.gcc.symbols.defined.1087115210" name="Defined symbols" superClass="com.atollic.truestudio.gcc.symbols.defined" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="BLUENRG2_DEVICE"/>
-									<listOptionValue builtIn="false" value="HS_SPEED_XTAL=HS_SPEED_XTAL_32MHZ"/>
+									<listOptionValue builtIn="false" value="HS_SPEED_XTAL=HS_SPEED_XTAL_16MHZ"/>
 									<listOptionValue builtIn="false" value="LS_SOURCE=LS_SOURCE_EXTERNAL_32KHZ"/>
-									<listOptionValue builtIn="false" value="SMPS_INDUCTOR=SMPS_INDUCTOR_10uH"/>
+									<listOptionValue builtIn="false" value="SMPS_INDUCTOR=SMPS_INDUCTOR_NONE"/>
 									<listOptionValue builtIn="false" value="BLE_STACK_CONFIGURATION=BLE_STACK_FULL_CONFIGURATION"/>
 								</option>
 								<option id="com.atollic.truestudio.gcc.directories.select.1003864152" name="Include path" superClass="com.atollic.truestudio.gcc.directories.select" useByScannerDiscovery="false" valueType="includePath">

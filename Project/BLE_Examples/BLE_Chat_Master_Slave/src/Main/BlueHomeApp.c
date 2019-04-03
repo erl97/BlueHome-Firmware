@@ -17,6 +17,7 @@
 /////////////
 
 #include "HardwareUtil/HW_Init.h"
+#include "HardwareUtil/HW_GPIO.h"
 #include "HardwareUtil/HW_Bluetooth.h"
 #include "HardwareUtil/HW_MAC.h"
 
@@ -40,13 +41,15 @@ int main(void)
 
 	// DEBUG CODE //
 	db_tc_init_Eval();
-	db_tc_init_GPIO_Int();
+	//db_tc_init_GPIO_Int();
 	///////////////
 
 	Clock_Init();
 
 	db_as_init();
+
 	hw_init_init();
+	hw_gpio_init();
 
 	/* Sensor Device Init */
 //	uint8_t ret = Sensor_DeviceInit();
@@ -61,7 +64,7 @@ int main(void)
 
 //	//SAM INITS//
 	sam_init_init();
-//
+
 //	//HW INIT//
 	hw_init_gpio();
 

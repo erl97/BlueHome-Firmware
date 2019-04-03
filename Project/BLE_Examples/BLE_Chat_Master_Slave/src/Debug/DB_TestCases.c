@@ -21,14 +21,14 @@
 void db_tc_init_Eval()
 {
 	SdkEvalIdentification();
-
-	SdkEvalLedInit(LED1);
-	SdkEvalLedInit(LED2);
-	SdkEvalLedInit(LED3);
-
-	SdkEvalLedOff(LED1);
-	SdkEvalLedOff(LED2);
-	SdkEvalLedOff(LED3);
+//
+//	SdkEvalLedInit(LED1);
+//	SdkEvalLedInit(LED2);
+//	SdkEvalLedInit(LED3);
+//
+//	SdkEvalLedOff(LED1);
+//	SdkEvalLedOff(LED2);
+//	SdkEvalLedOff(LED3);
 
 	SdkEvalComUartInit(115200);
 	SdkEvalComUartIrqConfig(ENABLE);
@@ -47,10 +47,11 @@ void db_tc_init_Eval()
 
 }
 
+
 void db_tc_init_GPIO_Int()
 {
 
-	SysCtrl_PeripheralClockCmd(CLOCK_PERIPH_GPIO, ENABLE);
+	//SysCtrl_PeripheralClockCmd(CLOCK_PERIPH_GPIO, ENABLE);
 
 	GPIO_InitType GPIO_InitStructure;
 	GPIO_InitStructure.GPIO_Pin = Get_ButtonGpioPin(BUTTON_1);
@@ -58,26 +59,30 @@ void db_tc_init_GPIO_Int()
 	GPIO_InitStructure.GPIO_Pull = DISABLE;
 	GPIO_InitStructure.GPIO_HighPwr = DISABLE;
 	GPIO_Init(&GPIO_InitStructure);
-
-	/* Set the GPIO interrupt priority and enable it */
+//
+//	/* Set the GPIO interrupt priority and enable it */
 	NVIC_InitType NVIC_InitStructure;
 	NVIC_InitStructure.NVIC_IRQChannel = GPIO_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = LOW_PRIORITY;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
-
-	/* Configures EXTI line for BUTTON_1 */
+//
+//	/* Configures EXTI line for BUTTON_1 */
 	GPIO_EXTIConfigType GPIO_EXTIStructure;
 	GPIO_EXTIStructure.GPIO_Pin = Get_ButtonGpioPin(BUTTON_1);
 	GPIO_EXTIStructure.GPIO_IrqSense = GPIO_IrqSense_Edge;
 	GPIO_EXTIStructure.GPIO_Event = IRQ_ON_RISING_EDGE;
 	GPIO_EXTIConfig(&GPIO_EXTIStructure);
+//
+//	/* Clear pending interrupt */
+//	GPIO_ClearITPendingBit(Get_ButtonGpioPin(BUTTON_1));
+//
+//	/* Enable the interrupt */
+//	GPIO_EXTICmd(Get_ButtonGpioPin(BUTTON_1), ENABLE);
 
-	/* Clear pending interrupt */
-	GPIO_ClearITPendingBit(Get_ButtonGpioPin(BUTTON_1));
+	//Relais
+//PIN_2
 
-	/* Enable the interrupt */
-	GPIO_EXTICmd(Get_ButtonGpioPin(BUTTON_1), ENABLE);
 }
 
 void db_tc_test_EvalLeds()

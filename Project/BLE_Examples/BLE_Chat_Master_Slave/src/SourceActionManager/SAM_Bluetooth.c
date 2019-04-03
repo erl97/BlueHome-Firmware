@@ -76,7 +76,9 @@ void sam_bl_triggerAction(Action *action){
 		uint8_t bdaddr[6];
 		hw_mac_getMac(action->actionID, bdaddr);
 
-		hw_bl_sendPacket(bdaddr, MAX_PARAM, action->param, cmdCharHandle);
+		uint8_t tx_uuid[16];
+		bl_gatt_getUUID(tx_uuid, 0);
+		hw_bl_sendPacket(bdaddr, MAX_PARAM, action->param, tx_uuid); //{0x1b,0xc5,0xd5,0xa5, 0x02,0x00, 0xb4,0x9a, 0xe1,0x11, 0x3a,0xcf,0x80,0x6e,0x36,0x02}
 	}
 }
 

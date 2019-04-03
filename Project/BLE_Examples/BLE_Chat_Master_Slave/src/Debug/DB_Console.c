@@ -9,9 +9,13 @@
 
 #include "string.h"
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "Main/BlueHomeApp.h"
+
 #include "HardwareUtil/HW_UART.h"
+#include "HardwareUtil/HW_MAC.h"
+
 
 #include "RuleProcess/RP_Init.h"
 #include "RuleProcess/RP_Types.h"
@@ -19,18 +23,25 @@
 #include "RuleProcess/RP_ActionManager.h"
 
 #include "SourceActionManager/SAM_Bluetooth.h"
+#include "SourceActionManager/SAM_Programming.h"
 #include "SourceActionManager/SAM_Init.h"
+
+#include "Bluetooth/BL_gatt_db.h"
+#include "HardwareUtil/HW_Bluetooth.h"
 
 void db_cs_executeCommand(char *cmd)
 {
-	if (strcmp(cmd, DB_CS_CMD_GETVERSION) == 0)
-	{
+	char *args = strtok(cmd, " ");
+
+	if (strcmp(args, DB_CS_CMD_GETVERSION) == 0){
 		db_cs_printString("BlueHome Fimware Version ");
 		db_cs_printString(BH_FIRMWARE_VERISON);
 		db_cs_printString("\r");
-	}
-	else if (strcmp(cmd, DB_CS_CMD_SENDTESTBL) == 0)
-	{
+
+	}else if(strcmp(args, DB_CS_CMD_GETHELP) == 0){
+		db_cs_printString(DB_CS_CMD_HELP);
+
+	}else if (strcmp(args, DB_CS_CMD_SENDTESTBL) == 0){
 		Action action;
 		action.actionSAM = SAM_ID_BLUETOOTH;
 		action.actionID = 0;
@@ -42,11 +53,122 @@ void db_cs_executeCommand(char *cmd)
 		action.param[1] = 0xFF;
 		action.param[2] = 0x10;
 		rp_am_addAction(action);
-	}
-	else
-	{
-		db_cs_printString("Unknown Command !");
+
+	}else if(strcmp(args, DB_CS_CMD_SHOW_MAC) == 0){
+
+		//Reload from flash
+		hw_mac_reload();
+
+		db_cs_printString("MAC ID List:\r");
+		db_cs_printString("============\r");
+		for(int i = 0; i < SIZEOF_MAC; i++){
+			db_cs_printString("ID: ");
+			db_cs_printInt(i);
+			if(i < 10) db_cs_printString("  ");
+			else db_cs_printString(" ");
+			db_cs_printMAC(MAC_Addr[i]);
+		}
+
+	}else if (strcmp(args, DB_CS_CMD_PROGRAM_MAC) == 0){
+
+		Action action;
+		action.actionSAM = SAM_ID_PROGRAMMING;
+		action.actionID = SAM_PROGRAMMING_ACT_ID_WRITE_MAC;
+		action.paramMask = 0;
+		for(int i = 0; i < MAX_PARAM; i++){
+			action.param[i] = 0;
+		}
+		//Get ID
+		args = strtok(NULL, " ");
+		if(args == NULL){
+			db_cs_printString(DB_CS_CMD_PROGRAM_MAC_HELP);
+			return;
+		}
+		//Set ID
+		action.param[0] = atoi(args);
+
+		//Get MAC
+		args = strtok(NULL, " ");
+		if(args == NULL){
+			db_cs_printString(DB_CS_CMD_PROGRAM_MAC_HELP);
+			return;
+		}
+
+		char *macP = strtok(args, ":");
+		int i = 1;
+		while(macP != NULL) {
+			if(i <= 6){
+				action.param[i] = strtol(macP, NULL, 16);
+			}else{
+				db_cs_printString("Invalid MAC\r");
+				return;
+			}
+			i++;
+			macP = strtok(NULL, ":");
+		}
+
+		rp_am_addAction(action);
+
+	}else if (strcmp(args, DB_CS_CMD_SEND_BL) == 0){
+
+
+		//Get TargetID
+		args = strtok(NULL, " ");
+		if(args == NULL){
+			db_cs_printString(DB_CS_CMD_SEND_BL_HELP);
+			return;
+		}
+		uint8_t targetID = atoi(args);
+		if(targetID >= SIZEOF_MAC){
+			db_cs_printString("Invalid MAC ID ! \r");
+			return;
+		}
+
+		//Get CharID
+		args = strtok(NULL, " ");
+		if(args == NULL){
+			db_cs_printString(DB_CS_CMD_SEND_BL_HELP);
+			return;
+		}
+		uint8_t charID = atoi(args);
+
+		//Get Data
+		args = strtok(NULL, " ");
+		if(args == NULL){
+			db_cs_printString(DB_CS_CMD_SEND_BL_HELP);
+			return;
+		}
+
+		db_cs_printString("Send Bluetooth Packet to ID ");
+		db_cs_printInt(targetID);
+		db_cs_printString(" :\r -> ");
+		db_cs_printMAC(MAC_Addr[targetID]);
+		db_cs_printString(" -> Char: ");
+		db_cs_printInt(charID);
+		db_cs_printString("\r -> Data: ");
+		db_cs_printString(args);
 		db_cs_printString("\r");
+
+		//Prepare UUID
+		uint8_t tx_uuid[16];
+		bl_gatt_getUUID(tx_uuid, 0);
+
+		//Prepare Data
+		uint8_t data[strlen(args)/2];
+		for(int i = 0; i < strlen(args); i += 2){
+			char split[3];
+			split[0] = args[i];
+			split[1] = args[i+1];
+			split[2] = '\0';
+
+			data[i/2] = strtol(split, NULL, 16);
+		}
+
+		//Send
+		hw_bl_sendPacket(MAC_Addr[targetID], strlen(args)/2, data, tx_uuid);
+
+	} else {
+		db_cs_printString("Unknown Command !\r");
 	}
 
 }

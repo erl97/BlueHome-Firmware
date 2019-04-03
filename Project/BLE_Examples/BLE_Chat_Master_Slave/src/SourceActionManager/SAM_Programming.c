@@ -65,8 +65,13 @@ void sam_prog_triggerAction(Action *action)
 
 				uint8_t macID = action->param[i];
 
-				if(macID == 0)
-					return;
+				if(macID == 0){
+					if(i == 0){
+//						db_as_assert(DB_AS_ERROR_PROGRAM, "Not allowed to repogram own MAC !\r");
+//						return;
+					}else return;
+				}
+
 
 				uint8_t mac[6];
 				for(int j = 0; j < 6; j++){

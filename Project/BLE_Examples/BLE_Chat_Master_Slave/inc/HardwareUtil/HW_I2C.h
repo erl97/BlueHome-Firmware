@@ -8,6 +8,6 @@
 #ifndef BLUEHOME_HARDWAREUTIL_HW_I2C_H_
 #define BLUEHOME_HARDWAREUTIL_HW_I2C_H_
 
-
+void hw_i2c_init();
 
 #endif /* BLUEHOME_HARDWAREUTIL_HW_I2C_H_ */

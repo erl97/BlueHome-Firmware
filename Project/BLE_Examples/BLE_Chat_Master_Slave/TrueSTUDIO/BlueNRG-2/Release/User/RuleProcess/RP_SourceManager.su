@@ -5,3 +5,5 @@ RP_SourceManager.c:53:6:Blue_Handler	8	static
 RP_SourceManager.c:58:6:SysTick_Handler	8	static
 RP_SourceManager.c:66:6:UART_Handler	8	static
 RP_SourceManager.c:74:6:GPIO_Handler	16	static
+RP_SourceManager.c:92:6:I2C2_Handler	8	static
+RP_SourceManager.c:96:6:I2C1_Handler	8	static

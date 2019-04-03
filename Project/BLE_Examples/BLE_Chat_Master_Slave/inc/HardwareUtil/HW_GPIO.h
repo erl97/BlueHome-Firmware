@@ -10,6 +10,9 @@
 
 #include <stdint.h>
 
-void hw_gpio_button(uint32_t button_pin);
+void hw_gpio_init();
+
+void hw_gpio_init_PinOut(uint32_t pin);
+
 
 #endif /* BLUEHOME_HARDWAREUTIL_HW_GPIO_H_ */

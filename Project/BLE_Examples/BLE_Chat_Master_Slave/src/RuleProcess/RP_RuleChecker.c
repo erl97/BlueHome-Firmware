@@ -5,6 +5,7 @@
  *      Author: dinkelsv64505
  */
 
+#include "RuleProcess/RP_ActionManager.h"
 #include "RuleProcess/RP_RuleChecker.h"
 #include "RuleProcess/RP_Init.h"
 #include "RuleProcess/RP_Types.h"
@@ -72,8 +73,6 @@ void rp_rc_loadRules()
 		_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + 1);
 		progRules[i].sourceID = FLASH_ReadByte(
 		_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + 2);
-		progRules[i].paramNum = FLASH_ReadByte(
-		_MEMORY_RULES_BEGIN_ + (j * BLOCKSIZE_RULES) + 3);
 
 		for (int k = 4, l = 0; l < MAX_PARAM; k++, l++)
 		{
@@ -117,9 +116,9 @@ void rp_rc_check(Source *source)
 
 	for (rules_idx = 0; rules_idx < SIZEOF_RULES; rules_idx++)
 	{
-		if (progRules[rules_idx].sourceSAM == source.sourceSAM)
+		if (progRules[rules_idx].sourceSAM == source->sourceSAM)
 		{
-			if (progRules[rules_idx].sourceID == source.sourceID)
+			if (progRules[rules_idx].sourceID == source->sourceID)
 			{
 				for (i = 0; i < MAX_PARAM; i++)
 				{
@@ -127,24 +126,24 @@ void rp_rc_check(Source *source)
 					{
 						if (progRules->paramComp[i] == COMPARE_EQUALS)
 						{
-							if (progRules->param[i] != source.param[i])
+							if (progRules->param[i] != source->param[i])
 								break;
 						}
 						else if (progRules->paramComp[i] == COMPARE_GREATER)
 						{
-							if (progRules->param[i] <= source.param[i])
+							if (progRules->param[i] <= source->param[i])
 								break;
 						}
 						else if (progRules->paramComp[i] == COMPARE_SMALLER)
 						{
-							if (progRules->param[i] >= source.param[i])
+							if (progRules->param[i] >= source->param[i])
 								break;
 						}
 					}
 				}
 				if (i == MAX_PARAM)
 				{
-					rp_am_addActionID(progRules[rules_idx].actionID);
+					rp_am_addActionID(progRules[rules_idx].actionMemID);
 				}
 			}
 		}

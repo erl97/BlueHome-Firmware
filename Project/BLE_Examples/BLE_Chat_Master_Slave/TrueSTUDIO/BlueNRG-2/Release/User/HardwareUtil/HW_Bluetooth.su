@@ -1,10 +1,10 @@
-HW_Bluetooth.c:121:9:sam_bl_initLink	40	static
+HW_Bluetooth.c:121:9:hw_bl_initLink	40	static
 HW_Bluetooth.c:95:6:hw_bl_init	8	static
 HW_Bluetooth.c:256:6:hw_bl_setDeviceConnectable	72	static
 HW_Bluetooth.c:281:12:hw_bl_setDeviceNonDiscover	8	static
 HW_Bluetooth.c:294:12:hw_bl_makeConnection	40	static
 HW_Bluetooth.c:324:12:hw_bl_terminateConnection	16	static
-HW_Bluetooth.c:341:12:hw_bl_sendPacket	72	static
+HW_Bluetooth.c:341:12:hw_bl_sendPacket	56	static
 HW_Bluetooth.c:420:6:aci_att_prepare_write_resp_event	8	static
 HW_Bluetooth.c:428:6:aci_att_exec_write_resp_event	8	static
 HW_Bluetooth.c:439:6:hci_le_connection_complete_event	8	static

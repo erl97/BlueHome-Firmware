@@ -26,6 +26,8 @@ enum {
   DIRECT_SERVICE_INDEX = 2
 };
 
+void bl_gatt_getUUID(uint8_t* uuid, uint8_t id);
+
 tBleStatus bl_gatt_addHWInfoService(void);
 tBleStatus bl_gatt_addCMDService(void);
 tBleStatus bl_gatt_addDirectService(void);

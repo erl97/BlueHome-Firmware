@@ -73,6 +73,13 @@ Char_Desc_Uuid_t char_desc_uuid;
 
 extern uint16_t connection_handle;
 
+void bl_gatt_getUUID(uint8_t *uuid, uint8_t id){
+	switch(id){
+		case 0:{
+			COPY_CHAR_CMD_UUID(uuid);
+		}
+	}
+}
 
 tBleStatus bl_gatt_addHWInfoService(void)
 {

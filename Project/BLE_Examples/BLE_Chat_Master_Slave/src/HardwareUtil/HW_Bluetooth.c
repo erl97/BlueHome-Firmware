@@ -90,7 +90,7 @@ uint8_t directActionID;
 uint8_t directSourceSAMID;
 uint8_t directSourceID;
 
-uint8_t sam_bl_initLink();
+uint8_t hw_bl_initLink();
 
 void hw_bl_init()
 {
@@ -105,7 +105,7 @@ void hw_bl_init()
 		BLUETOOTH_ERR_FLAG = 1;
 	}
 
-	ret = sam_bl_initLink();
+	ret = hw_bl_initLink();
 	if (ret != BLE_STATUS_SUCCESS)
 	{
 		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Bluetooth Init failed");
@@ -118,7 +118,7 @@ void hw_bl_init()
 
 }
 
-uint8_t sam_bl_initLink()
+uint8_t hw_bl_initLink()
 {
 
 	tBleStatus ret;
@@ -338,7 +338,7 @@ tBleStatus hw_bl_terminateConnection(){
 	return BLE_STATUS_ERROR;
 }
 
-tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, uint16_t charHandle){
+tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, uint8_t* charUuid128_TX){
 	db_cs_printString("Sending Packet...\r");
 
 	//Wait for disconnect
@@ -368,7 +368,7 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 
 		UUID_t tx_uuid;
 		//TODO: Hardcoded - Get Handle
-		const uint8_t charUuid128_TX[16] = {0x1b,0xc5,0xd5,0xa5, 0x02,0x00, 0xb4,0x9a, 0xe1,0x11, 0x3a,0xcf,0x80,0x6e,0x36,0x02}; //UUID from CMD Service
+		//const uint8_t charUuid128_TX[16];// = {0x1b,0xc5,0xd5,0xa5, 0x02,0x00, 0xb4,0x9a, 0xe1,0x11, 0x3a,0xcf,0x80,0x6e,0x36,0x02}; //UUID from CMD Service
 		//COPY_CHAR_CMD_UUID(tx_uuid);
 
 		Osal_MemCpy(&tx_uuid.UUID_128, charUuid128_TX, 16);
@@ -400,7 +400,7 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 
 	}else{
 		hw_bl_setDeviceConnectable();
-		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error could not connect to: \r");
+		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error could not connect to:");
 		db_cs_printMAC(addr);
 	}
 

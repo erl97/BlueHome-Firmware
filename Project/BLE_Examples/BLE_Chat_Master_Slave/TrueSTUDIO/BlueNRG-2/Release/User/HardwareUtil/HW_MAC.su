@@ -1,8 +1,9 @@
-HW_MAC.c:67:6:hw_mac_writeMacToFlash	24	static
-HW_MAC.c:63:6:hw_mac_writeCurrentMacToFlash	8	static
-HW_MAC.c:85:6:hw_mac_generateDeviceName	32	static
-HW_MAC.c:120:6:hw_mac_generateDeviceAddress	16	static
-HW_MAC.c:154:9:hw_mac_compareMac	8	static
-HW_MAC.c:24:6:hw_mac_init	24	static
-HW_MAC.c:141:9:hw_mac_getMacId	24	static
-HW_MAC.c:165:6:hw_mac_getMac	0	static
+HW_MAC.c:56:6:hw_mac_reload	16	static
+HW_MAC.c:73:6:hw_mac_writeMacToFlash	24	static
+HW_MAC.c:69:6:hw_mac_writeCurrentMacToFlash	8	static
+HW_MAC.c:94:6:hw_mac_generateDeviceName	32	static
+HW_MAC.c:129:6:hw_mac_generateDeviceAddress	16	static
+HW_MAC.c:163:9:hw_mac_compareMac	8	static
+HW_MAC.c:24:6:hw_mac_init	32	static
+HW_MAC.c:150:9:hw_mac_getMacId	24	static
+HW_MAC.c:174:6:hw_mac_getMac	0	static

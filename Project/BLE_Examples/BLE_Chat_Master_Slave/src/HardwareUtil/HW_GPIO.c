@@ -15,16 +15,18 @@
  * @button_pin pin address of the button. from hw_init_port
  * @retval None.
  */
-void hw_gpio_button(uint32_t button_pin)
+void hw_gpio_init()
 {
-	GPIO_InitType GPIO_InitStructure;
-
-	/* Enables the BUTTON Clock */
 	SysCtrl_PeripheralClockCmd(CLOCK_PERIPH_GPIO, ENABLE);
 
-	/* Configures Button pin as input */
-	GPIO_InitStructure.GPIO_Pin = button_pin;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Input;
+}
+
+void hw_gpio_init_PinOut(uint32_t pin)
+{
+
+	GPIO_InitType GPIO_InitStructure;
+	GPIO_InitStructure.GPIO_Pin = pin;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Output;
 	GPIO_InitStructure.GPIO_Pull = DISABLE;
 	GPIO_InitStructure.GPIO_HighPwr = DISABLE;
 	GPIO_Init(&GPIO_InitStructure);

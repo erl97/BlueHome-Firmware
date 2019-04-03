@@ -19,6 +19,8 @@ uint8_t MAC_UNINITIALIZED;
 
 void hw_mac_init();
 
+void hw_mac_reload();
+
 uint8_t hw_mac_getMacId(uint8_t macAddr[6]);
 void hw_mac_getMac(uint8_t id, uint8_t* macAddr);
 
