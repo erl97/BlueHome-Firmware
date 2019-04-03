@@ -88,3 +88,11 @@ void GPIO_Handler(void)
 	}
 
 }
+
+void I2C2_Handler(void){
+	db_cs_printString("I2C Int 1\r");
+}
+
+void I2C1_Handler(void){
+	db_cs_printString("I2C Int 2\r");
+}
