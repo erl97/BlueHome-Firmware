@@ -1,2 +1,2 @@
 HW_GPIO.c:18:6:hw_gpio_init	8	static
-HW_GPIO.c:24:6:hw_gpio_init_PinOut	16	static
+HW_GPIO.c:32:6:hw_gpio_init_PinOut	16	static

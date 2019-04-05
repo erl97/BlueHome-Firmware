@@ -36,7 +36,7 @@ void rp_am_init();
 uint8_t rp_am_registerSAMValueIdentfier(uint8_t samId, SamValue_Fct fct);
 uint8_t rp_am_registerSAMActionIdentfier(uint8_t samId, SamAction_Fct fct);
 
-void rp_am_addAction(Action action);
+void rp_am_addAction(Action *action);
 void rp_am_addActionID(uint8_t actionMemID);
 
 void rp_am_triggerAction(Action *action);

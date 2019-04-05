@@ -18,6 +18,7 @@
 #define DB_CS_CMD_SHOW_MAC		"showMacs"
 #define DB_CS_CMD_PROGRAM_MAC	"progMac"
 #define DB_CS_CMD_SEND_BL		"sendBL"
+#define DB_CS_CMD_TRIG_ACTION	"trigAct"
 
 #define DB_CS_CMD_HELP "\
 BlueHome Debug Console Help\r\
@@ -25,12 +26,14 @@ BlueHome Debug Console Help\r\
 Commands:\r\
  showMacs\r\
  progMac <ID> <MAC>\r\
- sendBL <TargetID> <CharID> <Data>\r"
+ sendBL <TargetID> <CharID> <Data>\r\
+ trigAct <SamID> <ActionID> <Param>\r"
 
 #define DB_CS_CMD_PROGRAM_MAC_HELP	"Usage: progMac <ID> <MAC>\r"
 #define DB_CS_CMD_SEND_BL_HELP "\
 Usage: sendBL <TargetID> <CharID> <Data>\r\
          CharIDs: 0 - CMD Char\r"
+#define DB_CS_CMD_TRIG_ACTION_HELP "Usage: trigAct <SamID> <ActionID> <Param>\r"
 
 #define TO_HEX(i) (i <= 9 ? '0' + i : 'A' - 10 + i)
 

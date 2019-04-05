@@ -133,7 +133,7 @@ uint8_t hw_bl_initLink()
 	}
 
 	/* Set the TX power -2 dBm */
-	aci_hal_set_tx_power_level(1, 4);
+	aci_hal_set_tx_power_level(1, 5);
 
 	/* GATT Init */
 	ret = aci_gatt_init();
@@ -372,8 +372,12 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 		//COPY_CHAR_CMD_UUID(tx_uuid);
 
 		Osal_MemCpy(&tx_uuid.UUID_128, charUuid128_TX, 16);
-		db_cs_printString("GET UUID\r");
-
+		db_cs_printString("GET UUID ");
+		for(int i = 0; i < 16; i++){
+			db_cs_printInt(charUuid128_TX[i]);
+			db_cs_printString(" ");
+		}
+		db_cs_printString("\r");
 		aci_gatt_disc_char_by_uuid(connection_handle, 0x0001, 0xFFFF, UUID_TYPE_128, &tx_uuid);
 
 		while(txHandle == 0){
@@ -559,7 +563,7 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 		}
 
 		//Add to Action Buffer
-		rp_am_addAction(action);
+		rp_am_addAction(&action);
 
 	}else if(Attr_Handle == paramCharHandle+1){
 		for(int i = 0; i < Attr_Data_Length; i++){

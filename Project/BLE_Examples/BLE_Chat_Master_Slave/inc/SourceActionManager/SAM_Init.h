@@ -19,6 +19,7 @@ enum {
 	SAM_ID_RELAY = 7,
 	SAM_ID_DIO = 8,
 	SAM_ID_PROGRAMMING = 9,
+	SAM_ID_PIEPER = 10,
 	SAM_NUM
 };
 
@@ -36,10 +37,12 @@ enum {
 	SAM_PIN_ID_RELAIS_0 = 1,
 	SAM_PIN_ID_RELAIS_1 = 2,
 	SAM_PIN_ID_RELAIS_2 = 3,
-	SAM_PIN_ID_RELAIS_3 = 4
+	SAM_PIN_ID_RELAIS_3 = 4,
+	SAM_PIN_ID_PIEPER_0 = 5
 };
 //#define SAM_PIN_ID_XXX	100
 
 void sam_init_init();
+void sam_init_initHW();
 
 #endif /* BLUEHOME_SOURCEACTIONMANAGER_SAM_INIT_H_ */

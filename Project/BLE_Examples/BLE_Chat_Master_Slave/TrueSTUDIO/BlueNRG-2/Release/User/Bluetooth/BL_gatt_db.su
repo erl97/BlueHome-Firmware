@@ -1,6 +1,6 @@
-BL_gatt_db.c:76:6:bl_gatt_getUUID	0	static
-BL_gatt_db.c:84:12:bl_gatt_addHWInfoService	64	static
-BL_gatt_db.c:137:12:bl_gatt_addCMDService	64	static
-BL_gatt_db.c:170:12:bl_gatt_addDirectService	64	static
-BL_gatt_db.c:222:12:bl_gatt_updateDirectParam	24	static
-BL_gatt_db.c:232:12:bl_gatt_initHWInfo	32	static
+BL_gatt_db.c:76:6:bl_gatt_getUUID	4	static
+BL_gatt_db.c:97:12:bl_gatt_addHWInfoService	64	static
+BL_gatt_db.c:150:12:bl_gatt_addCMDService	64	static
+BL_gatt_db.c:183:12:bl_gatt_addDirectService	64	static
+BL_gatt_db.c:235:12:bl_gatt_updateDirectParam	24	static
+BL_gatt_db.c:245:12:bl_gatt_initHWInfo	32	static

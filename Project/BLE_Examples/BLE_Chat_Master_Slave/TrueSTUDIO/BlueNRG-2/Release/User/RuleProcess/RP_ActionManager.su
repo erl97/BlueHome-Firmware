@@ -6,8 +6,8 @@ RP_ActionManager.c:75:6:rp_am_loadActions	24	static
 RP_ActionManager.c:47:6:rp_am_init	8	static
 RP_ActionManager.c:99:9:rp_am_registerSAMValueIdentfier	0	static
 RP_ActionManager.c:105:9:rp_am_registerSAMActionIdentfier	0	static
-RP_ActionManager.c:110:6:rp_am_addAction	24	static
-RP_ActionManager.c:127:6:rp_am_addActionID	40	static
+RP_ActionManager.c:110:6:rp_am_addAction	32	static
+RP_ActionManager.c:127:6:rp_am_addActionID	8	static
 RP_ActionManager.c:152:6:rp_am_replaceMask	16	static
 RP_ActionManager.c:162:6:rp_am_triggerAction	8	static
 RP_ActionManager.c:132:9:rp_am_tick	16	static

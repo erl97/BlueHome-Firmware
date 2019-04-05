@@ -13,19 +13,19 @@
 
 void hw_i2c_init(){
 
-	db_cs_printString("Init I2C...\r");
-	I2C_InitType initStruct = {
-			5000, //Operation Frequency (Hz)
-			I2C_OperatingMode_Master, //Operation Mode (OM)
-			I2C_Filtering_Off, //Digital Filter (FON)
-			0xA0, //Own Address
-			DISABLE //Addressing Mode (SAM) - 7bit
-	};
-	I2C_Init(1, initStruct);
+//	db_cs_printString("Init I2C...\r");
+//	I2C_InitType initStruct = {
+//			5000, //Operation Frequency (Hz)
+//			I2C_OperatingMode_Master, //Operation Mode (OM)
+//			I2C_Filtering_Off, //Digital Filter (FON)
+//			0xA0, //Own Address
+//			DISABLE //Addressing Mode (SAM) - 7bit
+//	};
+	//I2C_Init(1, initStruct);
 
-	SysCtrl_PeripheralClockCmd(CLOCK_PERIPH_I2C1, ENABLE);
+	//SysCtrl_PeripheralClockCmd(CLOCK_PERIPH_I2C1, ENABLE);
 
-	db_cs_printString("Start test transmittion...\r");
+//	db_cs_printString("Start test transmittion...\r");
 
 //	typedef struct {
 //	  uint16_t Operation;               /*!< Specifies the transaction operation: read or write.
@@ -46,6 +46,6 @@ void hw_i2c_init(){
 //	                                         This parameter can be a value of @ref I2C_stop_condition */
 //	} I2C_TransactionType;
 
-	I2C_BeginTransaction(1, );
+//	I2C_BeginTransaction(1, );
 
 }
