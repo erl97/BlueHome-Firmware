@@ -15,6 +15,7 @@
 #define DB_AS_ERROR_VALUEFCT		3
 #define DB_AS_ERROR_ACTIONFCT		4
 #define DB_AS_ERROR_PROGRAM			5
+#define DB_AS_ERROR_CONFIG			6
 
 char *errorMsg[32];
 
@@ -22,6 +23,7 @@ char *errorMsg[32];
 uint32_t PIN_ERR_FLAG;
 uint8_t ADDR_ERR_FLAG;
 uint8_t BLUETOOTH_ERR_FLAG;
+uint8_t CONFIG_ERR_FLAG;
 //////////////////////
 
 void db_as_init();

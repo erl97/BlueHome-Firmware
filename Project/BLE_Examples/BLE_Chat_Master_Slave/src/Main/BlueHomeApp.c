@@ -11,6 +11,8 @@
 #include "BlueNRG_x_device.h"
 #include "bluenrg1_stack.h"
 
+
+#include "BlueNRG1_mft.h"
 /// DEBUG ///
 #include "Debug/DB_TestCases.h"
 #include "SDK_EVAL_Led.h"
@@ -66,12 +68,19 @@ int main(void)
 	sam_init_init();
 
 //	//HW INIT//
-	hw_init_gpio();
+	hw_init_pins();
+
+	sam_init_initHW();
 
 	bl_gatt_initHWInfo();
 
 	if (db_as_checkInit() == 0)
-		SdkEvalLedOn(LED3);
+		db_cs_printString("Initialization successfully ! \r");
+	else{
+		db_cs_printString("Initialization failed ! \r");
+		while (1){}
+	}
+		//SdkEvalLedOn(LED3);
 
 
 	//uint8_t mac[] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06};
@@ -144,6 +153,7 @@ void APP_Tick(void)
 	rp_rc_tick();
 
 	rp_am_tick();
+
 }
 
 //void APP_Tick(void)

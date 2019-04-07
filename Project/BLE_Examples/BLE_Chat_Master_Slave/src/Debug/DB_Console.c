@@ -52,7 +52,7 @@ void db_cs_executeCommand(char *cmd)
 		action.param[0] = 0x43;
 		action.param[1] = 0xFF;
 		action.param[2] = 0x10;
-		rp_am_addAction(action);
+		rp_am_addAction(&action);
 
 	}else if(strcmp(args, DB_CS_CMD_SHOW_MAC) == 0){
 
@@ -107,7 +107,7 @@ void db_cs_executeCommand(char *cmd)
 			macP = strtok(NULL, ":");
 		}
 
-		rp_am_addAction(action);
+		rp_am_addAction(&action);
 
 	}else if (strcmp(args, DB_CS_CMD_SEND_BL) == 0){
 
@@ -151,7 +151,7 @@ void db_cs_executeCommand(char *cmd)
 
 		//Prepare UUID
 		uint8_t tx_uuid[16];
-		bl_gatt_getUUID(tx_uuid, 0);
+		bl_gatt_getUUID(tx_uuid, charID);
 
 		//Prepare Data
 		uint8_t data[strlen(args)/2];
@@ -167,7 +167,72 @@ void db_cs_executeCommand(char *cmd)
 		//Send
 		hw_bl_sendPacket(MAC_Addr[targetID], strlen(args)/2, data, tx_uuid);
 
-	} else {
+	} else if (strcmp(args, DB_CS_CMD_TRIG_ACTION) == 0) {
+
+		Action action;
+		action.paramMask = 0;
+
+		//Get SamID
+		args = strtok(NULL, " ");
+		if(args == NULL){
+			db_cs_printString(DB_CS_CMD_TRIG_ACTION_HELP);
+			return;
+		}
+		action.actionSAM = strtol(args, NULL, 10);
+
+		if(action.actionSAM >= SAM_NUM){
+			db_cs_printString("Invalid SAM ID ! \r");
+			return;
+		}
+
+		//Get ActionID
+		args = strtok(NULL, " ");
+		if(args == NULL){
+			db_cs_printString(DB_CS_CMD_TRIG_ACTION_HELP);
+			return;
+		}
+		action.actionID = strtol(args, NULL, 10);
+
+		//Get Data
+		args = strtok(NULL, " ");
+		if(args == NULL){
+			db_cs_printString(DB_CS_CMD_TRIG_ACTION_HELP);
+			return;
+		}
+		db_cs_printString("Trigger Action:\rSAM ID: ");
+		db_cs_printInt(action.actionSAM);
+		db_cs_printString("\rAction ID: ");
+		db_cs_printInt(action.actionID);
+		db_cs_printString("\r Param: ");
+		db_cs_printString(args);
+		db_cs_printString("\r");
+
+		//Prepare Data
+		uint8_t param[strlen(args)/2];
+		if(strlen(args)/2 > MAX_PARAM) {
+			db_cs_printString("Param to long");
+			return;
+		}
+		for(int i = 0; i < strlen(args); i += 2){
+			char split[3];
+			split[0] = args[i];
+			split[1] = args[i+1];
+			split[2] = '\0';
+
+			param[i/2] = strtol(split, NULL, 16);
+		}
+
+		for(uint8_t i = 0; i < MAX_PARAM; i++) {
+			if(i >= (sizeof(param)/sizeof(uint8_t))) {
+				action.param[i] = 0;
+			} else {
+				action.param[i] = param[i];
+			}
+		}
+
+		rp_am_addAction(&action);
+
+	}else {
 		db_cs_printString("Unknown Command !\r");
 	}
 

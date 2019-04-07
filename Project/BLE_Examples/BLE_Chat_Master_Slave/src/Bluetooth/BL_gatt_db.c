@@ -77,6 +77,19 @@ void bl_gatt_getUUID(uint8_t *uuid, uint8_t id){
 	switch(id){
 		case 0:{
 			COPY_CHAR_CMD_UUID(uuid);
+			break;
+		}
+		case 1:{
+			COPY_CHAR_PARAM_UUID(uuid);
+			break;
+		}
+		case 2:{
+			COPY_CHAR_PARAMCOMP_UUID(uuid);
+			break;
+		}
+		case 3:{
+			COPY_CHAR_OPTIONS_UUID(uuid);
+			break;
 		}
 	}
 }

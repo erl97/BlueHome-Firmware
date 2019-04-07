@@ -1,2 +1,4 @@
-SAM_Pieper.c:32:6:sam_pieper_triggerAction	8	static
-SAM_Pieper.c:21:6:sam_pieper_init	8	static
+SAM_Pieper.c:74:6:sam_pieper_triggerAction	8	static
+SAM_Pieper.c:26:6:sam_pieper_init	8	static
+SAM_Pieper.c:37:6:sam_pieper_initHW	24	static
+SAM_Pieper.c:112:6:sam_pieper_isr	8	static

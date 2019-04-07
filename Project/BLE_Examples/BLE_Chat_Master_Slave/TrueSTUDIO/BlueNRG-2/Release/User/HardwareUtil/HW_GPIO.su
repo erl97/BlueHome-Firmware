@@ -1,2 +1,5 @@
 HW_GPIO.c:18:6:hw_gpio_init	8	static
 HW_GPIO.c:32:6:hw_gpio_init_PinOut	16	static
+HW_GPIO.c:43:6:hw_gpio_init_PinSerial0	16	static
+HW_GPIO.c:54:6:hw_gpio_init_PinSerial1	16	static
+HW_GPIO.c:65:6:hw_gpio_init_PinSerial2	16	static

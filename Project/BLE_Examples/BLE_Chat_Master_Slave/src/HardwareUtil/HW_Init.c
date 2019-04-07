@@ -13,6 +13,7 @@
 #include "BlueNRG1_flash.h"
 
 #include "Debug/DB_Console.h"
+#include "Debug/DB_Assert.h"
 
 #include "HardwareUtil/HW_Memory.h"
 #include "HardwareUtil/HW_MAC.h"
@@ -47,7 +48,7 @@ void hw_init_init()
 	hw_mac_init();
 	hw_bl_init();
 
-	hw_i2c_init();
+	//hw_i2c_init();
 }
 
 
@@ -69,7 +70,7 @@ uint32_t hw_init_getIntPinFromSAM(uint8_t samID){
 	else return *setPinVar[samID];
 }
 
-void hw_init_gpio()
+void hw_init_pins()
 {
 
 	if (HW_BUS_DEV_NUM > NUM_MAX_BUSADDR)
@@ -83,9 +84,16 @@ void hw_init_gpio()
 	for (int i = 0; i < NUM_LOCAL_PIN; i++)
 	{
 		uint8_t pinMode = FLASH_ReadByte(_MEMORY_HWCONFIG_BEGIN_ + 16 + i);
+		db_cs_printInt(pinMode);
 
 		if(*setPinVar[pinMode] == 0xffff){ //Configure as output
 			hw_gpio_init_PinOut(currPin);
+		} else if(*setPinVar[pinMode] == 0xfff0){
+			hw_gpio_init_PinSerial0(currPin);
+		} else if(*setPinVar[pinMode] == 0xfff1){
+			hw_gpio_init_PinSerial1(currPin);
+		} else if(*setPinVar[pinMode] == 0xfff2){
+			hw_gpio_init_PinSerial2(currPin);
 		}
 
 		*setPinVar[pinMode] = currPin;
@@ -109,6 +117,9 @@ void hw_init_gpio()
 
 		if(samID < NUM_MAX_BUSADDR){
 			*setBusAddrVar[samID] = addr;
+		}else{
+			CONFIG_ERR_FLAG = 0xff;
+			db_as_assert(DB_AS_ERROR_CONFIG, "Missing/Wrong Config !");
 		}
 	}
 

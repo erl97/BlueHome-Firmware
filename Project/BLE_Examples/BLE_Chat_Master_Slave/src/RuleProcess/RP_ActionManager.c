@@ -107,7 +107,7 @@ uint8_t rp_am_registerSAMActionIdentfier(uint8_t samId, SamAction_Fct fct){
 	return 0;
 }
 
-void rp_am_addAction(Action action){
+void rp_am_addAction(Action *action){
 	if (actionBuffer[write_idx_action].actionSAM != SAM_ID_UNKNWON)
 		{
 			db_as_assert(DB_AS_ERROR_BOVERFLOW, "Action Buffer full !");
@@ -115,9 +115,9 @@ void rp_am_addAction(Action action){
 		else
 		{
 			db_cs_printString("Adding Action:\r");
-			db_cs_printAction(&action);
+			db_cs_printAction(action);
 
-			actionBuffer[write_idx_action] = action;
+			actionBuffer[write_idx_action] = *action;
 			write_idx_action++;
 			if (write_idx_action >= SIZEOF_ACTIONBUFFER)
 				write_idx_action = 0;
@@ -125,7 +125,7 @@ void rp_am_addAction(Action action){
 }
 
 void rp_am_addActionID(uint8_t actionMemID){
-	rp_am_addAction(progActions[actionMemID]);
+	rp_am_addAction(&progActions[actionMemID]);
 }
 
 
