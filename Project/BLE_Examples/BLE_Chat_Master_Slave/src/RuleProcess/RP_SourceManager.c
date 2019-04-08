@@ -13,6 +13,7 @@
 #include "BlueNRG1_gpio.h"
 #include "bluenrg1_stack.h"
 #include "clock.h"
+#include "BlueNRG1_i2c.h"
 
 #include "ble_const.h"
 //#include "SDK_EVAL_Com.h"
@@ -28,6 +29,7 @@
 #include "lsm6ds3_hal.h"
 
 #include "SourceActionManager/SAM_Init.h"
+#include "SourceActionManager/SAM_Pieper.h"
 
 extern LSM6DS3_DrvExtTypeDef *Imu6AxesDrvExt;
 
@@ -89,10 +91,19 @@ void GPIO_Handler(void)
 
 }
 
-void I2C2_Handler(void){
-	db_cs_printString("I2C Int 1\r");
+
+void MFT2B_Handler(void){
+	sam_pieper_isr();
 }
 
-void I2C1_Handler(void){
-	db_cs_printString("I2C Int 2\r");
+void I2C2_Handler(void){
+
+
+//	I2C_FillTxFIFO(I2C2, 0xFF);
+//	I2C_FlushTx(I2C2);
+//
+	I2C_GenerateStopCondition(I2C2);
+	I2C_ClearITPendingBit(I2C2, I2C_IT_MTD);
+
 }
+

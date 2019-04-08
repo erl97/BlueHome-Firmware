@@ -15,6 +15,7 @@ void db_as_init()
 	PIN_ERR_FLAG = 0;
 	ADDR_ERR_FLAG = 0;
 	BLUETOOTH_ERR_FLAG = 0;
+	CONFIG_ERR_FLAG = 0;
 
 	// SET ERROR MSGs //
 	errorMsg[DB_AS_ERROR_BOVERFLOW] = "OVERFLOW ERROR";
@@ -22,12 +23,13 @@ void db_as_init()
 	errorMsg[DB_AS_ERROR_VALUEFCT] = "VALUEFCT ERROR";
 	errorMsg[DB_AS_ERROR_ACTIONFCT] = "ACTIONFCT ERROR";
 	errorMsg[DB_AS_ERROR_PROGRAM] = "PROGRAM ERROR";
+	errorMsg[DB_AS_ERROR_CONFIG] = "CONFIG ERROR";
 }
 
 
 uint8_t db_as_checkInit()
 {
-	if (PIN_ERR_FLAG != 0 || ADDR_ERR_FLAG != 0 || BLUETOOTH_ERR_FLAG != 0)
+	if (PIN_ERR_FLAG != 0 || ADDR_ERR_FLAG != 0 || BLUETOOTH_ERR_FLAG != 0 || CONFIG_ERR_FLAG != 0)
 		return 1;
 	else
 		return 0;
