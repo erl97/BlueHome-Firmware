@@ -15,9 +15,12 @@
 #include "BlueNRG1_sysCtrl.h"
 #include "misc.h"
 
+#include <stdint.h>
+
 #include "Debug/DB_Console.h"
 
 void hw_i2c_init(){
+	FLAG_BUSY = 0;
 
 	SysCtrl_PeripheralClockCmd(CLOCK_PERIPH_I2C2, ENABLE);
 
@@ -45,38 +48,37 @@ void hw_i2c_init(){
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 
-	I2C_ITConfig(I2C2, I2C_IT_MTD, ENABLE);
+	I2C_ITConfig(I2C2, I2C_IT_TXFE, DISABLE);
 
-	db_cs_printString("Start test transmission...\r");
+}
 
-	I2C_FillTxFIFO(I2C2, 0x00);
-	I2C_FillTxFIFO(I2C2, 0xAA);
-	I2C_FillTxFIFO(I2C2, 0xAA);
-	I2C_FillTxFIFO(I2C2, 0x00);
-	I2C_FillTxFIFO(I2C2, 0x00);
-	//I2C_FlushTx(I2C2);
+void hw_i2c_write(uint8_t addr, const uint8_t *data, uint8_t length, uint8_t wait, uint8_t end){
+
+	for(int i = 0; i < length; i++){
+		I2C_FillTxFIFO(I2C2, data[i]);
+	}
 
 	I2C_TransactionType transmissionType;
 	transmissionType.Operation = I2C_Operation_Write;
-	transmissionType.Address = 0x20;
+	transmissionType.Address = addr;
 	transmissionType.AddressType = I2C_AddressType_7Bit;
 	transmissionType.StartByte = I2C_StartByte_Disable;
-	transmissionType.StopCondition = I2C_StopCondition_Enable;
-	transmissionType.Length = 5;
+	if(end) transmissionType.StopCondition = I2C_StopCondition_Enable;
+	else transmissionType.StopCondition = I2C_StopCondition_Disable;
+	transmissionType.Length = length;
 
+	I2C_ITConfig(I2C2, I2C_IT_TXFE, ENABLE);
 	I2C_BeginTransaction(I2C2, &transmissionType);
+	FLAG_BUSY = 1;
 
-	while(1){
-		uint32_t val = I2C2->SR_b.STATUS;
-		db_cs_printString("Status: ");
-		db_cs_printInt(val);
-		db_cs_printString("\r");
-
-		val = I2C2->SR_b.CAUSE;
-		db_cs_printString("Cause: ");
-		db_cs_printInt(val);
-		db_cs_printString("\r");
+	if(wait == 1){
+		while(FLAG_BUSY){};
 	}
-
-
+	return;
 }
+
+void hw_i2c_isr_bufferEmpty(){
+	FLAG_BUSY = 0;
+	I2C_ITConfig(I2C2, I2C_IT_TXFE, DISABLE);
+}
+

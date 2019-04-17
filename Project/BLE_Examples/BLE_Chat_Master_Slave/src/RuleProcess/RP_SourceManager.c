@@ -19,6 +19,7 @@
 //#include "SDK_EVAL_Com.h"
 
 #include "HardwareUtil/HW_UART.h"
+#include "HardwareUtil/HW_I2C.h"
 
 #include "Debug/DB_TestCases.h"
 #include "Debug/DB_Console.h"
@@ -30,6 +31,7 @@
 
 #include "SourceActionManager/SAM_Init.h"
 #include "SourceActionManager/SAM_Pieper.h"
+
 
 extern LSM6DS3_DrvExtTypeDef *Imu6AxesDrvExt;
 
@@ -44,7 +46,7 @@ uint8_t rp_sm_registerSAMSourceIdentfier(uint8_t samId, SamSource_Fct fct){
 }
 
 void rp_sm_triggerSource(uint8_t samId, uint8_t paramLen, uint8_t *param){
-	db_cs_printString("Trigger Source :");
+	db_cs_printString("Trigger Source :\r");
 
 	sourceFct[samId](paramLen, param);
 }
@@ -98,12 +100,10 @@ void MFT2B_Handler(void){
 
 void I2C2_Handler(void){
 
-
-//	I2C_FillTxFIFO(I2C2, 0xFF);
-//	I2C_FlushTx(I2C2);
-//
-	I2C_GenerateStopCondition(I2C2);
-	I2C_ClearITPendingBit(I2C2, I2C_IT_MTD);
+	if(I2C_GetITPendingBit(I2C2, I2C_IT_TXFE)){
+		hw_i2c_isr_bufferEmpty();
+		I2C_ClearITPendingBit(I2C2, I2C_IT_TXFE);
+	}
 
 }
 
