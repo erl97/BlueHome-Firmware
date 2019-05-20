@@ -21,7 +21,7 @@
 
 void hw_i2c_init(){
 	FLAG_BUSY = 0;
-
+	RECV_BUSY = 0;
 	SysCtrl_PeripheralClockCmd(CLOCK_PERIPH_I2C2, ENABLE);
 
 	hw_gpio_init_PinSerial0(HW_I2C_SCL_PIN);
@@ -48,12 +48,13 @@ void hw_i2c_init(){
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 
-	I2C_ITConfig(I2C2, I2C_IT_TXFE, DISABLE);
+	I2C_ITConfig(I2C2, I2C_IT_RXFNF|I2C_IT_LBR|I2C_IT_RFSR|I2C_IT_RFSE|I2C_IT_WTSR|I2C_IT_MTD|I2C_IT_STD|I2C_IT_SAL|I2C_IT_MAL|I2C_IT_BERR|I2C_IT_MTDWS|I2C_IT_TIMEOUT, ENABLE);
 
 }
 
 void hw_i2c_write(uint8_t addr, const uint8_t *data, uint8_t length, uint8_t wait, uint8_t end){
 
+	I2C_FlushTx(I2C2);
 	for(int i = 0; i < length; i++){
 		I2C_FillTxFIFO(I2C2, data[i]);
 	}
@@ -67,7 +68,7 @@ void hw_i2c_write(uint8_t addr, const uint8_t *data, uint8_t length, uint8_t wai
 	else transmissionType.StopCondition = I2C_StopCondition_Disable;
 	transmissionType.Length = length;
 
-	I2C_ITConfig(I2C2, I2C_IT_TXFE, ENABLE);
+	I2C_ITConfig(I2C2, I2C_IT_MTD, ENABLE);
 	I2C_BeginTransaction(I2C2, &transmissionType);
 	FLAG_BUSY = 1;
 
@@ -77,8 +78,34 @@ void hw_i2c_write(uint8_t addr, const uint8_t *data, uint8_t length, uint8_t wai
 	return;
 }
 
+void hw_i2c_read(uint8_t addr, uint8_t registerAddr, uint8_t length){
+
+
+	hw_i2c_write(addr, &registerAddr, 1, 1, 0);
+
+	I2C_TransactionType transmissionType;
+	transmissionType.Operation = I2C_Operation_Read;
+	transmissionType.Address = addr;
+	transmissionType.AddressType = I2C_AddressType_7Bit;
+	transmissionType.StartByte = I2C_StartByte_Disable;
+	transmissionType.StopCondition = I2C_StopCondition_Enable;
+	transmissionType.Length = length;
+
+	//I2C_ITConfig(I2C2, I2C_IT_MTD|I2C_IT_STD, ENABLE);
+	I2C_BeginTransaction(I2C2, &transmissionType);
+
+	RECV_BUSY = 1;
+
+	while(RECV_BUSY){};
+
+}
+
+void hw_i2c_isr_received(){
+	RECV_BUSY = 0;
+}
+
 void hw_i2c_isr_bufferEmpty(){
 	FLAG_BUSY = 0;
-	I2C_ITConfig(I2C2, I2C_IT_TXFE, DISABLE);
+	I2C_ITConfig(I2C2, I2C_IT_MTD, DISABLE);
 }
 

@@ -100,9 +100,32 @@ void MFT2B_Handler(void){
 
 void I2C2_Handler(void){
 
-	if(I2C_GetITPendingBit(I2C2, I2C_IT_TXFE)){
+//	db_cs_printString("I2C Interrupt\r");
+//	db_cs_printInt(I2C2->MISR);
+//	db_cs_printInt(I2C_GetITPendingBit(I2C2, I2C_IT_TXFE));
+//	db_cs_printString(" ");
+//	db_cs_printInt(I2C_GetITPendingBit(I2C2, I2C_IT_MTD));
+//	db_cs_printString(" ");
+//	db_cs_printInt(I2C_GetITPendingBit(I2C2, I2C_IT_MTDWS));
+
+//	db_cs_printString("\r");
+	if(I2C_GetITPendingBit(I2C2, I2C_IT_MTD) || I2C_GetITPendingBit(I2C2, I2C_IT_MTDWS)){
 		hw_i2c_isr_bufferEmpty();
-		I2C_ClearITPendingBit(I2C2, I2C_IT_TXFE);
+		I2C_ClearITPendingBit(I2C2, I2C_IT_MTD);
+		I2C_ClearITPendingBit(I2C2, I2C_IT_MTDWS);
+	}
+
+	if(I2C_GetITPendingBit(I2C2, I2C_IT_LBR)){
+		db_cs_printString("Data: ");
+		for(int j = 0; j < 8; j++){
+			uint8_t i = I2C_ReceiveData(I2C2);
+			db_cs_printInt(i);
+			db_cs_printString(" ");
+		}
+		db_cs_printString("\r");
+		I2C_FlushRx(I2C2);
+		hw_i2c_isr_received();
+		I2C_ClearITPendingBit(I2C2, I2C_IT_LBR);
 	}
 
 }
