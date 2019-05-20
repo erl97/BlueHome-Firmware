@@ -15,8 +15,13 @@
 typedef void (*SamSource_Fct)(uint8_t paramLen, uint8_t *param);
 
 SamSource_Fct sourceFct[SAM_NUM];
+uint8_t sourceFlags[SAM_NUM];
 
-void rp_im_init();
+void rp_sm_init();
+
+void rp_sm_tick();
+
+void rp_sm_setSourceFlag(uint8_t samId);
 
 uint8_t rp_sm_registerSAMSourceIdentfier(uint8_t samId, SamSource_Fct fct);
 

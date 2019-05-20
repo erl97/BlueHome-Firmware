@@ -10,6 +10,8 @@
 
 #include <stdint.h>
 
+#include "RuleProcess/RP_Types.h"
+
 #define SX8635_ADDR 0x2B
 
 uint32_t SAM_PIN_TB_INT;
@@ -41,6 +43,7 @@ uint32_t SAM_PIN_TB_INT;
 void sam_tb_init();
 void sam_tb_initHW();
 
-void sam_tb_notifyEvent();
+void sam_tb_triggerSource(uint8_t paramLen, uint8_t *param);
+void sam_tb_triggerAction(Action *action);
 
 #endif /* BLUEHOME_SOURCEACTIONMANAGER_SAM_TOUCHBUTTON_H_ */

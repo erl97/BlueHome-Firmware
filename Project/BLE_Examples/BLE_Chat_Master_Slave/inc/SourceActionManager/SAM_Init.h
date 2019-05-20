@@ -30,7 +30,6 @@ enum {
 };
 
 
-//PINS -> INT SOURCE PIN ID = SAM IDs
 // Additional Pins here //
 enum {
 	SAM_PIN_ID_UNKNWON = 0,
@@ -39,8 +38,11 @@ enum {
 	SAM_PIN_ID_RELAIS_2 = 3,
 	SAM_PIN_ID_RELAIS_3 = 4,
 	SAM_PIN_ID_PIEPER_0 = 5,
-	SAM_PIN_ID_TB_INT   = 6
+	SAM_PIN_ID_TB_INT   = 6,
+	PIN_NUM
 };
+
+
 //#define SAM_PIN_ID_XXX	100
 
 void sam_init_init();

@@ -21,7 +21,14 @@
 #include "HardwareUtil/HW_GPIO.h"
 #include "HardwareUtil/HW_I2C.h"
 
+#include "misc.h"
+
+#include "SourceActionManager/SAM_Init.h"
+
 uint32_t rtc_pin = 0;
+
+// Resolve pinIDs to samIDs
+uint8_t pinIdToSam[] = {SAM_ID_UNKNWON, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_PIEPER, SAM_ID_TOUCHBUTTON};
 
 void hw_init_init()
 {
@@ -38,7 +45,6 @@ void hw_init_init()
 	for (int i = 1; i < sizeof(setPinVar) / sizeof(uint32_t*); i++)
 	{
 		setPinVar[i] = &PIN_ERR_FLAG;
-
 	}
 	for (int i = 0; i < sizeof(setBusAddrVar) / sizeof(uint8_t*); i++)
 	{
@@ -66,9 +72,12 @@ uint8_t hw_init_registerBusAddrIdentfier(uint8_t samID, uint8_t* addr)
 	return 0;
 }
 
-uint32_t hw_init_getIntPinFromSAM(uint8_t samID){
-	if(*setPinVar[samID] == PIN_ERR_FLAG) return 0xffff;
-	else return *setPinVar[samID];
+uint32_t hw_init_getPinFromPinId(uint8_t pinID){
+	return *setPinVar[pinID];
+}
+
+uint8_t hw_init_getSamIdFromPinId(uint8_t pinId){
+	return pinIdToSam[pinId];
 }
 
 void hw_init_pins()
@@ -87,19 +96,34 @@ void hw_init_pins()
 		uint8_t pinMode = FLASH_ReadByte(_MEMORY_HWCONFIG_BEGIN_ + 16 + i);
 		db_cs_printInt(pinMode);
 
-		if(*setPinVar[pinMode] == 0xffff){ //Configure as output
+		uint32_t mode = *setPinVar[pinMode];
+		*setPinVar[pinMode] = currPin;
+
+		if(mode == 0xffff){ //Configure as output
 			hw_gpio_init_PinOut(currPin);
-		} else if(*setPinVar[pinMode] == 0xfff0){
+		} else if(mode == 0x0000){ //Configure as input
+			hw_gpio_init_PinIn(currPin);
+		} else if(mode == 0xfff0){
 			hw_gpio_init_PinSerial0(currPin);
-		} else if(*setPinVar[pinMode] == 0xfff1){
+		} else if(mode == 0xfff1){
 			hw_gpio_init_PinSerial1(currPin);
-		} else if(*setPinVar[pinMode] == 0xfff2){
+		} else if(mode == 0xfff2){
 			hw_gpio_init_PinSerial2(currPin);
 		}
 
-		*setPinVar[pinMode] = currPin;
 		currPin = currPin << 1;
 	}
+
+	// Disable PIN_1/2 Interrupt
+	GPIO_EXTICmd(1, DISABLE);
+	GPIO_EXTICmd(2, DISABLE);
+
+	// Enable GPIO Interrupts
+	NVIC_InitType NVIC_InitStructure;
+	NVIC_InitStructure.NVIC_IRQChannel = GPIO_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = LOW_PRIORITY;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
 
 	// Read Ext Pin Config (Port Expander)
 	currPin = NUM_LOCAL_PIN;

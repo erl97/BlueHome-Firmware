@@ -1,5 +1,6 @@
-HW_Init.c:26:6:hw_init_init	8	static
-HW_Init.c:57:9:hw_init_registerPinIdentfier	0	static
-HW_Init.c:63:9:hw_init_registerBusAddrIdentfier	0	static
-HW_Init.c:69:10:hw_init_getIntPinFromSAM	0	static
-HW_Init.c:74:6:hw_init_pins	24	static
+HW_Init.c:33:6:hw_init_init	8	static
+HW_Init.c:63:9:hw_init_registerPinIdentfier	0	static
+HW_Init.c:69:9:hw_init_registerBusAddrIdentfier	0	static
+HW_Init.c:75:10:hw_init_getPinFromPinId	0	static
+HW_Init.c:79:9:hw_init_getSamIdFromPinId	0	static
+HW_Init.c:83:6:hw_init_pins	32	static

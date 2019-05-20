@@ -31,13 +31,31 @@
 
 #include "SourceActionManager/SAM_Init.h"
 #include "SourceActionManager/SAM_Pieper.h"
-
+#include "SourceActionManager/SAM_Init.h"
 
 extern LSM6DS3_DrvExtTypeDef *Imu6AxesDrvExt;
 
-void rp_im_init()
-{
+uint8_t volatile PROGRAM_FLAG = 0;
 
+void rp_sm_init()
+{
+	for(uint8_t i = 0; i < SAM_NUM; i++){
+		sourceFlags[i] = 0;
+	}
+}
+
+void rp_sm_tick(){
+	for(uint8_t i = 0; i < SAM_NUM; i++){
+		if(sourceFlags[i] == 1){
+			sourceFlags[i] = 0;
+			//Call Source Trigger
+			rp_sm_triggerSource(i, 0, NULL);
+		}
+	}
+}
+
+void rp_sm_setSourceFlag(uint8_t samId){
+	sourceFlags[samId] = 1;
 }
 
 uint8_t rp_sm_registerSAMSourceIdentfier(uint8_t samId, SamSource_Fct fct){
@@ -46,7 +64,7 @@ uint8_t rp_sm_registerSAMSourceIdentfier(uint8_t samId, SamSource_Fct fct){
 }
 
 void rp_sm_triggerSource(uint8_t samId, uint8_t paramLen, uint8_t *param){
-	db_cs_printString("Trigger Source :\r");
+	db_cs_printString("Trigger Source : ");
 
 	sourceFct[samId](paramLen, param);
 }
@@ -79,17 +97,35 @@ void GPIO_Handler(void)
 {
 	// DEBUG //
 	//db_tc_GPIO_Int();
+//	db_cs_printString("GPIO Int ");
+//    db_cs_printInt(GPIO->MIS);
+//    db_cs_printString(" ");
+//    db_cs_printInt(GPIO->RIS);
+//    db_cs_printString("\r");
 
 	// Determine Triggered Source
-	for(int i = 0; i < SAM_NUM; i++){
-		uint32_t pinAddr = hw_init_getIntPinFromSAM(i);
-		if(pinAddr != 0xffff && GPIO_GetITPendingBit(pinAddr) == SET){
-			GPIO_ClearITPendingBit(pinAddr);
+	for(int i = 1; i < PIN_NUM; i++){
+		uint32_t pinAddr = hw_init_getPinFromPinId(i);
 
-			//Call Source Trigger
-			rp_sm_triggerSource(i, 0, NULL);
+		if(pinAddr <= 0xfff0 && pinAddr != 0x0000){
+				uint8_t samId = hw_init_getSamIdFromPinId(i);
+//				db_cs_printInt(samId);
+//				db_cs_printString(" ");
+//				db_cs_printInt(pinAddr);
+//				db_cs_printString(" - ");
+				if(samId != SAM_ID_UNKNWON){
+					if(GPIO_GetITPendingBit(pinAddr) == SET){
+						GPIO_ClearITPendingBit(pinAddr);
+
+						if(PROGRAM_FLAG) PROGRAM_FLAG = 0;
+						else rp_sm_setSourceFlag(samId);
+
+						break;
+					}
+				}
 		}
 	}
+	db_cs_printString("\r");
 
 }
 
@@ -116,14 +152,6 @@ void I2C2_Handler(void){
 	}
 
 	if(I2C_GetITPendingBit(I2C2, I2C_IT_LBR)){
-		db_cs_printString("Data: ");
-		for(int j = 0; j < 8; j++){
-			uint8_t i = I2C_ReceiveData(I2C2);
-			db_cs_printInt(i);
-			db_cs_printString(" ");
-		}
-		db_cs_printString("\r");
-		I2C_FlushRx(I2C2);
 		hw_i2c_isr_received();
 		I2C_ClearITPendingBit(I2C2, I2C_IT_LBR);
 	}

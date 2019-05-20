@@ -35,7 +35,8 @@ void hw_init_init();
 uint8_t hw_init_registerPinIdentfier(uint8_t pinID, uint32_t* addr);
 uint8_t hw_init_registerBusAddrIdentfier(uint8_t samID, uint8_t* addr);
 
-uint32_t hw_init_getIntPinFromSAM(uint8_t samID);
+uint32_t hw_init_getPinFromPinId(uint8_t pinId);
+uint8_t hw_init_getSamIdFromPinId(uint8_t pinId);
 
 void hw_init_pins();
 
