@@ -19,6 +19,9 @@
 
 #include "Debug/DB_Console.h"
 
+uint8_t* RECV_BUFFER;
+volatile uint8_t RECV_LENGTH;
+
 void hw_i2c_init(){
 	FLAG_BUSY = 0;
 	RECV_BUSY = 0;
@@ -78,7 +81,7 @@ void hw_i2c_write(uint8_t addr, const uint8_t *data, uint8_t length, uint8_t wai
 	return;
 }
 
-void hw_i2c_read(uint8_t addr, uint8_t registerAddr, uint8_t length){
+void hw_i2c_read(uint8_t addr, uint8_t registerAddr, uint8_t length, uint8_t* buffer){
 
 
 	hw_i2c_write(addr, &registerAddr, 1, 1, 0);
@@ -95,6 +98,8 @@ void hw_i2c_read(uint8_t addr, uint8_t registerAddr, uint8_t length){
 	I2C_BeginTransaction(I2C2, &transmissionType);
 
 	RECV_BUSY = 1;
+	RECV_BUFFER = buffer;
+	RECV_LENGTH = length;
 
 	while(RECV_BUSY){};
 
@@ -102,6 +107,12 @@ void hw_i2c_read(uint8_t addr, uint8_t registerAddr, uint8_t length){
 
 void hw_i2c_isr_received(){
 	RECV_BUSY = 0;
+
+	for(int i = 0; i < RECV_LENGTH; i++){
+		RECV_BUFFER[i] = I2C_ReceiveData(I2C2);
+	}
+	I2C_FlushRx(I2C2);
+
 }
 
 void hw_i2c_isr_bufferEmpty(){

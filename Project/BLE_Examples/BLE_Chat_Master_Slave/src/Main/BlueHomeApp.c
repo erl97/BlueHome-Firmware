@@ -150,6 +150,8 @@ void APP_Tick(void)
 		hw_bl_setConnectable = FALSE;
 	}
 
+	rp_sm_tick();
+
 	rp_rc_tick();
 
 	rp_am_tick();

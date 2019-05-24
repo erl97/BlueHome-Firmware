@@ -11,16 +11,20 @@
 
 #include "SourceActionManager/SAM_Init.h"
 
+#include "RuleProcess/RP_RuleChecker.h"
 #include "RuleProcess/RP_SourceManager.h"
 #include "RuleProcess/RP_ActionManager.h"
 
 #include "HardwareUtil/HW_Init.h"
 #include "HardwareUtil/HW_I2C.h"
+#include "HardwareUtil/HW_MAC.h"
 
 #include "RuleProcess/RP_Types.h"
 #include "Debug/DB_Console.h"
 
 //0x0E, 0xFA, 0x92, 0x10,
+
+extern uint8_t hw_bl_connectedDeviceAddr[6];
 
 static const uint8_t initSPMData[] = {
 		0x00, 0x00, 0x19, 0x00, 0x2B, 0x02, 0x0D, 0x00,
@@ -106,6 +110,7 @@ void sam_tb_initHW()
 }
 
 void sam_tb_programSPM(uint8_t baseAdress, const uint8_t* spmData){
+	PROGRAM_FLAG = 1;
 
 	uint8_t sendData[16];
 	sendData[0] = 0x0D; //SpmCfg Register
@@ -137,12 +142,11 @@ void sam_tb_programSPM(uint8_t baseAdress, const uint8_t* spmData){
 	hw_i2c_write(SX8635_ADDR, sendData, 2, 1, 1);
 
 	db_cs_printString("WAIT");
-	PROGRAM_FLAG = 1;
+
 	while(PROGRAM_FLAG){}
 
 	uint8_t recvData[1];
 	hw_i2c_read(SX8635_ADDR, 0x00, 1, recvData); // Read SPM Interrupt
-
 }
 
 void sma_tb_readSPM(uint8_t baseAdress, uint8_t* dataBuffer){
@@ -178,34 +182,32 @@ void sma_tb_readSPM(uint8_t baseAdress, uint8_t* dataBuffer){
 void sam_tb_triggerSource(uint8_t paramLen, uint8_t *param)
 {
 	db_cs_printString("Touch Button Source\r");
-	db_cs_printString("Cause: ");
+
+	//Create Source
+	Source touchSource;
+
+	touchSource.sourceSAM = SAM_ID_TOUCHBUTTON;
+	touchSource.sourceID = hw_mac_getMacId(hw_bl_connectedDeviceAddr);
 
 	//Get Data
 	uint8_t data[1];
 	hw_i2c_read(SX8635_ADDR, 0x00, 1, data); // Read Interrupt Source
-	db_cs_printInt(data[0]);
-	db_cs_printString(" Value: ");
-
+	touchSource.param[0] = data[0];		//4=Button; 8=Wheel
 	hw_i2c_read(SX8635_ADDR, 0x01, 1, data); // Read Button Stat (Msb)
-	db_cs_printInt(data[0]);
-	db_cs_printString(" ");
-
+	touchSource.param[1] = data[0];		//2=uLButton; 4=uRButton; 16=1Segment; 80=Wheel
 	hw_i2c_read(SX8635_ADDR, 0x02, 1, data); // Read Button Stat (Lsb)
-	db_cs_printInt(data[0]);
-	db_cs_printString(" Wheel: ");
-
+	touchSource.param[2] = data[0];		//2=uLButton; 4=uRButton
 	hw_i2c_read(SX8635_ADDR, 0x03, 1, data); // Read Wheel (Msb)
-	db_cs_printInt(data[0]);
-	db_cs_printString(" ");
-
+	touchSource.param[3] = data[0];		//immer 0?
 	hw_i2c_read(SX8635_ADDR, 0x04, 1, data); // Read Wheel (Lsb)
-	db_cs_printInt(data[0]);
-	db_cs_printString("\r");
+	touchSource.param[4] = data[0];		//0-59; 0 bei 225°; 37(,5) bei 0°
 
-	//Create Source
+	for(int i = 5; i < MAX_PARAM; i++){
+		touchSource.param[i] = 0;
+	}
+
 	//Add to buffer
-
-
+	rp_rc_addSource(touchSource);
 }
 
 void sam_tb_triggerAction(Action *action)

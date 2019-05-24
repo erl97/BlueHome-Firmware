@@ -97,7 +97,7 @@ void GPIO_Handler(void)
 {
 	// DEBUG //
 	//db_tc_GPIO_Int();
-//	db_cs_printString("GPIO Int ");
+	db_cs_printString("GPIO Int ");
 //    db_cs_printInt(GPIO->MIS);
 //    db_cs_printString(" ");
 //    db_cs_printInt(GPIO->RIS);

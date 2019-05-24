@@ -20,6 +20,7 @@ enum {
 	SAM_ID_DIO = 8,
 	SAM_ID_PROGRAMMING = 9,
 	SAM_ID_PIEPER = 10,
+	SAM_ID_LIGHT = 11,
 	SAM_NUM
 };
 

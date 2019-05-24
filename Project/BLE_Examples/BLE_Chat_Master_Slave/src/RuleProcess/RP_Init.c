@@ -13,6 +13,6 @@
 void rp_init_init()
 {
 	rp_am_init();
-	rp_im_init();
+	rp_sm_init();
 	rp_rc_init();
 }
