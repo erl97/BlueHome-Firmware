@@ -14,6 +14,7 @@
 #include "SourceActionManager/SAM_Programming.h"
 #include "SourceActionManager/SAM_Relais.h"
 #include "SourceActionManager/SAM_Pieper.h"
+#include "SourceActionManager/SAM_Light.h"
 
 void sam_init_init()
 {
@@ -24,6 +25,7 @@ void sam_init_init()
 	sam_prog_init();
 	sam_relay_init();
 	sam_pieper_init();
+	sam_light_init();
 }
 
 void sam_init_initHW()
