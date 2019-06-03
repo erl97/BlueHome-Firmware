@@ -40,6 +40,7 @@ enum {
 	SAM_PIN_ID_RELAIS_3 = 4,
 	SAM_PIN_ID_PIEPER_0 = 5,
 	SAM_PIN_ID_TB_INT   = 6,
+	SAM_PIN_ID_LIGHT_INT = 7,
 	PIN_NUM
 };
 

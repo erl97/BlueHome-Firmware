@@ -70,9 +70,10 @@ void sam_bl_triggerAction(Action *action){
 
 	db_cs_printString("Bluetooth Action\r");
 
-	if(action->actionID == 0){ //Publish on own GATT
-		bl_gatt_updateDirectParam(action->param);
-	}else{ //Send to other node
+	if(action->actionID == SAM_BLUETOOTH_ACT_ID_PUBLISH){
+		bl_gatt_updateDirectParam(action->param);  //Publish on own GATT
+
+	}else if(action->actionID == SAM_BLUETOOTH_ACT_ID_SEND){
 		uint8_t bdaddr[6];
 		hw_mac_getMac(action->actionID, bdaddr);
 

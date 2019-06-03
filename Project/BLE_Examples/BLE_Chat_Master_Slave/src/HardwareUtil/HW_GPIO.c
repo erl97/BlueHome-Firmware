@@ -47,7 +47,7 @@ void hw_gpio_init_PinIn(uint32_t pin)
 	GPIO_InitType GPIO_InitStructure;
 	GPIO_InitStructure.GPIO_Pin = pin;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Input;
-	GPIO_InitStructure.GPIO_Pull = DISABLE;
+	GPIO_InitStructure.GPIO_Pull = ENABLE;
 	GPIO_InitStructure.GPIO_HighPwr = DISABLE;
 	GPIO_Init(&GPIO_InitStructure);
 

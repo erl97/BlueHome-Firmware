@@ -25,7 +25,9 @@
 
 #include "SourceActionManager/SAM_Init.h"
 
+
 #include "RuleProcess/RP_RuleChecker.h"
+#include "RuleProcess/RP_SourceManager.h"
 #include "RuleProcess/RP_ActionManager.h"
 
 #include "Debug/DB_Console.h"

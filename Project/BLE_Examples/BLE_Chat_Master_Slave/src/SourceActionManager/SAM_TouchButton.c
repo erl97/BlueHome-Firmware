@@ -187,22 +187,21 @@ void sam_tb_triggerSource(uint8_t paramLen, uint8_t *param)
 	Source touchSource;
 
 	touchSource.sourceSAM = SAM_ID_TOUCHBUTTON;
-	touchSource.sourceID = hw_mac_getMacId(hw_bl_connectedDeviceAddr);
 
-	//Get Data
 	uint8_t data[1];
 	hw_i2c_read(SX8635_ADDR, 0x00, 1, data); // Read Interrupt Source
-	touchSource.param[0] = data[0];		//4=Button; 8=Wheel
-	hw_i2c_read(SX8635_ADDR, 0x01, 1, data); // Read Button Stat (Msb)
-	touchSource.param[1] = data[0];		//2=uLButton; 4=uRButton; 16=1Segment; 80=Wheel
-	hw_i2c_read(SX8635_ADDR, 0x02, 1, data); // Read Button Stat (Lsb)
-	touchSource.param[2] = data[0];		//2=uLButton; 4=uRButton
-	hw_i2c_read(SX8635_ADDR, 0x03, 1, data); // Read Wheel (Msb)
-	touchSource.param[3] = data[0];		//immer 0?
-	hw_i2c_read(SX8635_ADDR, 0x04, 1, data); // Read Wheel (Lsb)
-	touchSource.param[4] = data[0];		//0-59; 0 bei 225°; 37(,5) bei 0°
+	touchSource.sourceID = data[0];
 
-	for(int i = 5; i < MAX_PARAM; i++){
+	hw_i2c_read(SX8635_ADDR, 0x01, 1, data); // Read Button Stat (Msb)
+	touchSource.param[0] = data[0];		//2=uLButton; 4=uRButton; 16=1Segment; 80=Wheel
+	hw_i2c_read(SX8635_ADDR, 0x02, 1, data); // Read Button Stat (Lsb)
+	touchSource.param[1] = data[0];		//2=uLButton; 4=uRButton
+	hw_i2c_read(SX8635_ADDR, 0x03, 1, data); // Read Wheel (Msb)
+	touchSource.param[2] = data[0];		//immer 0?
+	hw_i2c_read(SX8635_ADDR, 0x04, 1, data); // Read Wheel (Lsb)
+	touchSource.param[3] = data[0];		//0-59; 0 bei 225°; 37(,5) bei 0°
+
+	for(int i = 4; i < MAX_PARAM; i++){
 		touchSource.param[i] = 0;
 	}
 

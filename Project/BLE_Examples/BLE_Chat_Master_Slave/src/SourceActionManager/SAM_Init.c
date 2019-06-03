@@ -32,5 +32,6 @@ void sam_init_initHW()
 {
 	sam_pieper_initHW();
 	sam_tb_initHW();
+	sam_light_initHW();
 
 }
