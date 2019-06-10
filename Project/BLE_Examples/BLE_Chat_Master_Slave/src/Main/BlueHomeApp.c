@@ -80,6 +80,7 @@ int main(void)
 		db_cs_printString("Initialization successfully ! \r");
 	else{
 		db_cs_printString("Initialization failed ! \r");
+		db_cs_printString("Halting CPU... \r");
 		while (1){}
 	}
 		//SdkEvalLedOn(LED3);

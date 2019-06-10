@@ -1,6 +1,6 @@
-SAM_TouchButton.c:212:6:sam_tb_triggerAction	8	static
-SAM_TouchButton.c:182:6:sam_tb_triggerSource	56	static
+SAM_TouchButton.c:215:6:sam_tb_triggerAction	8	static
+SAM_TouchButton.c:185:6:sam_tb_triggerSource	56	static
 SAM_TouchButton.c:62:6:sam_tb_init	8	static
-SAM_TouchButton.c:112:6:sam_tb_programSPM	64	static
-SAM_TouchButton.c:152:6:sma_tb_readSPM	48	static
-SAM_TouchButton.c:77:6:sam_tb_initHW	24	static
+SAM_TouchButton.c:115:6:sam_tb_programSPM	64	static
+SAM_TouchButton.c:155:6:sma_tb_readSPM	48	static
+SAM_TouchButton.c:77:6:sam_tb_initHW	32	static

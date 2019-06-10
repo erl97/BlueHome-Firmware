@@ -20,6 +20,7 @@
 #include "HardwareUtil/HW_Bluetooth.h"
 #include "HardwareUtil/HW_GPIO.h"
 #include "HardwareUtil/HW_I2C.h"
+#include "HardwareUtil/HW_SPI.h"
 
 #include "misc.h"
 
@@ -55,7 +56,7 @@ void hw_init_init()
 	hw_mac_init();
 	hw_bl_init();
 	hw_i2c_init();
-
+	hw_spi_init();
 }
 
 

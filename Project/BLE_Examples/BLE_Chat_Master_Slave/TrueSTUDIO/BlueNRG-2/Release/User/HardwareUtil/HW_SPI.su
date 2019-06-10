@@ -1,0 +1,4 @@
+HW_SPI.c:127:6:hw_spi_write.constprop	16	static
+HW_SPI.c:21:6:hw_spi_init	24	static
+HW_SPI.c:127:6:hw_spi_write	16	static
+HW_SPI.c:139:6:hw_spi_isp	8	static

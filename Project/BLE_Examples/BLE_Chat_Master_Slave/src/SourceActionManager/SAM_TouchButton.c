@@ -79,6 +79,9 @@ void sam_tb_initHW()
 	if(SAM_PIN_TB_INT != 0x0000){
 		db_cs_printString("Init TouchButton HW...\r");
 
+		uint8_t recvData[1];
+		hw_i2c_read(SX8635_ADDR, 0x00, 1, recvData); // Read SPM Interrupt
+
 		//hw_i2c_write(uint8_t addr, uint8_t *data, uint8_t length, uint8_t wait, uint8_t end);
 		//int i = 1;
 		for(int i = 0; i < 16; i++){ //16

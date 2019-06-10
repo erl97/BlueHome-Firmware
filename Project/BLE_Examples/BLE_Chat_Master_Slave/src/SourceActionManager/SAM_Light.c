@@ -122,9 +122,28 @@ void sam_light_triggerSource(uint8_t paramLen, uint8_t *param)
 	//Create Source
 	//Add to buffer
 
-	db_cs_printString("Reseting interrupts\r");
+	//Set thresholds
+	db_cs_printString("Write Threshold Register\r");
 
 	uint8_t sendData[16];
+	sendData[0] = 0xA4; //CMD Register
+	sendData[1] = recvData[0] < SAM_LIGHT_TH ? 0 : recvData[0] - SAM_LIGHT_TH; //ALS low th low byte Register
+	hw_i2c_write(TSL25911_ADDR, sendData, 2, 1, 1);
+
+	sendData[0] = 0xA5; //CMD Register
+	sendData[1] = recvData[1]; //ALS low th high byte Register
+	hw_i2c_write(TSL25911_ADDR, sendData, 2, 1, 1);
+
+	sendData[0] = 0xA6; //CMD Register
+	sendData[1] = 0xff-recvData[0] < SAM_LIGHT_TH ? 0xff : recvData[0] + SAM_LIGHT_TH; //ALS high th low byte Register
+	hw_i2c_write(TSL25911_ADDR, sendData, 2, 1, 1);
+
+	sendData[0] = 0xA7; //CMD Register
+	sendData[1] = recvData[1]; //ALS high th high byte Register
+	hw_i2c_write(TSL25911_ADDR, sendData, 2, 1, 1);
+
+	db_cs_printString("Reseting interrupts\r");
+
 	sendData[0] = 0xE7; //CMD Register
 	hw_i2c_write(TSL25911_ADDR, sendData, 1, 1, 1);
 }

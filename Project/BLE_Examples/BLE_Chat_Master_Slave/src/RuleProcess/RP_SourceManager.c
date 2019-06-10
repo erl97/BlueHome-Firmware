@@ -12,6 +12,7 @@
 #include "BlueNRG_x_device.h"
 #include "BlueNRG1_gpio.h"
 #include "bluenrg1_stack.h"
+#include "BlueNRG1_spi.h"
 #include "clock.h"
 #include "BlueNRG1_i2c.h"
 
@@ -20,6 +21,7 @@
 
 #include "HardwareUtil/HW_UART.h"
 #include "HardwareUtil/HW_I2C.h"
+#include "HardwareUtil/HW_SPI.h"
 
 #include "Debug/DB_TestCases.h"
 #include "Debug/DB_Console.h"
@@ -155,6 +157,17 @@ void I2C2_Handler(void){
 		hw_i2c_isr_received();
 		I2C_ClearITPendingBit(I2C2, I2C_IT_LBR);
 	}
+
+}
+
+void SPI_Handler(void) {
+
+//	db_cs_printString("SPI Interrupt\r");
+//	db_cs_printInt(SPI->RIS);
+//	db_cs_printString("\r");
+
+	hw_spi_isp();
+	SPI_ClearITPendingBit(SPI_IT_TE);
 
 }
 
