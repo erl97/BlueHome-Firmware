@@ -21,7 +21,7 @@ uint8_t HW_ID;
 uint8_t HW_VERSION;
 uint8_t HW_BUS_DEV_NUM;
 
-uint32_t* setPinVar[255];
+uint32_t* setPinVar[32];
 uint8_t* setBusAddrVar[NUM_MAX_BUSADDR];
 
 //Assert Flags
