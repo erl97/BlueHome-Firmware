@@ -1,2 +1,2 @@
-SAM_Init.c:19:6:sam_init_init	8	static
-SAM_Init.c:31:6:sam_init_initHW	8	static
+SAM_Init.c:20:6:sam_init_init	8	static
+SAM_Init.c:33:6:sam_init_initHW	8	static

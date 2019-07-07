@@ -383,7 +383,18 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 		while(txHandle == 0){
 			BTLE_StackTick();
 		}
-		txHandle = 0;
+
+		db_cs_printString("SEND DATA\r");
+		db_cs_printString(" Handle: ");
+		db_cs_printInt(txHandle);
+		db_cs_printString(" Data LENGTH: ");
+		db_cs_printInt(data_length);
+		db_cs_printString(" Data: ");
+		for(int i = 0; i < data_length; i++){
+			db_cs_printInt(data[i]);
+			db_cs_printString(" ");
+		}
+		db_cs_printString("\r");
 
 		tBleStatus ret = aci_gatt_write_without_resp(connection_handle, txHandle+1, data_length, data);
 		//tBleStatus ret = aci_gatt_write_char_value(connection_handle, txHandle+1, MAX_PARAM, d);
@@ -398,6 +409,7 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 			BTLE_StackTick();
 		};
 		transmitionDone = 0;
+		txHandle = 0;
 
 		//Disconnect
 		hw_bl_terminateConnection();
@@ -406,6 +418,7 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 		hw_bl_setDeviceConnectable();
 		db_as_assert(DB_AS_ERROR_BLUETOOTH, "Error could not connect to:");
 		db_cs_printMAC(addr);
+		return 1;
 	}
 
 //	MAYBE TIMEOUT FOR WRITE IN FLASH
@@ -600,6 +613,9 @@ void aci_gatt_disc_read_char_by_uuid_resp_event(uint16_t Connection_Handle,
 		db_cs_printString(" ");
 		db_cs_printInt(Attribute_Value[i]);
 	}
+	db_cs_printString("\r");
+	db_cs_printString("TX Handle: ");
+	db_cs_printInt(Attribute_Handle);
 	db_cs_printString("\r");
 
  	txHandle = Attribute_Handle;

@@ -15,6 +15,7 @@
 #include "SourceActionManager/SAM_Relais.h"
 #include "SourceActionManager/SAM_Pieper.h"
 #include "SourceActionManager/SAM_Light.h"
+#include "SourceActionManager/SAM_GPIO.h"
 
 void sam_init_init()
 {
@@ -26,6 +27,7 @@ void sam_init_init()
 	sam_relay_init();
 	sam_pieper_init();
 	sam_light_init();
+	sam_gpio_init();
 }
 
 void sam_init_initHW()
@@ -33,5 +35,6 @@ void sam_init_initHW()
 	sam_pieper_initHW();
 	sam_tb_initHW();
 	sam_light_initHW();
+	sam_gpio_initHW();
 
 }
