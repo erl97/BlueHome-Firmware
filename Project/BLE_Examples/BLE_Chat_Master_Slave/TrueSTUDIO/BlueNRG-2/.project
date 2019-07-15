@@ -200,6 +200,11 @@
 			<locationURI>PARENT-2-PROJECT_LOC/src/Debug</locationURI>
 		</link>
 		<link>
+			<name>User/HardwareConfig</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/src/HardwareConfig</locationURI>
+		</link>
+		<link>
 			<name>User/HardwareUtil</name>
 			<type>2</type>
 			<locationURI>PARENT-2-PROJECT_LOC/src/HardwareUtil</locationURI>

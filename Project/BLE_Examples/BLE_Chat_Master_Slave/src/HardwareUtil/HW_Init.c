@@ -91,6 +91,7 @@ void hw_init_pins()
 	}
 
 	// Read Local Pin Config
+	db_cs_printString("Pin Config: ");
 	uint32_t currPin = GPIO_Pin_0;
 	for (int i = 0; i < NUM_LOCAL_PIN; i++)
 	{
@@ -114,6 +115,7 @@ void hw_init_pins()
 
 		currPin = currPin << 1;
 	}
+	db_cs_printString("\r");
 
 	// Disable PIN_1/2 Interrupt
 	GPIO_EXTICmd(1, DISABLE);

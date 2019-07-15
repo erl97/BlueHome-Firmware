@@ -16,11 +16,11 @@
 #include "HardwareUtil/HW_UART.h"
 #include "HardwareUtil/HW_MAC.h"
 
-
 #include "RuleProcess/RP_Init.h"
 #include "RuleProcess/RP_Types.h"
 #include "RuleProcess/RP_SourceManager.h"
 #include "RuleProcess/RP_ActionManager.h"
+#include "RuleProcess/RP_RuleChecker.h"
 
 #include "SourceActionManager/SAM_Bluetooth.h"
 #include "SourceActionManager/SAM_Programming.h"
@@ -28,6 +28,9 @@
 
 #include "Bluetooth/BL_gatt_db.h"
 #include "HardwareUtil/HW_Bluetooth.h"
+
+#include "HardwareUtil/HW_Memory.h"
+
 
 void db_cs_executeCommand(char *cmd)
 {
@@ -232,7 +235,39 @@ void db_cs_executeCommand(char *cmd)
 
 		rp_am_addAction(&action);
 
-	}else {
+	}else if(strcmp(args, DB_CS_CMD_SHOW_ACTIONS) == 0){
+
+		db_cs_printString("ACTIONS List:\r");
+		db_cs_printString("============\r");
+		db_cs_printString("saved at address ");
+		db_cs_printInt(_MEMORY_ACTIONS_ADDR);
+		db_cs_printString("\r");
+		for(int i = 0; i < SIZEOF_PROG_ACTIONS; i++){
+			db_cs_printString("ID: ");
+			db_cs_printInt(i);
+			if(i < 10) db_cs_printString("  ");
+			else db_cs_printString(" ");
+			db_cs_printAction(&progActions[i]);
+		}
+
+	}else if(strcmp(args, DB_CS_CMD_SHOW_RULES) == 0){
+
+		db_cs_printString("RULES List:\r");
+		db_cs_printString("============\r");
+		db_cs_printString("saved at address ");
+		db_cs_printInt(_MEMORY_RULES_ADDR);
+		db_cs_printString("\r");
+		for(int i = 0; i < SIZEOF_RULES; i++){
+			db_cs_printString("ID: ");
+			db_cs_printInt(i);
+			if(i < 10) db_cs_printString("  ");
+			else db_cs_printString(" ");
+			db_cs_printRule(&progRules[i]);
+		}
+
+	}else if(strcmp(args, DB_CS_CMD_WHATSLIVE) == 0){
+		db_cs_printString("42\r");
+	}else{
 		db_cs_printString("Unknown Command !\r");
 	}
 
@@ -292,6 +327,29 @@ void db_cs_printSource(Source *source){
 		db_cs_printInt(source->param[i]);
 	}
 	db_cs_printString("]\r");
+}
+
+void db_cs_printRule(Rule *rule){
+	db_cs_printString("Rule: ");
+	db_cs_printString("TRIG_SAM: ");
+	db_cs_printInt(rule->sourceSAM);
+	db_cs_printString(" TRIG_SOURCEID: ");
+	db_cs_printInt(rule->sourceID);
+	db_cs_printString(" PARAMS: [");
+	for(int i = 0; i < MAX_PARAM; i++){
+		db_cs_printString(" ");
+		db_cs_printInt(rule->param[i]);
+	}
+	db_cs_printString(" ] PARAMS COMP: [");
+	for(int i = 0; i < MAX_PARAM; i++){
+		db_cs_printString(" ");
+		db_cs_printInt(rule->paramComp[i]);
+	}
+
+
+	db_cs_printString("] ----> TRIG_ACTION: ");
+	db_cs_printInt(rule->actionMemID);
+	db_cs_printString("\r");
 }
 
 char* db_cs_itoa(int i, char b[]){

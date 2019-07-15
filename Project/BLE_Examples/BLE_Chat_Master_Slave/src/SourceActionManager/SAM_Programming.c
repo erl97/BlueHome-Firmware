@@ -14,9 +14,12 @@
 
 #include "RuleProcess/RP_SourceManager.h"
 #include "RuleProcess/RP_ActionManager.h"
+#include "RuleProcess/RP_RuleChecker.h"
 
 #include "Debug/DB_Console.h"
 #include "Debug/DB_Assert.h"
+
+#include <string.h>
 
 extern uint8_t directParam[MAX_PARAM];
 extern uint8_t directCompParam[MAX_PARAM];
@@ -54,10 +57,29 @@ void sam_prog_triggerAction(Action *action)
 	switch(action->actionID){
 		case SAM_PROGRAMMING_ACT_ID_WRITE_RULE:{
 			db_cs_printString("Programming Rule...\r");
+
+			Rule r;
+			r.actionMemID = directActionMemID;
+			r.sourceSAM = directSourceSAMID;
+			r.sourceID = directSourceID;
+			memcpy(r.param, directParam, MAX_PARAM);
+			memcpy(r.paramComp, directCompParam, MAX_PARAM);
+
+			rp_rc_updateRules(&r, directRuleMemID);
+
 			break;
 		}
 		case SAM_PROGRAMMING_ACT_ID_WRITE_ACTION:{
 			db_cs_printString("Programming Action...\r");
+
+			Action a;
+			a.actionID = directActionID;
+			a.actionSAM = directActionSAMID;
+			a.paramMask = directMask;
+			memcpy(a.param, directParam, MAX_PARAM);
+
+			rp_am_updateAction(&a, directActionMemID);
+
 			break;
 		}
 		case SAM_PROGRAMMING_ACT_ID_WRITE_MAC:{
@@ -72,7 +94,6 @@ void sam_prog_triggerAction(Action *action)
 					}else return;
 				}
 
-
 				uint8_t mac[6];
 				for(int j = 0; j < 6; j++){
 					mac[5-j] = action->param[i+1+j];
@@ -86,8 +107,7 @@ void sam_prog_triggerAction(Action *action)
 				db_cs_printString("\r");
 
 				//Programming MAC
-				hw_mac_writeMacToFlash(mac, macID);
-
+				hw_mac_updateMac(mac, macID);
 			}
 			break;
 		}

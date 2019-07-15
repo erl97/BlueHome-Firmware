@@ -8,7 +8,7 @@
 #ifndef SOURCE_H_
 #define SOURCE_H_
 
-#include "stdint.h"
+#include <stdint.h>
 #include "RP_Types.h"
 #include "RP_Init.h"
 
@@ -32,6 +32,10 @@ Rule progRules[SIZEOF_RULES];
 //source.handler
 void rp_rc_init();
 
+void rp_rc_reloadRules();
+void rp_rc_updateRules(Rule* rule, uint8_t id);
+void rp_rc_writeRuleF(uint8_t id);
+void rp_rc_writeRulesToFlash();
 
 void rp_rc_addSource(Source source);
 

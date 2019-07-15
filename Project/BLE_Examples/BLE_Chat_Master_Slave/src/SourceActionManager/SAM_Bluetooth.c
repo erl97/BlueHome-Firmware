@@ -29,6 +29,8 @@
 #include "Bluetooth/BL_gatt_db.h"
 
 
+extern uint8_t DEVICE_BDADDR[6];
+
 extern uint8_t hw_bl_connectedDeviceAddr[6];
 extern uint16_t cmdServHandle, cmdCharHandle, pollCharHandle;
 
@@ -70,12 +72,13 @@ void sam_bl_triggerAction(Action *action){
 
 	db_cs_printString("Bluetooth Action\r");
 
-	if(action->actionID == SAM_BLUETOOTH_ACT_ID_PUBLISH){
+	uint8_t bdaddr[6];
+	hw_mac_getMac(action->actionID, bdaddr);
+
+	if(hw_mac_compareMac(DEVICE_BDADDR, bdaddr)){
 		bl_gatt_updateDirectParam(action->param);  //Publish on own GATT
 
-	}else if(action->actionID == SAM_BLUETOOTH_ACT_ID_SEND){
-		uint8_t bdaddr[6];
-		hw_mac_getMac(action->actionID, bdaddr);
+	}else{
 
 		uint8_t tx_uuid[16];
 		bl_gatt_getUUID(tx_uuid, 0);

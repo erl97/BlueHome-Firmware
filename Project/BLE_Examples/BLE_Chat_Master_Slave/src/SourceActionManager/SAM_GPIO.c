@@ -110,22 +110,19 @@ void sam_gpio_triggerSource(uint8_t paramLen, uint8_t *param)
 void sam_gpio_triggerAction(Action *action)
 {
 	db_cs_printString("GPIO Action\r");
-	uint8_t inData[2];
 
-//	while(1){
-//		//uint8_t inData[2];
-//		hw_i2c_read(SAM_BUS_ADDR_GPIO, 0x00, 2, inData);
-//		db_cs_printInt(inData[0]);
-//		db_cs_printString(" ");
-//		db_cs_printInt(inData[0]);
-//		db_cs_printString("\r");
-//
-//	}
+	uint8_t inData[2];
+	hw_i2c_read(SAM_BUS_ADDR_GPIO, 0x00, 2, inData);
 
 	uint8_t data[3];
 	data[0] = 0x00; //IO Base Address
 	data[1] = inData[0];
 	data[2] = inData[1];
+
+	db_cs_printInt(inData[0]);
+	db_cs_printString(" ");
+	db_cs_printInt(inData[1]);
+	db_cs_printString("\r");
 
 	if(action->actionID == SAM_GPIO_ACT_ID_TOGGLE){
 
@@ -143,6 +140,9 @@ void sam_gpio_triggerAction(Action *action)
 		if(action->param[0] >= 4) data[1] &= ~(1 << (action->param[0] - 4));
 		else data[2] &= ~(1 << action->param[0]);
 
+	}else if(action->actionID == SAM_GPIO_ACT_ID_ALLOFF){
+		data[1] = 0;
+		data[2] = 0;
 	}
 
 	hw_i2c_write(SAM_BUS_ADDR_GPIO, data, 3, 1, 1);

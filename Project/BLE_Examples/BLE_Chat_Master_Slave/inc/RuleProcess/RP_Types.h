@@ -30,7 +30,7 @@ typedef struct
 	uint8_t paramComp[MAX_PARAM];	//how to compare the values
 } Rule;
 
-#define BLOCKSIZE_RULES		(sizeof(Rule)/sizeof(uint8_t))		//52
+#define BLOCKSIZE_RULES		(sizeof(Rule)/sizeof(uint8_t)) + 4 - (sizeof(Rule)/sizeof(uint8_t))%4
 
 ////////////////////////////////// ACTION ////////////////////////////////////////
 
@@ -42,6 +42,6 @@ typedef struct
 	uint8_t param[MAX_PARAM]; //Info und Werte
 } Action;
 
-#define BLOCKSIZE_ACTIONS	(sizeof(Action)/sizeof(uint8_t))	//27
+#define BLOCKSIZE_ACTIONS	(sizeof(Action)/sizeof(uint8_t)) + 4 - (sizeof(Action)/sizeof(uint8_t))%4			//27
 
 #endif /* BLUEHOME_RULEPROCESS_RULEPROCESS_TYPES_H_ */

@@ -19,7 +19,10 @@
 #include "Debug/DB_Console.h"
 #include "Debug/DB_Assert.h"
 
+#include "bluenrg1_stack.h"
+
 #include <stddef.h>
+#include <string.h>
 
 void rp_am_noAction(Action *action){
 	db_as_assert(DB_AS_ERROR_ACTIONFCT, " Action Fct not assigned ! ");
@@ -41,8 +44,6 @@ uint8_t rp_am_sourceValue(uint8_t samValueID){
 		return 0xff;
 	}else return currentSource->param[samValueID-1];
 }
-
-void rp_am_loadActions();
 
 void rp_am_init()
 {
@@ -69,29 +70,106 @@ void rp_am_init()
 		actionFcts[i] = rp_am_noAction;
 	}
 
-	rp_am_loadActions();
+	rp_am_reloadActions();
 }
 
-void rp_am_loadActions()
+void rp_am_updateAction(Action* action, uint8_t id){
+
+	db_cs_printString("Update Actions: MEM_ID: ");
+	db_cs_printInt(id);
+	db_cs_printString(" ");
+	db_cs_printAction(action);
+
+	progActions[id].actionID = action->actionID;
+	progActions[id].actionSAM = action->actionSAM;
+	progActions[id].paramMask = action->paramMask;
+
+	memcpy(progActions[id].param, action->param, MAX_PARAM);
+
+	rp_am_writeActionsToFlash();
+}
+
+void rp_am_reloadActions()
 {
-	int i = 0;
 
-	//Action
-	for (int j = 0; i < SIZEOF_PROG_ACTIONS; i++, j++)
-	{
-		progActions[i].actionSAM = FLASH_ReadByte(
-				_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + 0);
-		progActions[i].actionID = FLASH_ReadByte(
-				_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + 1);
-		//progActions[i].paramNum = FLASH_ReadByte(
-		//		_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + 2);
+	uint8_t index = 0;
 
-		for (int k = 3, l = 0; l < MAX_PARAM; k++, l++)
-		{
-			progActions[i].param[l] = FLASH_ReadByte(
-					_MEMORY_ACTIONS_BEGIN_ + (j * BLOCKSIZE_ACTIONS) + k);
+	// Action
+	for(int i = 0; i < SIZEOF_PROG_ACTIONS; i++){
+		index = 0;
+		progActions[i].actionSAM = FLASH_ReadByte(_MEMORY_ACTIONS_ADDR + (i * BLOCKSIZE_ACTIONS) + index);
+		index++;
+
+		progActions[i].actionID = FLASH_ReadByte(_MEMORY_ACTIONS_ADDR + (i * BLOCKSIZE_ACTIONS) + index);
+		index = 4;
+
+		progActions[i].paramMask = FLASH_ReadWord(_MEMORY_ACTIONS_ADDR + (i * BLOCKSIZE_ACTIONS) + index);
+		index += 4;
+
+		for (int l = 0; l < MAX_PARAM; l++){
+			progActions[i].param[l] = FLASH_ReadByte(_MEMORY_ACTIONS_ADDR + (i * BLOCKSIZE_ACTIONS) + index);
+			index++;
 		}
+
 	}
+
+}
+
+void rp_am_writeActionF(uint8_t id){
+
+	uint32_t temp = 0;
+	uint8_t index = 0;
+
+	/* Write Flash */
+	temp = 0x0000 | (progActions[id].actionID << 8) | (progActions[id].actionSAM << 0);
+	FLASH_ProgramWord(_MEMORY_ACTIONS_ADDR + (id * BLOCKSIZE_ACTIONS) + index, temp);
+	index += 4;
+
+	temp = progActions[id].paramMask;
+	FLASH_ProgramWord(_MEMORY_ACTIONS_ADDR + (id * BLOCKSIZE_ACTIONS) + index, temp);
+	index += 4;
+
+	//PARAM
+	for(uint8_t l = 0; l < MAX_PARAM; l += 4){
+		temp = 0x0000;
+		if(l+3 < MAX_PARAM) temp |= (progActions[id].param[l+3] << 24);
+		if(l+2 < MAX_PARAM) temp |= (progActions[id].param[l+2] << 16);
+		if(l+1 < MAX_PARAM) temp |= (progActions[id].param[l+1] << 8);
+		if(l < MAX_PARAM) temp |= (progActions[id].param[l] << 0);
+
+		FLASH_ProgramWord(_MEMORY_ACTIONS_ADDR + (id * BLOCKSIZE_ACTIONS) + index, temp);
+		index += 4;
+	}
+
+	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){
+		BTLE_StackTick();
+	};
+
+}
+
+void rp_am_writeActionsToFlash(){
+
+	db_cs_printString("Write Actions to Flash...\r");
+
+	FLASH_Unlock();
+
+	FLASH_ErasePage(_MEMORY_ACTIONS_PAGE);
+
+	/* Wait for the end of erase operation */
+	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){
+		BTLE_StackTick();
+	};
+
+	db_cs_printString("Action Memory Page erased\r");
+
+	for(uint8_t i = 0; i < SIZEOF_MAC; i++){
+		rp_am_writeActionF(i);
+	}
+
+	FLASH_Lock();
+
+	db_cs_printString("Done\r");
+
 }
 
 

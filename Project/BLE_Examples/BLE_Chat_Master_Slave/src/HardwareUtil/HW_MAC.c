@@ -15,6 +15,8 @@
 #include "Debug/DB_Console.h"
 #include "Debug/DB_Assert.h"
 
+#include "bluenrg1_stack.h"
+
 
 uint8_t defaultAddr[6] = {0x00, 0x00, 0x00, 0x42, 0x42, 0x42};
 uint8_t DEVICE_BDADDR[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
@@ -57,38 +59,75 @@ void hw_mac_reload(){
 	// MAC-ID 0 is own MAC
 	for (int i = 0; i < SIZEOF_MAC; i++)
 	{
-		MAC_Addr[i][0] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 0);
-		MAC_Addr[i][1] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 1);
-		MAC_Addr[i][2] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 2);
-		MAC_Addr[i][3] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 3);
-		MAC_Addr[i][4] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 4);
-		MAC_Addr[i][5] = FLASH_ReadByte(_MEMORY_MAC_BEGIN_ + (i * 8) + 5);
+		MAC_Addr[i][0] = FLASH_ReadByte(_MEMORY_MAC_ADDR + (i * 8) + 0);
+		MAC_Addr[i][1] = FLASH_ReadByte(_MEMORY_MAC_ADDR + (i * 8) + 1);
+		MAC_Addr[i][2] = FLASH_ReadByte(_MEMORY_MAC_ADDR + (i * 8) + 2);
+		MAC_Addr[i][3] = FLASH_ReadByte(_MEMORY_MAC_ADDR + (i * 8) + 3);
+		MAC_Addr[i][4] = FLASH_ReadByte(_MEMORY_MAC_ADDR + (i * 8) + 4);
+		MAC_Addr[i][5] = FLASH_ReadByte(_MEMORY_MAC_ADDR + (i * 8) + 5);
 	}
 }
 
-void hw_mac_writeCurrentMacToFlash(){
-	hw_mac_writeMacToFlash(DEVICE_BDADDR, 0);
-}
+void hw_mac_writeMacF(uint8_t id){
 
-void hw_mac_writeMacToFlash(uint8_t *b_addr, uint8_t id){
-	db_cs_printString("Write MAC to Flash...\r");
 	uint8_t addr[8];
+	uint32_t temp = 0;
+
 	for(int i = 0; i < 6; i++){
-		addr[i] = b_addr[i];
-		MAC_Addr[id][i] = b_addr[i];
+		addr[i] = MAC_Addr[id][i];
 	}
 
 	//Can only write 32 bit - alignment
 	addr[6] = 0;
 	addr[7] = 0;
 
-	uint32_t temp = (addr[3] << 24) | (addr[2] << 16) | (addr[1] << 8) | (addr[0] << 0);
-	db_cs_printString("Write MAC to Flash...\r");
-	//FLASH_Unlock();
-	FLASH_ProgramWord(_MEMORY_MAC_BEGIN_+ (id*8), temp);
+	/* Write Flash */
+	temp = (addr[3] << 24) | (addr[2] << 16) | (addr[1] << 8) | (addr[0] << 0);
+	FLASH_ProgramWord(_MEMORY_MAC_ADDR + (id*8), temp);
+
 	temp = (addr[7] << 24) | (addr[6] << 16) | (addr[5] << 8) | (addr[4] << 0);
-	FLASH_ProgramWord(_MEMORY_MAC_BEGIN_ + (id*8) + 4, temp);
-	//FLASH_Lock();
+	FLASH_ProgramWord(_MEMORY_MAC_ADDR + (id*8) + 4, temp);
+
+	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){
+		BTLE_StackTick();
+	};
+
+}
+
+void hw_mac_updateMac(uint8_t* b_addr, uint8_t id){
+
+	db_cs_printString("Update MAC: ");
+	db_cs_printInt(id);
+	db_cs_printString(" ");
+	db_cs_printMAC(b_addr);
+
+	for(int i = 0; i < 6; i++){
+		MAC_Addr[id][i] = b_addr[i];
+	}
+	hw_mac_writeMacsToFlash();
+}
+
+void hw_mac_writeMacsToFlash(){
+	db_cs_printString("Write MACs to Flash...\r");
+
+	FLASH_Unlock();
+
+	FLASH_ErasePage(_MEMORY_MAC_PAGE);
+
+	/* Wait for the end of erase operation */
+	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){
+		BTLE_StackTick();
+	};
+
+	db_cs_printString("MAC Memory Page erased\r");
+
+	for(uint8_t i = 0; i < SIZEOF_MAC; i++){
+		hw_mac_writeMacF(i);
+	}
+
+	FLASH_Lock();
+
+	db_cs_printString("Done\r");
 }
 
 void hw_mac_generateDeviceName(){

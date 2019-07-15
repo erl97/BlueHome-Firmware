@@ -41,6 +41,12 @@ void rp_am_addActionID(uint8_t actionMemID);
 
 void rp_am_triggerAction(Action *action);
 
+void rp_am_reloadActions();
+void rp_am_updateAction(Action* action, uint8_t id);
+void rp_am_writeActionF(uint8_t id);
+void rp_am_writeActionsToFlash();
+
+
 /*
  * Checks DirectActionQueue
  */

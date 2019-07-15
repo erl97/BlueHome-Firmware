@@ -18,6 +18,7 @@ uint8_t SAM_BUS_ADDR_GPIO;
 #define SAM_GPIO_ACT_ID_TOGGLE 	1
 #define SAM_GPIO_ACT_ID_ON 		2
 #define SAM_GPIO_ACT_ID_OFF 	3
+#define SAM_GPIO_ACT_ID_ALLOFF 	4
 
 void sam_gpio_init();
 void sam_gpio_initHW();

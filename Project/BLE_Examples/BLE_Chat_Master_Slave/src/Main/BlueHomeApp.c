@@ -41,6 +41,7 @@
 
 int main(void)
 {
+
 	SystemInit();
 
 	// DEBUG CODE //

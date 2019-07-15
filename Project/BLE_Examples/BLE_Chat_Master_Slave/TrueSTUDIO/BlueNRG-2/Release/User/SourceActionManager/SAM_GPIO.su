@@ -1,4 +1,4 @@
-SAM_GPIO.c:110:6:sam_gpio_triggerAction	32	static
 SAM_GPIO.c:79:6:sam_gpio_triggerSource	64	static
+SAM_GPIO.c:110:6:sam_gpio_triggerAction	40	static
 SAM_GPIO.c:18:6:sam_gpio_init	8	static
 SAM_GPIO.c:36:6:sam_gpio_initHW	48	static

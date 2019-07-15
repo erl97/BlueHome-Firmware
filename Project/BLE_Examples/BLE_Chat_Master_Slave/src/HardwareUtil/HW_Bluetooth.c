@@ -354,14 +354,11 @@ tBleStatus hw_bl_sendPacket(uint8_t* addr, uint8_t data_length, uint8_t* data, u
 		if(timeout == 0){
 			hw_bl_terminateConnection();
 		}
-
 	}else{
 
 		//Turn off discover
 		hw_bl_setDeviceNonDiscover();
-
 	}
-
 
 	//Make connection
 	if(hw_bl_makeConnection(addr) == BLE_STATUS_SUCCESS){
@@ -717,7 +714,7 @@ void aci_gap_proc_complete_event(uint8_t Procedure_Code,
 			}
 
 			//Save current MAC
-			hw_mac_writeCurrentMacToFlash();
+			hw_mac_updateMac(DEVICE_BDADDR, 0);
 			MAC_UNINITIALIZED = 0;
 		}
 	}

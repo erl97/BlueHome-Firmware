@@ -10,9 +10,6 @@
 
 #include "RuleProcess/RP_Types.h"
 
-#define SAM_BLUETOOTH_ACT_ID_PUBLISH 	0
-#define SAM_BLUETOOTH_ACT_ID_SEND		1
-
 void sam_bl_init();
 
 void sam_bl_triggerSource(uint8_t paramLen, uint8_t *param);

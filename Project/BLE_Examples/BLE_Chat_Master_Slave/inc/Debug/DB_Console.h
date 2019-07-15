@@ -19,12 +19,18 @@
 #define DB_CS_CMD_PROGRAM_MAC	"progMac"
 #define DB_CS_CMD_SEND_BL		"sendBL"
 #define DB_CS_CMD_TRIG_ACTION	"trigAct"
+#define DB_CS_CMD_SHOW_ACTIONS	"showActions"
+#define DB_CS_CMD_SHOW_RULES	"showRules"
+
+#define DB_CS_CMD_WHATSLIVE		"life_the_universe_and_everything"
 
 #define DB_CS_CMD_HELP "\
 BlueHome Debug Console Help\r\
 ===========================\r\
 Commands:\r\
  showMacs\r\
+ showActions\r\
+ showRules\r\
  progMac <ID> <MAC>\r\
  sendBL <TargetID> <CharID> <Data>\r\
  trigAct <SamID> <ActionID> <Param>\r"
@@ -44,6 +50,7 @@ void db_cs_printInt(uint32_t i);
 void db_cs_printMAC(uint8_t *mac);
 void db_cs_printAction(Action* action);
 void db_cs_printSource(Source *source);
+void db_cs_printRule(Rule *rule);
 
 char* db_cs_itoa(int i, char b[]);
 
