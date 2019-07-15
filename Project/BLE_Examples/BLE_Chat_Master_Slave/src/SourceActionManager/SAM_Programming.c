@@ -89,8 +89,8 @@ void sam_prog_triggerAction(Action *action)
 
 				if(macID == 0){
 					if(i == 0){
-//						db_as_assert(DB_AS_ERROR_PROGRAM, "Not allowed to repogram own MAC !\r");
-//						return;
+						db_as_assert(DB_AS_ERROR_PROGRAM, "Not allowed to reprogram own MAC !\r");
+						return;
 					}else return;
 				}
 
@@ -109,6 +109,21 @@ void sam_prog_triggerAction(Action *action)
 				//Programming MAC
 				hw_mac_updateMac(mac, macID);
 			}
+			break;
+		}
+		case SAM_PROGRAMMING_ACT_ID_CLEAR_RULE:{
+			db_cs_printString("Clear Rules...\r");
+			rp_rc_clearRules();
+			break;
+		}
+		case SAM_PROGRAMMING_ACT_ID_CLEAR_ACTION:{
+			db_cs_printString("Clear Actions...\r");
+			rp_am_clearActions();
+			break;
+		}
+		case SAM_PROGRAMMING_ACT_ID_CLEAR_MAC:{
+			db_cs_printString("Clear Macs...\r");
+			void hw_mac_clear();
 			break;
 		}
 	}

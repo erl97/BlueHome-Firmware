@@ -22,6 +22,7 @@ uint8_t defaultAddr[6] = {0x00, 0x00, 0x00, 0x42, 0x42, 0x42};
 uint8_t DEVICE_BDADDR[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 uint8_t DEVICE_NAME[16];
 
+uint8_t updateFlash_MAC = 0;
 
 void hw_mac_init()
 {
@@ -68,6 +69,19 @@ void hw_mac_reload(){
 	}
 }
 
+void hw_mac_clear(){
+	// MAC-ID 0 is own MAC
+	for (int i = 1; i < SIZEOF_MAC; i++)
+	{
+		MAC_Addr[i][0] = 255;
+		MAC_Addr[i][1] = 255;
+		MAC_Addr[i][2] = 255;
+		MAC_Addr[i][3] = 255;
+		MAC_Addr[i][4] = 255;
+		MAC_Addr[i][5] = 255;
+	}
+}
+
 void hw_mac_writeMacF(uint8_t id){
 
 	uint8_t addr[8];
@@ -88,9 +102,7 @@ void hw_mac_writeMacF(uint8_t id){
 	temp = (addr[7] << 24) | (addr[6] << 16) | (addr[5] << 8) | (addr[4] << 0);
 	FLASH_ProgramWord(_MEMORY_MAC_ADDR + (id*8) + 4, temp);
 
-	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){
-		BTLE_StackTick();
-	};
+	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){};
 
 }
 
@@ -104,7 +116,7 @@ void hw_mac_updateMac(uint8_t* b_addr, uint8_t id){
 	for(int i = 0; i < 6; i++){
 		MAC_Addr[id][i] = b_addr[i];
 	}
-	hw_mac_writeMacsToFlash();
+	updateFlash_MAC = 1;
 }
 
 void hw_mac_writeMacsToFlash(){
@@ -115,9 +127,7 @@ void hw_mac_writeMacsToFlash(){
 	FLASH_ErasePage(_MEMORY_MAC_PAGE);
 
 	/* Wait for the end of erase operation */
-	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){
-		BTLE_StackTick();
-	};
+	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){};
 
 	db_cs_printString("MAC Memory Page erased\r");
 

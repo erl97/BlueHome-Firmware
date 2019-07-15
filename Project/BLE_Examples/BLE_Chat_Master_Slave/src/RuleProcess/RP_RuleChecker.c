@@ -26,6 +26,8 @@
 #include <stdint.h>
 #include <string.h>
 
+uint8_t updateFlash_Rule = 0;
+
 void rp_rc_loadRules();
 
 void rp_rc_init()
@@ -61,6 +63,26 @@ uint8_t rp_rc_tick(){
 
 		return 1;
 	}else return 0;
+}
+
+void rp_rc_clearRules()
+{
+	for(int i = 0; i < SIZEOF_RULES; i++){
+
+		progRules[i].actionMemID = 255;
+		progRules[i].sourceSAM = 255;
+		progRules[i].sourceID = 255;
+
+		for (int l = 0; l < MAX_PARAM; l++){
+			progRules[i].param[l] = 255;
+		}
+
+		for (int l = 0; l < MAX_PARAM; l++){
+			progRules[i].paramComp[l] = 255;
+		}
+
+	}
+	updateFlash_Rule = 1;
 }
 
 void rp_rc_reloadRules()
@@ -108,7 +130,7 @@ void rp_rc_updateRules(Rule* rule, uint8_t id){
 	memcpy(progRules[id].param, rule->param, MAX_PARAM);
 	memcpy(progRules[id].paramComp, rule->paramComp, MAX_PARAM);
 
-	rp_rc_writeRulesToFlash();
+	updateFlash_Rule = 1;
 }
 
 void rp_rc_writeRuleF(uint8_t id){
@@ -145,9 +167,7 @@ void rp_rc_writeRuleF(uint8_t id){
 		index += 4;
 	}
 
-	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){
-		BTLE_StackTick();
-	};
+	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){};
 
 }
 
@@ -160,9 +180,7 @@ void rp_rc_writeRulesToFlash(){
 	FLASH_ErasePage(_MEMORY_RULES_PAGE);
 
 	/* Wait for the end of erase operation */
-	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){
-		BTLE_StackTick();
-	};
+	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){};
 
 	db_cs_printString("Rule Memory Page erased\r");
 

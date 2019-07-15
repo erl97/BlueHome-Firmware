@@ -39,6 +39,11 @@
 #include "sleep.h"
 #include "clock.h"
 
+extern volatile uint8_t connected;
+extern uint8_t updateFlash_Rule;
+extern uint8_t updateFlash_Action;
+extern uint8_t updateFlash_MAC;
+
 int main(void)
 {
 
@@ -159,6 +164,21 @@ void APP_Tick(void)
 	rp_rc_tick();
 
 	rp_am_tick();
+
+	if(connected == FALSE){
+		if(updateFlash_Rule == 1){
+			updateFlash_Rule = 0;
+			rp_rc_writeRulesToFlash();
+		}
+		if(updateFlash_Action == 1){
+			updateFlash_Action = 0;
+			rp_am_writeActionsToFlash();
+		}
+		if(updateFlash_MAC == 1){
+			updateFlash_MAC = 0;
+			hw_mac_writeMacsToFlash();
+		}
+	}
 
 }
 

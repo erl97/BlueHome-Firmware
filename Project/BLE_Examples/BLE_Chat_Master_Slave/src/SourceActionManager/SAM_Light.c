@@ -12,9 +12,11 @@
 
 #include "RuleProcess/RP_SourceManager.h"
 #include "RuleProcess/RP_ActionManager.h"
+#include "RuleProcess/RP_RuleChecker.h"
 
 #include "HardwareUtil/HW_Init.h"
 #include "HardwareUtil/HW_I2C.h"
+
 
 #include "Debug/DB_Console.h"
 
@@ -113,14 +115,22 @@ void sam_light_triggerSource(uint8_t paramLen, uint8_t *param)
 	hw_i2c_read(TSL25911_ADDR, 0xB6, 1, recvData+2); // Read CH1 Low Byte
 	hw_i2c_read(TSL25911_ADDR, 0xB7, 1, recvData+3); // Read CH1 High Byte
 
+	//Create Source
+	Source s;
+
 	for(int i = 0; i < 4; i++){
 		db_cs_printInt(recvData[i]);
 		db_cs_printString(" ");
+		s.param[i] = recvData[i];
 	}
 	db_cs_printString("\r");
 
-	//Create Source
-	//Add to buffer
+	for(int i = 4; i < MAX_PARAM; i++){
+		s.param[i] = 0;
+	}
+
+	s.sourceSAM = SAM_ID_LIGHT;
+	s.sourceID = ACTION_ID_THRESHOLD;
 
 	//Set thresholds
 	db_cs_printString("Write Threshold Register\r");
@@ -146,5 +156,8 @@ void sam_light_triggerSource(uint8_t paramLen, uint8_t *param)
 
 	sendData[0] = 0xE7; //CMD Register
 	hw_i2c_write(TSL25911_ADDR, sendData, 1, 1, 1);
+
+	//Add to buffer
+	rp_rc_addSource(s);
 }
 

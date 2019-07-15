@@ -24,6 +24,8 @@
 #include <stddef.h>
 #include <string.h>
 
+uint8_t updateFlash_Action = 0;
+
 void rp_am_noAction(Action *action){
 	db_as_assert(DB_AS_ERROR_ACTIONFCT, " Action Fct not assigned ! ");
 }
@@ -86,7 +88,23 @@ void rp_am_updateAction(Action* action, uint8_t id){
 
 	memcpy(progActions[id].param, action->param, MAX_PARAM);
 
-	rp_am_writeActionsToFlash();
+	updateFlash_Action = 1;
+}
+
+void rp_am_clearActions()
+{
+
+	// Action
+	for(int i = 0; i < SIZEOF_PROG_ACTIONS; i++){
+		progActions[i].actionSAM = 255;
+		progActions[i].actionID = 255;
+		progActions[i].paramMask = 0xffff;
+
+		for (int l = 0; l < MAX_PARAM; l++){
+			progActions[i].param[l] = 255;
+		}
+	}
+
 }
 
 void rp_am_reloadActions()
@@ -141,9 +159,7 @@ void rp_am_writeActionF(uint8_t id){
 		index += 4;
 	}
 
-	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){
-		BTLE_StackTick();
-	};
+	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){};
 
 }
 
@@ -156,9 +172,7 @@ void rp_am_writeActionsToFlash(){
 	FLASH_ErasePage(_MEMORY_ACTIONS_PAGE);
 
 	/* Wait for the end of erase operation */
-	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){
-		BTLE_StackTick();
-	};
+	while(FLASH_GetFlagStatus(Flash_CMDDONE) != SET){};
 
 	db_cs_printString("Action Memory Page erased\r");
 
@@ -242,7 +256,7 @@ void rp_am_triggerAction(Action *action){
 	db_cs_printAction(action);
 
 	//Replace Action Masked Fields
-	rp_am_replaceMask(action);
+//	rp_am_replaceMask(action); TODO MASK !
 
 	//Call Action Function
 	if(action->actionSAM < SAM_NUM) actionFcts[action->actionSAM](action);

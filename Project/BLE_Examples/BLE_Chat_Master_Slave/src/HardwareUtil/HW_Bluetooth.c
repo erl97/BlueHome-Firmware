@@ -67,7 +67,7 @@ extern uint16_t directServHandle, paramCharHandle, paramCompCharHandle, optionsC
 uint16_t service_handle, dev_name_char_handle, appearance_char_handle;
 
 
-volatile int connected = FALSE;
+volatile uint8_t connected = FALSE;
 volatile uint8_t transmitionDone = 0;
 volatile uint16_t txHandle = 0;
 volatile uint8_t receivedChar = 0;
@@ -563,10 +563,10 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 			}
 		}
 
-	//	if(action.paramNum > MAX_PARAM){
-	//		action.paramNum = MAX_PARAM;
-	//		db_as_assert(DB_AS_ERROR_BOVERFLOW, "Param Num to large !");
-	//	}
+//		if(action.paramNum > MAX_PARAM){
+//			action.paramNum = MAX_PARAM;
+//			db_as_assert(DB_AS_ERROR_BOVERFLOW, "Param Num to large !");
+//		}
 
 		for(int i = 0; i < MAX_PARAM; i++){
 			action.param[i] = directParam[i];
