@@ -1,8 +1,9 @@
-RP_RuleChecker.c:66:6:rp_rc_reloadRules	24	static
-RP_RuleChecker.c:31:6:rp_rc_init	8	static
-RP_RuleChecker.c:114:6:rp_rc_writeRuleF	32	static
-RP_RuleChecker.c:154:6:rp_rc_writeRulesToFlash	8	static
-RP_RuleChecker.c:97:6:rp_rc_updateRules	24	static
-RP_RuleChecker.c:178:6:rp_rc_addSource	24	static
-RP_RuleChecker.c:200:6:rp_rc_check	24	static
-RP_RuleChecker.c:46:9:rp_rc_tick	16	static
+RP_RuleChecker.c:68:6:rp_rc_clearRules	8	static
+RP_RuleChecker.c:88:6:rp_rc_reloadRules	24	static
+RP_RuleChecker.c:33:6:rp_rc_init	8	static
+RP_RuleChecker.c:119:6:rp_rc_updateRules	24	static
+RP_RuleChecker.c:136:6:rp_rc_writeRuleF	32	static
+RP_RuleChecker.c:174:6:rp_rc_writeRulesToFlash	8	static
+RP_RuleChecker.c:196:6:rp_rc_addSource	24	static
+RP_RuleChecker.c:218:6:rp_rc_check	24	static
+RP_RuleChecker.c:48:9:rp_rc_tick	16	static

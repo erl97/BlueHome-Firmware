@@ -32,6 +32,8 @@ Rule progRules[SIZEOF_RULES];
 //source.handler
 void rp_rc_init();
 
+void rp_rc_clearRules();
+
 void rp_rc_reloadRules();
 void rp_rc_updateRules(Rule* rule, uint8_t id);
 void rp_rc_writeRuleF(uint8_t id);

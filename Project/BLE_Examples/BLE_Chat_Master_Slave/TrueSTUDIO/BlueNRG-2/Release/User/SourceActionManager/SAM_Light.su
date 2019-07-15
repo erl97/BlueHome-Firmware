@@ -1,3 +1,3 @@
-SAM_Light.c:103:6:sam_light_triggerSource	48	static
-SAM_Light.c:21:6:sam_light_init	8	static
-SAM_Light.c:34:6:sam_light_initHW	48	static
+SAM_Light.c:105:6:sam_light_triggerSource	80	static
+SAM_Light.c:23:6:sam_light_init	8	static
+SAM_Light.c:36:6:sam_light_initHW	48	static

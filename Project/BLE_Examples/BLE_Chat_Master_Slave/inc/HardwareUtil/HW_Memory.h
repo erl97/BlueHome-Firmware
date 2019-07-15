@@ -12,7 +12,7 @@
 
 //Memory-Map-Addition; analog to system_bluenrg2.h
 
-//Hardware config: 128 Byte -> 0x80
+//HARDWARE CONFIG: 128 Byte -> 0x80
 //1 Byte HW_ID (node#1/#2/...), 1 Byte HW_Version, 1 Byte number bus devices, + 13 Byte alignment; 0x1007ef80
 //14 Byte BNRG_GPIO, + 2 Byte alignment; 0x1007ef90
 //16 Byte Expander_GPIO; 0x1007efa0

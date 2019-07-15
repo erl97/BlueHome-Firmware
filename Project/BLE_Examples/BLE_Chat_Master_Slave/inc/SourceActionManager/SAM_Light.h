@@ -16,7 +16,10 @@
 
 #define SAM_LIGHT_TH	20
 
+#define ACTION_ID_THRESHOLD 1
+
 uint32_t SAM_PIN_LIGHT_INT;
+
 
 void sam_light_init();
 void sam_light_initHW();
