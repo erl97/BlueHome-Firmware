@@ -5,31 +5,26 @@
  *      Author: dinkelsv64505
  */
 
-#include "HardwareUtil/HW_Init.h"
-
-
-#include <stdint.h>
-#include "BlueNRG1_gpio.h"
-#include "BlueNRG1_flash.h"
-
-#include "Debug/DB_Console.h"
-#include "Debug/DB_Assert.h"
-
-#include "HardwareUtil/HW_Memory.h"
-#include "HardwareUtil/HW_MAC.h"
-#include "HardwareUtil/HW_Bluetooth.h"
-#include "HardwareUtil/HW_GPIO.h"
-#include "HardwareUtil/HW_I2C.h"
-#include "HardwareUtil/HW_SPI.h"
-
-#include "misc.h"
-
-#include "SourceActionManager/SAM_Init.h"
+#include <BlueNRG1_flash.h>
+#include <BlueNRG1_gpio.h>
+#include <BlueNRG2.h>
+#include <Debug/DB_Console.h>
+#include <hal_types.h>
+#include <HardwareUtil/HW_Bluetooth.h>
+#include <HardwareUtil/HW_GPIO.h>
+#include <HardwareUtil/HW_I2C.h>
+#include <HardwareUtil/HW_Init.h>
+#include <HardwareUtil/HW_MAC.h>
+#include <HardwareUtil/HW_Memory.h>
+#include <HardwareUtil/HW_SPI.h>
+#include <SourceActionManager/SAM_Init.h>
+#include <misc.h>
+#include <sys/_stdint.h>
 
 uint32_t rtc_pin = 0;
 
 // Resolve pinIDs to samIDs
-uint8_t pinIdToSam[] = {SAM_ID_UNKNWON, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_PIEPER, SAM_ID_TOUCHBUTTON, SAM_ID_LIGHT};
+uint8_t pinIdToSam[] = {SAM_ID_UNKNWON, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_PIEPER, SAM_ID_TOUCHBUTTON, SAM_ID_LIGHT, SAM_ID_DIO};
 
 void hw_init_init()
 {

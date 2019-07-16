@@ -5,35 +5,22 @@
  *      Author: dinkelsv64505
  */
 
-#include "RuleProcess/RP_SourceManager.h"
-
-#include "Bluetooth/BL_gatt_db.h"
-
-#include "BlueNRG_x_device.h"
-#include "BlueNRG1_gpio.h"
-#include "bluenrg1_stack.h"
-#include "BlueNRG1_spi.h"
-#include "clock.h"
-#include "BlueNRG1_i2c.h"
-
-#include "ble_const.h"
-//#include "SDK_EVAL_Com.h"
-
-#include "HardwareUtil/HW_UART.h"
-#include "HardwareUtil/HW_I2C.h"
-#include "HardwareUtil/HW_SPI.h"
-
-#include "Debug/DB_TestCases.h"
-#include "Debug/DB_Console.h"
-
-#include "SDK_EVAL_Led.h"
-
-#include "lsm6ds3.h"
-#include "lsm6ds3_hal.h"
-
-#include "SourceActionManager/SAM_Init.h"
-#include "SourceActionManager/SAM_Pieper.h"
-#include "SourceActionManager/SAM_Init.h"
+#include <bluenrg1_stack.h>
+#include <BlueNRG1_gpio.h>
+#include <BlueNRG1_i2c.h>
+#include <BlueNRG1_spi.h>
+#include <BlueNRG2.h>
+#include <clock.h>
+#include <Debug/DB_Console.h>
+#include <hal_types.h>
+#include <HardwareUtil/HW_I2C.h>
+#include <HardwareUtil/HW_Init.h>
+#include <HardwareUtil/HW_SPI.h>
+#include <HardwareUtil/HW_UART.h>
+#include <lsm6ds3.h>
+#include <RuleProcess/RP_SourceManager.h>
+#include <sys/_stdint.h>
+#include <SourceActionManager/SAM_Pieper.h>
 
 extern LSM6DS3_DrvExtTypeDef *Imu6AxesDrvExt;
 

@@ -6,23 +6,15 @@
  */
 
 
-#include "RuleProcess/RP_ActionManager.h"
-#include "RuleProcess/RP_Types.h"
-#include "RuleProcess/RP_RuleChecker.h"
-#include "RuleProcess/RP_Init.h"
-
-#include "BlueNRG1_flash.h"
-#include "HardwareUtil/HW_Memory.h"
-
-#include "SourceActionManager/SAM_Init.h"
-
-#include "Debug/DB_Console.h"
-#include "Debug/DB_Assert.h"
-
-#include "bluenrg1_stack.h"
-
-#include <stddef.h>
+#include <BlueNRG1_flash.h>
+#include <Debug/DB_Assert.h>
+#include <Debug/DB_Console.h>
+#include <hal_types.h>
+#include <HardwareUtil/HW_Memory.h>
+#include <RuleProcess/RP_ActionManager.h>
+#include <RuleProcess/RP_RuleChecker.h>
 #include <string.h>
+#include <sys/_stdint.h>
 
 uint8_t updateFlash_Action = 0;
 

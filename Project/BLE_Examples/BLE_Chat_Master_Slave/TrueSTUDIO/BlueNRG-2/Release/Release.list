@@ -3,13 +3,13 @@ Release.elf:     file format elf32-littlearm
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .bootloader   00000000  10040000  10040000  00033058  2**0
+  0 .bootloader   00000000  10040000  10040000  0003305c  2**0
                   CONTENTS
   1 .intvec       000000c0  10040000  10040000  00010000  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   2 .text         0001b6dc  100400c0  100400c0  000100c0  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  3 .data         000006e8  20002970  1005b7c8  00032970  2**2
+  3 .data         000006ec  20002970  1005b7c8  00032970  2**2
                   CONTENTS, ALLOC, LOAD, DATA
   4 .ram_preamble 0000002c  20000008  1005b79c  00030008  2**2
                   CONTENTS, ALLOC, LOAD, DATA
@@ -21,35 +21,35 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   8 .bss          000026a4  200002cc  200002cc  00040000  2**2
                   ALLOC
-  9 .noinit       00002814  20003058  1005beb0  00033058  2**2
+  9 .noinit       00002814  2000305c  1005beb4  0003305c  2**2
                   ALLOC
  10 BLOCK_STACKLIB_FLASH_DATA 00000838  1007f000  1007f000  0003f000  2**2
                   ALLOC
- 11 CSTACK        00000000  20005400  20005400  00033058  2**0
+ 11 CSTACK        00000000  20005400  20005400  0003305c  2**0
                   CONTENTS
- 12 .rom_info     00000000  10000000  10000000  00033058  2**0
+ 12 .rom_info     00000000  10000000  10000000  0003305c  2**0
                   CONTENTS
- 13 .ARM.attributes 00000031  00000000  00000000  00033058  2**0
+ 13 .ARM.attributes 00000031  00000000  00000000  0003305c  2**0
                   CONTENTS, READONLY
- 14 .debug_info   0002c2c7  00000000  00000000  00033089  2**0
+ 14 .debug_info   0002bf1d  00000000  00000000  0003308d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_abbrev 00005d36  00000000  00000000  0005f350  2**0
+ 15 .debug_abbrev 00005d43  00000000  00000000  0005efaa  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_loc    00007277  00000000  00000000  00065086  2**0
+ 16 .debug_loc    00007277  00000000  00000000  00064ced  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_aranges 00001158  00000000  00000000  0006c300  2**3
+ 17 .debug_aranges 00001158  00000000  00000000  0006bf68  2**3
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_ranges 000014d8  00000000  00000000  0006d458  2**0
+ 18 .debug_ranges 000014d8  00000000  00000000  0006d0c0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .debug_line   0000af94  00000000  00000000  0006e930  2**0
+ 19 .debug_line   0000af11  00000000  00000000  0006e598  2**0
                   CONTENTS, READONLY, DEBUGGING
- 20 .debug_str    0000783b  00000000  00000000  000798c4  2**0
+ 20 .debug_str    0000783b  00000000  00000000  000794a9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 21 .comment      00014b09  00000000  00000000  000810ff  2**0
+ 21 .comment      00014b09  00000000  00000000  00080ce4  2**0
                   CONTENTS, READONLY
- 22 .arm_vfe_header 000000d0  00000000  00000000  00095c08  2**2
+ 22 .arm_vfe_header 000000d0  00000000  00000000  000957f0  2**2
                   CONTENTS, READONLY
- 23 .debug_frame  000034a4  00000000  00000000  00095cd8  2**2
+ 23 .debug_frame  000034a4  00000000  00000000  000958c0  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -4062,7 +4062,7 @@ __attribute__( ( always_inline ) ) __STATIC_INLINE void __set_MSP(uint32_t topOf
 10041218:	e7eb      	b.n	100411f2 <RESET_HANDLER+0x36>
 1004121a:	46c0      	nop			; (mov r8, r8)
 1004121c:	20002970 	.word	0x20002970
-10041220:	20003058 	.word	0x20003058
+10041220:	2000305c 	.word	0x2000305c
 10041224:	1005b7c8 	.word	0x1005b7c8
 10041228:	20000008 	.word	0x20000008
 1004122c:	20000034 	.word	0x20000034
@@ -6947,7 +6947,7 @@ uint8_t hw_bl_initLink()
 10042484:	4816      	ldr	r0, [pc, #88]	; (100424e0 <hw_bl_initLink+0x164>)
 10042486:	f7ff fbef 	bl	10041c68 <db_cs_printString>
 1004248a:	e7a1      	b.n	100423d0 <hw_bl_initLink+0x54>
-1004248c:	200029dc 	.word	0x200029dc
+1004248c:	200029dd 	.word	0x200029dd
 10042490:	1005a90f 	.word	0x1005a90f
 10042494:	1005a932 	.word	0x1005a932
 10042498:	200028f4 	.word	0x200028f4
@@ -7015,7 +7015,7 @@ uint8_t hw_bl_initLink()
 10042528:	e7fa      	b.n	10042520 <hw_bl_init+0x3c>
 1004252a:	46c0      	nop			; (mov r8, r8)
 1004252c:	1005a899 	.word	0x1005a899
-10042530:	200029dc 	.word	0x200029dc
+10042530:	200029dd 	.word	0x200029dd
 10042534:	1005a718 	.word	0x1005a718
 10042538:	1005a8b2 	.word	0x1005a8b2
 1004253c:	200014fc 	.word	0x200014fc
@@ -8141,7 +8141,7 @@ void aci_gap_proc_complete_event(uint8_t Procedure_Code,
 10042bc0:	1005a18d 	.word	0x1005a18d
 10042bc4:	200029ce 	.word	0x200029ce
 10042bc8:	1005a776 	.word	0x1005a776
-10042bcc:	200029dc 	.word	0x200029dc
+10042bcc:	200029dd 	.word	0x200029dd
 10042bd0:	1005a90f 	.word	0x1005a90f
 10042bd4:	200028fa 	.word	0x200028fa
 10042bd8:	20002910 	.word	0x20002910
@@ -8680,7 +8680,7 @@ void hw_i2c_isr_bufferEmpty(){
 10042e44 <hw_init_init>:
 
 // Resolve pinIDs to samIDs
-uint8_t pinIdToSam[] = {SAM_ID_UNKNWON, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_PIEPER, SAM_ID_TOUCHBUTTON, SAM_ID_LIGHT};
+uint8_t pinIdToSam[] = {SAM_ID_UNKNWON, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_RELAY, SAM_ID_PIEPER, SAM_ID_TOUCHBUTTON, SAM_ID_LIGHT, SAM_ID_DIO};
 
 void hw_init_init()
 {
@@ -9373,7 +9373,7 @@ void hw_mac_generateDeviceName(){
 10043208:	20002922 	.word	0x20002922
 1004320c:	2000191a 	.word	0x2000191a
 10043210:	2000292b 	.word	0x2000292b
-10043214:	200029dc 	.word	0x200029dc
+10043214:	200029dd 	.word	0x200029dd
 
 10043218 <hw_mac_generateDeviceAddress>:
 
@@ -9553,8 +9553,8 @@ uint8_t hw_mac_compareMac(uint8_t macAddr1[6], uint8_t macAddr2[6]){
 10043308:	20002922 	.word	0x20002922
 1004330c:	1005a1a0 	.word	0x1005a1a0
 10043310:	200026e4 	.word	0x200026e4
-10043314:	200029dc 	.word	0x200029dc
-10043318:	200029e2 	.word	0x200029e2
+10043314:	200029dd 	.word	0x200029dd
+10043318:	200029e3 	.word	0x200029e3
 1004331c:	200025f8 	.word	0x200025f8
 10043320:	1005ad01 	.word	0x1005ad01
 
@@ -10128,8 +10128,8 @@ void APP_Tick(void)
 10043684:	1005adb0 	.word	0x1005adb0
 
 10043688 <rp_am_noAction>:
-#include <stddef.h>
 #include <string.h>
+#include <sys/_stdint.h>
 
 uint8_t updateFlash_Action = 0;
 
@@ -11964,7 +11964,7 @@ void sam_bl_triggerAction(Action *action){
 }
 10044052:	e7f3      	b.n	1004403c <sam_bl_triggerAction+0x28>
 10044054:	1005afde 	.word	0x1005afde
-10044058:	200029dc 	.word	0x200029dc
+10044058:	200029dd 	.word	0x200029dd
 
 1004405c <sam_bl_init>:
 {
@@ -14098,7 +14098,7 @@ void sma_tb_readSPM(uint8_t baseAdress, uint8_t* dataBuffer){
 10044d44:	f000 f804 	bl	10044d50 <__strtok_r>
 10044d48:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
 10044d4a:	46c0      	nop			; (mov r8, r8)
-10044d4c:	200029e8 	.word	0x200029e8
+10044d4c:	200029ec 	.word	0x200029ec
 
 10044d50 <__strtok_r>:
 10044d50:	b5f0      	push	{r4, r5, r6, r7, lr}
@@ -14296,8 +14296,8 @@ void sma_tb_readSPM(uint8_t baseAdress, uint8_t* dataBuffer){
 10044ed0:	f7ff ff6c 	bl	10044dac <_strtol_l.isra.0>
 10044ed4:	bd3e      	pop	{r1, r2, r3, r4, r5, pc}
 10044ed6:	46c0      	nop			; (mov r8, r8)
-10044ed8:	200029e8 	.word	0x200029e8
-10044edc:	20002adc 	.word	0x20002adc
+10044ed8:	200029ec 	.word	0x200029ec
+10044edc:	20002ae0 	.word	0x20002ae0
 
 10044ee0 <_malloc_trim_r>:
 10044ee0:	b5f7      	push	{r0, r1, r2, r4, r5, r6, r7, lr}
@@ -14370,8 +14370,8 @@ void sma_tb_readSPM(uint8_t baseAdress, uint8_t* dataBuffer){
 10044f74:	e7cf      	b.n	10044f16 <_malloc_trim_r+0x36>
 10044f76:	46c0      	nop			; (mov r8, r8)
 10044f78:	00000080 	.word	0x00000080
-10044f7c:	20002c48 	.word	0x20002c48
-10044f80:	20003050 	.word	0x20003050
+10044f7c:	20002c4c 	.word	0x20002c4c
+10044f80:	20003054 	.word	0x20003054
 10044f84:	20001344 	.word	0x20001344
 
 10044f88 <_free_r>:
@@ -14540,10 +14540,10 @@ void sma_tb_readSPM(uint8_t baseAdress, uint8_t* dataBuffer){
 100450d2:	68ee      	ldr	r6, [r5, #12]
 100450d4:	e7d9      	b.n	1004508a <_free_r+0x102>
 100450d6:	46c0      	nop			; (mov r8, r8)
-100450d8:	20002c48 	.word	0x20002c48
-100450dc:	20003054 	.word	0x20003054
+100450d8:	20002c4c 	.word	0x20002c4c
+100450dc:	20003058 	.word	0x20003058
 100450e0:	20001374 	.word	0x20001374
-100450e4:	20002c50 	.word	0x20002c50
+100450e4:	20002c54 	.word	0x20002c54
 100450e8:	000001ff 	.word	0x000001ff
 100450ec:	00000554 	.word	0x00000554
 
@@ -14567,7 +14567,7 @@ void sma_tb_readSPM(uint8_t baseAdress, uint8_t* dataBuffer){
 10045104:	f000 f804 	bl	10045110 <_malloc_r>
 10045108:	bd10      	pop	{r4, pc}
 1004510a:	46c0      	nop			; (mov r8, r8)
-1004510c:	200029e8 	.word	0x200029e8
+1004510c:	200029ec 	.word	0x200029ec
 
 10045110 <_malloc_r>:
 10045110:	b5f0      	push	{r4, r5, r6, r7, lr}
@@ -14965,11 +14965,11 @@ void sma_tb_readSPM(uint8_t baseAdress, uint8_t* dataBuffer){
 10045426:	d93c      	bls.n	100454a2 <_malloc_r+0x392>
 10045428:	6013      	str	r3, [r2, #0]
 1004542a:	e03a      	b.n	100454a2 <_malloc_r+0x392>
-1004542c:	20002c48 	.word	0x20002c48
+1004542c:	20002c4c 	.word	0x20002c4c
 10045430:	00000554 	.word	0x00000554
 10045434:	000001ff 	.word	0x000001ff
 10045438:	20001374 	.word	0x20001374
-1004543c:	20003050 	.word	0x20003050
+1004543c:	20003054 	.word	0x20003054
 10045440:	00000080 	.word	0x00000080
 10045444:	20001344 	.word	0x20001344
 10045448:	2000136c 	.word	0x2000136c
@@ -15063,10 +15063,10 @@ void sma_tb_readSPM(uint8_t baseAdress, uint8_t* dataBuffer){
 10045502:	608d      	str	r5, [r1, #8]
 10045504:	606b      	str	r3, [r5, #4]
 10045506:	e638      	b.n	1004517a <_malloc_r+0x6a>
-10045508:	20003050 	.word	0x20003050
+10045508:	20003054 	.word	0x20003054
 1004550c:	00000080 	.word	0x00000080
 10045510:	20001344 	.word	0x20001344
-10045514:	20002c48 	.word	0x20002c48
+10045514:	20002c4c 	.word	0x20002c4c
 
 10045518 <__ascii_mbtowc>:
 10045518:	b082      	sub	sp, #8
@@ -38428,7 +38428,7 @@ void sma_tb_readSPM(uint8_t baseAdress, uint8_t* dataBuffer){
 
 1005a718 <BlueNRG_Stack_Init_params>:
 1005a718:	1007f000 00000400 00000400 1007f800     ................
-1005a728:	20003058 00002814 00050029 00010220     X0. .(..)... ...
+1005a728:	2000305c 00002814 00050029 00010220     \0. .(..)... ...
 1005a738:	00170e02 20001319 ffffffff 00030064     ....... ....d...
 1005a748:	00000148 63657845 69727720 000d6574     H...Exec write..
 1005a758:	70657250 20657261 74697277 53000d65     Prepare write..S

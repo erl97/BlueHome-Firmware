@@ -5808,7 +5808,7 @@ END GROUP
  *fill*         0x2000296d        0x3 
                 0x20002970                _ebss = .
 
-.data           0x20002970      0x6e8 load address 0x1005b7c8
+.data           0x20002970      0x6ec load address 0x1005b7c8
                 0x20002970                . = ALIGN (0x4)
                 0x20002970                _sdata = .
  *(.data)
@@ -5846,43 +5846,44 @@ END GROUP
                 0x200029ce        0x6 User\HardwareUtil\HW_Bluetooth.o
                 0x200029ce                initMacCandidate
  .data.pinIdToSam
-                0x200029d4        0x8 User\HardwareUtil\HW_Init.o
+                0x200029d4        0x9 User\HardwareUtil\HW_Init.o
                 0x200029d4                pinIdToSam
  .data.DEVICE_BDADDR
-                0x200029dc        0x6 User\HardwareUtil\HW_MAC.o
-                0x200029dc                DEVICE_BDADDR
+                0x200029dd        0x6 User\HardwareUtil\HW_MAC.o
+                0x200029dd                DEVICE_BDADDR
  .data.defaultAddr
-                0x200029e2        0x6 User\HardwareUtil\HW_MAC.o
-                0x200029e2                defaultAddr
+                0x200029e3        0x6 User\HardwareUtil\HW_MAC.o
+                0x200029e3                defaultAddr
+ *fill*         0x200029e9        0x3 
  .data._impure_ptr
-                0x200029e8        0x4 c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-impure.o)
-                0x200029e8                _impure_ptr
+                0x200029ec        0x4 c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-impure.o)
+                0x200029ec                _impure_ptr
  .data.impure_data
-                0x200029ec       0xf0 c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-impure.o)
+                0x200029f0       0xf0 c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-impure.o)
  .data.__global_locale
-                0x20002adc      0x16c c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-locale.o)
-                0x20002adc                __global_locale
+                0x20002ae0      0x16c c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-locale.o)
+                0x20002ae0                __global_locale
  .data.__malloc_av_
-                0x20002c48      0x408 c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-mallocr.o)
-                0x20002c48                __malloc_av_
+                0x20002c4c      0x408 c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-mallocr.o)
+                0x20002c4c                __malloc_av_
  .data.__malloc_sbrk_base
-                0x20003050        0x4 c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-mallocr.o)
-                0x20003050                __malloc_sbrk_base
- .data.__malloc_trim_threshold
                 0x20003054        0x4 c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-mallocr.o)
-                0x20003054                __malloc_trim_threshold
-                0x20003058                . = ALIGN (0x4)
-                0x20003058                _edata = .
+                0x20003054                __malloc_sbrk_base
+ .data.__malloc_trim_threshold
+                0x20003058        0x4 c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-mallocr.o)
+                0x20003058                __malloc_trim_threshold
+                0x2000305c                . = ALIGN (0x4)
+                0x2000305c                _edata = .
 
-.igot.plt       0x20003058        0x0 load address 0x1005beb0
- .igot.plt      0x20003058        0x0 Hal\clock.o
+.igot.plt       0x2000305c        0x0 load address 0x1005beb4
+ .igot.plt      0x2000305c        0x0 Hal\clock.o
 
-.noinit         0x20003058     0x2814 load address 0x1005beb0
-                0x20003058                . = ALIGN (0x4)
+.noinit         0x2000305c     0x2814 load address 0x1005beb4
+                0x2000305c                . = ALIGN (0x4)
  *(.noinit)
- .noinit        0x20003058     0x2814 User\HardwareUtil\HW_Bluetooth.o
-                0x20003058                dyn_alloc_a
-                0x2000586c                . = ALIGN (0x4)
+ .noinit        0x2000305c     0x2814 User\HardwareUtil\HW_Bluetooth.o
+                0x2000305c                dyn_alloc_a
+                0x20005870                . = ALIGN (0x4)
 
 BLOCK_STACKLIB_FLASH_DATA
                 0x1007f000      0x838
@@ -6154,7 +6155,7 @@ CSTACK          0x20005400        0x0
                 0x00002360       0x2c c:/program files (x86)/atollic/truestudio for stm32 9.1.0/armtools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/../../../../arm-atollic-eabi/lib/armv6-m\libc.a(lib_a-ctype_.o)
 OUTPUT(Release.elf elf32-littlearm)
 
-.debug_info     0x00000000    0x2c2c7
+.debug_info     0x00000000    0x2bf1d
  .debug_info    0x00000000      0x748 Hal\clock.o
  .debug_info    0x00000748       0xbd Hal\context_switch.o
  .debug_info    0x00000805     0x152b Hal\miscutil.o
@@ -6179,26 +6180,26 @@ OUTPUT(Release.elf elf32-littlearm)
  .debug_info    0x00017f3d     0x2801 User\HardwareUtil\HW_Bluetooth.o
  .debug_info    0x0001a73e      0x62d User\HardwareUtil\HW_GPIO.o
  .debug_info    0x0001ad6b     0x139a User\HardwareUtil\HW_I2C.o
- .debug_info    0x0001c105      0xb16 User\HardwareUtil\HW_Init.o
- .debug_info    0x0001cc1b      0xb81 User\HardwareUtil\HW_MAC.o
- .debug_info    0x0001d79c      0xb1f User\HardwareUtil\HW_SPI.o
- .debug_info    0x0001e2bb     0x12e0 User\HardwareUtil\HW_UART.o
- .debug_info    0x0001f59b     0x18b3 User\Main\BlueHomeApp.o
- .debug_info    0x00020e4e     0x15fa User\RuleProcess\RP_ActionManager.o
- .debug_info    0x00022448      0x40a User\RuleProcess\RP_Init.o
- .debug_info    0x00022852     0x158f User\RuleProcess\RP_RuleChecker.o
- .debug_info    0x00023de1     0x1b48 User\RuleProcess\RP_SourceManager.o
- .debug_info    0x00025929      0xfc6 User\SourceActionManager\SAM_Bluetooth.o
- .debug_info    0x000268ef      0xbdd User\SourceActionManager\SAM_GPIO.o
- .debug_info    0x000274cc      0x276 User\SourceActionManager\SAM_Init.o
- .debug_info    0x00027742      0xe4c User\SourceActionManager\SAM_Light.o
- .debug_info    0x0002858e      0xd9a User\SourceActionManager\SAM_Pieper.o
- .debug_info    0x00029328     0x111b User\SourceActionManager\SAM_Programming.o
- .debug_info    0x0002a443      0x50d User\SourceActionManager\SAM_RTC.o
- .debug_info    0x0002a950      0x9e0 User\SourceActionManager\SAM_Relais.o
- .debug_info    0x0002b330      0xf97 User\SourceActionManager\SAM_TouchButton.o
+ .debug_info    0x0001c105      0xb1d User\HardwareUtil\HW_Init.o
+ .debug_info    0x0001cc22      0xb81 User\HardwareUtil\HW_MAC.o
+ .debug_info    0x0001d7a3      0xb1f User\HardwareUtil\HW_SPI.o
+ .debug_info    0x0001e2c2     0x12e0 User\HardwareUtil\HW_UART.o
+ .debug_info    0x0001f5a2     0x18b3 User\Main\BlueHomeApp.o
+ .debug_info    0x00020e55     0x15fa User\RuleProcess\RP_ActionManager.o
+ .debug_info    0x0002244f      0x40a User\RuleProcess\RP_Init.o
+ .debug_info    0x00022859     0x158f User\RuleProcess\RP_RuleChecker.o
+ .debug_info    0x00023de8     0x1797 User\RuleProcess\RP_SourceManager.o
+ .debug_info    0x0002557f      0xfc6 User\SourceActionManager\SAM_Bluetooth.o
+ .debug_info    0x00026545      0xbdd User\SourceActionManager\SAM_GPIO.o
+ .debug_info    0x00027122      0x276 User\SourceActionManager\SAM_Init.o
+ .debug_info    0x00027398      0xe4c User\SourceActionManager\SAM_Light.o
+ .debug_info    0x000281e4      0xd9a User\SourceActionManager\SAM_Pieper.o
+ .debug_info    0x00028f7e     0x111b User\SourceActionManager\SAM_Programming.o
+ .debug_info    0x0002a099      0x50d User\SourceActionManager\SAM_RTC.o
+ .debug_info    0x0002a5a6      0x9e0 User\SourceActionManager\SAM_Relais.o
+ .debug_info    0x0002af86      0xf97 User\SourceActionManager\SAM_TouchButton.o
 
-.debug_abbrev   0x00000000     0x5d36
+.debug_abbrev   0x00000000     0x5d43
  .debug_abbrev  0x00000000      0x250 Hal\clock.o
  .debug_abbrev  0x00000250       0x14 Hal\context_switch.o
  .debug_abbrev  0x00000264      0x2b6 Hal\miscutil.o
@@ -6223,24 +6224,24 @@ OUTPUT(Release.elf elf32-littlearm)
  .debug_abbrev  0x0000310e      0x3d7 User\HardwareUtil\HW_Bluetooth.o
  .debug_abbrev  0x000034e5      0x175 User\HardwareUtil\HW_GPIO.o
  .debug_abbrev  0x0000365a      0x2c5 User\HardwareUtil\HW_I2C.o
- .debug_abbrev  0x0000391f      0x20b User\HardwareUtil\HW_Init.o
- .debug_abbrev  0x00003b2a      0x232 User\HardwareUtil\HW_MAC.o
- .debug_abbrev  0x00003d5c      0x1d0 User\HardwareUtil\HW_SPI.o
- .debug_abbrev  0x00003f2c      0x253 User\HardwareUtil\HW_UART.o
- .debug_abbrev  0x0000417f      0x23e User\Main\BlueHomeApp.o
- .debug_abbrev  0x000043bd      0x335 User\RuleProcess\RP_ActionManager.o
- .debug_abbrev  0x000046f2       0xed User\RuleProcess\RP_Init.o
- .debug_abbrev  0x000047df      0x2b7 User\RuleProcess\RP_RuleChecker.o
- .debug_abbrev  0x00004a96      0x303 User\RuleProcess\RP_SourceManager.o
- .debug_abbrev  0x00004d99      0x241 User\SourceActionManager\SAM_Bluetooth.o
- .debug_abbrev  0x00004fda      0x1b1 User\SourceActionManager\SAM_GPIO.o
- .debug_abbrev  0x0000518b       0x7c User\SourceActionManager\SAM_Init.o
- .debug_abbrev  0x00005207      0x1cd User\SourceActionManager\SAM_Light.o
- .debug_abbrev  0x000053d4      0x220 User\SourceActionManager\SAM_Pieper.o
- .debug_abbrev  0x000055f4      0x26c User\SourceActionManager\SAM_Programming.o
- .debug_abbrev  0x00005860      0x12f User\SourceActionManager\SAM_RTC.o
- .debug_abbrev  0x0000598f      0x1cf User\SourceActionManager\SAM_Relais.o
- .debug_abbrev  0x00005b5e      0x1d8 User\SourceActionManager\SAM_TouchButton.o
+ .debug_abbrev  0x0000391f      0x218 User\HardwareUtil\HW_Init.o
+ .debug_abbrev  0x00003b37      0x232 User\HardwareUtil\HW_MAC.o
+ .debug_abbrev  0x00003d69      0x1d0 User\HardwareUtil\HW_SPI.o
+ .debug_abbrev  0x00003f39      0x253 User\HardwareUtil\HW_UART.o
+ .debug_abbrev  0x0000418c      0x23e User\Main\BlueHomeApp.o
+ .debug_abbrev  0x000043ca      0x335 User\RuleProcess\RP_ActionManager.o
+ .debug_abbrev  0x000046ff       0xed User\RuleProcess\RP_Init.o
+ .debug_abbrev  0x000047ec      0x2b7 User\RuleProcess\RP_RuleChecker.o
+ .debug_abbrev  0x00004aa3      0x303 User\RuleProcess\RP_SourceManager.o
+ .debug_abbrev  0x00004da6      0x241 User\SourceActionManager\SAM_Bluetooth.o
+ .debug_abbrev  0x00004fe7      0x1b1 User\SourceActionManager\SAM_GPIO.o
+ .debug_abbrev  0x00005198       0x7c User\SourceActionManager\SAM_Init.o
+ .debug_abbrev  0x00005214      0x1cd User\SourceActionManager\SAM_Light.o
+ .debug_abbrev  0x000053e1      0x220 User\SourceActionManager\SAM_Pieper.o
+ .debug_abbrev  0x00005601      0x26c User\SourceActionManager\SAM_Programming.o
+ .debug_abbrev  0x0000586d      0x12f User\SourceActionManager\SAM_RTC.o
+ .debug_abbrev  0x0000599c      0x1cf User\SourceActionManager\SAM_Relais.o
+ .debug_abbrev  0x00005b6b      0x1d8 User\SourceActionManager\SAM_TouchButton.o
 
 .debug_loc      0x00000000     0x7277
  .debug_loc     0x00000000       0x3f Hal\clock.o
@@ -6411,7 +6412,7 @@ OUTPUT(Release.elf elf32-littlearm)
  .debug_ranges  0x00001438       0x50 User\SourceActionManager\SAM_Relais.o
  .debug_ranges  0x00001488       0x50 User\SourceActionManager\SAM_TouchButton.o
 
-.debug_line     0x00000000     0xaf94
+.debug_line     0x00000000     0xaf11
  .debug_line    0x00000000      0x268 Hal\clock.o
  .debug_line    0x00000268       0x8c Hal\context_switch.o
  .debug_line    0x000002f4      0x33b Hal\miscutil.o
@@ -6436,24 +6437,24 @@ OUTPUT(Release.elf elf32-littlearm)
  .debug_line    0x000052bb      0x85a User\HardwareUtil\HW_Bluetooth.o
  .debug_line    0x00005b15      0x29b User\HardwareUtil\HW_GPIO.o
  .debug_line    0x00005db0      0x3ac User\HardwareUtil\HW_I2C.o
- .debug_line    0x0000615c      0x480 User\HardwareUtil\HW_Init.o
- .debug_line    0x000065dc      0x51b User\HardwareUtil\HW_MAC.o
- .debug_line    0x00006af7      0x386 User\HardwareUtil\HW_SPI.o
- .debug_line    0x00006e7d      0x366 User\HardwareUtil\HW_UART.o
- .debug_line    0x000071e3      0x596 User\Main\BlueHomeApp.o
- .debug_line    0x00007779      0x5fb User\RuleProcess\RP_ActionManager.o
- .debug_line    0x00007d74      0x23a User\RuleProcess\RP_Init.o
- .debug_line    0x00007fae      0x5ab User\RuleProcess\RP_RuleChecker.o
- .debug_line    0x00008559      0x60b User\RuleProcess\RP_SourceManager.o
- .debug_line    0x00008b64      0x45e User\SourceActionManager\SAM_Bluetooth.o
- .debug_line    0x00008fc2      0x406 User\SourceActionManager\SAM_GPIO.o
- .debug_line    0x000093c8      0x23d User\SourceActionManager\SAM_Init.o
- .debug_line    0x00009605      0x529 User\SourceActionManager\SAM_Light.o
- .debug_line    0x00009b2e      0x462 User\SourceActionManager\SAM_Pieper.o
- .debug_line    0x00009f90      0x417 User\SourceActionManager\SAM_Programming.o
- .debug_line    0x0000a3a7      0x321 User\SourceActionManager\SAM_RTC.o
- .debug_line    0x0000a6c8      0x409 User\SourceActionManager\SAM_Relais.o
- .debug_line    0x0000aad1      0x4c3 User\SourceActionManager\SAM_TouchButton.o
+ .debug_line    0x0000615c      0x47f User\HardwareUtil\HW_Init.o
+ .debug_line    0x000065db      0x51b User\HardwareUtil\HW_MAC.o
+ .debug_line    0x00006af6      0x386 User\HardwareUtil\HW_SPI.o
+ .debug_line    0x00006e7c      0x366 User\HardwareUtil\HW_UART.o
+ .debug_line    0x000071e2      0x596 User\Main\BlueHomeApp.o
+ .debug_line    0x00007778      0x5fb User\RuleProcess\RP_ActionManager.o
+ .debug_line    0x00007d73      0x23a User\RuleProcess\RP_Init.o
+ .debug_line    0x00007fad      0x5ab User\RuleProcess\RP_RuleChecker.o
+ .debug_line    0x00008558      0x589 User\RuleProcess\RP_SourceManager.o
+ .debug_line    0x00008ae1      0x45e User\SourceActionManager\SAM_Bluetooth.o
+ .debug_line    0x00008f3f      0x406 User\SourceActionManager\SAM_GPIO.o
+ .debug_line    0x00009345      0x23d User\SourceActionManager\SAM_Init.o
+ .debug_line    0x00009582      0x529 User\SourceActionManager\SAM_Light.o
+ .debug_line    0x00009aab      0x462 User\SourceActionManager\SAM_Pieper.o
+ .debug_line    0x00009f0d      0x417 User\SourceActionManager\SAM_Programming.o
+ .debug_line    0x0000a324      0x321 User\SourceActionManager\SAM_RTC.o
+ .debug_line    0x0000a645      0x409 User\SourceActionManager\SAM_Relais.o
+ .debug_line    0x0000aa4e      0x4c3 User\SourceActionManager\SAM_TouchButton.o
 
 .debug_str      0x00000000     0x783b
  .debug_str     0x00000000      0x5ee Hal\clock.o
@@ -6519,7 +6520,7 @@ OUTPUT(Release.elf elf32-littlearm)
  .debug_str     0x00007141       0x9e User\RuleProcess\RP_RuleChecker.o
                                 0xc07 (size before relaxing)
  .debug_str     0x000071df      0x16e User\RuleProcess\RP_SourceManager.o
-                               0x1158 (size before relaxing)
+                                0xe90 (size before relaxing)
  .debug_str     0x0000734d       0x72 User\SourceActionManager\SAM_Bluetooth.o
                                 0xa95 (size before relaxing)
  .debug_str     0x000073bf       0xc4 User\SourceActionManager\SAM_GPIO.o

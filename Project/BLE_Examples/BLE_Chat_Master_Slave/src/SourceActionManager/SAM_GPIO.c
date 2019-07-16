@@ -6,12 +6,12 @@
  */
 
 #include <Debug/DB_Console.h>
-#include <HardwareUtil/HW_Init.h>
 #include <HardwareUtil/HW_I2C.h>
+#include <HardwareUtil/HW_Init.h>
 #include <RuleProcess/RP_ActionManager.h>
 #include <RuleProcess/RP_RuleChecker.h>
 #include <RuleProcess/RP_SourceManager.h>
-#include <stdint.h>
+#include <sys/_stdint.h>
 #include <SourceActionManager/SAM_GPIO.h>
 #include <SourceActionManager/SAM_Init.h>
 
